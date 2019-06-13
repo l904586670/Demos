@@ -13,6 +13,7 @@
 		8C55296B22B1F3E400F3561A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C55296A22B1F3E400F3561A /* Assets.xcassets */; };
 		8C55296E22B1F3E400F3561A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C55296C22B1F3E400F3561A /* LaunchScreen.storyboard */; };
 		8C55297122B1F3E400F3561A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C55297022B1F3E400F3561A /* main.m */; };
+		8C55297922B26DB800F3561A /* Concurrency_vs_Parallelism.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C55297822B26DB800F3561A /* Concurrency_vs_Parallelism.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,8 @@
 		8C55296D22B1F3E400F3561A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8C55296F22B1F3E400F3561A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8C55297022B1F3E400F3561A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		8C55297722B26D8000F3561A /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Header.h; sourceTree = "<group>"; };
+		8C55297822B26DB800F3561A /* Concurrency_vs_Parallelism.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Concurrency_vs_Parallelism.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +65,8 @@
 				8C55296222B1F3DE00F3561A /* AppDelegate.m */,
 				8C55296422B1F3DE00F3561A /* ViewController.h */,
 				8C55296522B1F3DE00F3561A /* ViewController.m */,
+				8C55297822B26DB800F3561A /* Concurrency_vs_Parallelism.png */,
+				8C55297722B26D8000F3561A /* Header.h */,
 				8C55296722B1F3DE00F3561A /* Main.storyboard */,
 				8C55296A22B1F3E400F3561A /* Assets.xcassets */,
 				8C55296C22B1F3E400F3561A /* LaunchScreen.storyboard */,
@@ -129,6 +134,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C55296E22B1F3E400F3561A /* LaunchScreen.storyboard in Resources */,
+				8C55297922B26DB800F3561A /* Concurrency_vs_Parallelism.png in Resources */,
 				8C55296B22B1F3E400F3561A /* Assets.xcassets in Resources */,
 				8C55296922B1F3DE00F3561A /* Main.storyboard in Resources */,
 			);

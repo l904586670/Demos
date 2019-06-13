@@ -23,7 +23,7 @@
   self.serialQueue = dispatch_queue_create("serialQueue", DISPATCH_QUEUE_SERIAL);
   self.concurrentQueue = dispatch_queue_create("concurrentQueue", DISPATCH_QUEUE_CONCURRENT);
 
-  [self mainQueueAddAsyncTask];
+//  [self mainQueueAddAsyncTask];
 
 //  [self mainQueueAddSyncTask];
 
@@ -39,6 +39,8 @@
 //  [self concurrentQueueAddSyncTask];
 
 //  [self concurrentQueueAddTask];
+
+  [self concurrentQueueAddBarrier];
 }
 
 #pragma mark - 队列和任务
@@ -154,7 +156,8 @@
 
 #pragma mark - /*********************/
 
-// 并发队列添加异步任务. 结果: 并发队列添加异步任务, 会开辟新线程. 任务的执行顺序不定.任务执行结束的时长看任务的耗时
+#warning FIFO???
+// 并发队列添加异步任务. 结果: 并发队列添加异步任务, 会开辟新线程. log显示任务的执行顺序不定???? FIFO????.任务执行结束的时长看任务的耗时
 - (void)concurrentQueueAddAsyncTask {
   NSLog(@"custom concurrent start");
 
@@ -221,6 +224,44 @@
   });
 }
 
+// 并发队列里面添加栅栏函数 dispatch_barrier_async / dispatch_barrier_sync . 用于确保多线程数据读写安全. 栅栏函数里面的方法会在栅栏函数以前的任务完全执行完毕后调用.  栅栏函数 后面的任务会在栅栏函数里面的任务执行完毕后执行. dispatch_barrier_async/dispatch_barrier_sync 区别就是dispatch_barrier_async有开辟线程的能力,会在另外的线程执行任务,不会阻碍当前线程. dispatch_barrier_sync 会在添加当前线程(添加栅栏函数的线程)执行任务,会阻碍当前线程.
+- (void)concurrentQueueAddBarrier {
+  dispatch_async(dispatch_get_global_queue(0, 0), ^{
+    dispatch_async(self.concurrentQueue, ^{
+      NSLog(@"log 0");
+      sleep(1);
+      NSLog(@"log 0 end");
+    });
+
+    dispatch_async(self.concurrentQueue, ^{
+      NSLog(@"log 1");
+      sleep(2);
+      NSLog(@"log 1 end");
+    });
+
+    dispatch_async(self.concurrentQueue, ^{
+      NSLog(@"log 2");
+      NSLog(@"log 2 end");
+      NSLog(@"current thread : %@", [NSThread currentThread]);
+    });
+
+    dispatch_barrier_sync(self.concurrentQueue, ^{
+      NSLog(@"log barrier start");
+      sleep(2);
+      NSLog(@"current thread : %@", [NSThread currentThread]);
+      NSLog(@"log barrier end");
+    });
+
+    dispatch_async(self.concurrentQueue, ^{
+      NSLog(@"log 3");
+      NSLog(@"log 3 end");
+    });
+
+    NSLog(@"end");
+  });
+
+
+}
 
 
 @end
