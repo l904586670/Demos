@@ -31,7 +31,7 @@
 
 //  [self serialQueueAddSyncTask];
 
-//  [self serialQueueAddTask];
+  [self serialQueueAddTask];
 
 
 //  [self concurrentQueueAddAsyncTask];
@@ -40,7 +40,7 @@
 
 //  [self concurrentQueueAddTask];
 
-  [self concurrentQueueAddBarrier];
+//  [self concurrentQueueAddBarrier];
 }
 
 #pragma mark - 队列和任务
@@ -73,18 +73,21 @@
 
 
 
-// 串行队列中添加异步任务 结果 : 按添加的顺序执行 上一个任务执行完后开始执行下一个任务. 根据设备的不同,开辟线程的时长不同, task async0 start 和 custom Async end的打印顺序不同.但是在串行里面的异步任务确定是按顺序执行
+// 串行队列中添加异步任务 结果 : 会异步开辟出一个新线程.因为fifo的原则.在串行队列中同一时间只执行一个任务. 所以任务按顺序执行, 根据设备性能的不同,开辟线程的时长不同, task async0 start 和 custom Async end的打印顺序不同
 - (void)serialQueueAddAsyncTask {
+  NSLog(@"current Thread : %@", [NSThread currentThread]);
   NSLog(@"custom Async start");
   sleep(1);
   dispatch_async(self.serialQueue, ^{
     NSLog(@"task async0 start");
+    NSLog(@"current Thread : %@", [NSThread currentThread]);
     sleep(3);
     NSLog(@"task async0 end");
   });
 
   dispatch_async(self.serialQueue, ^{
     NSLog(@"task async1 start");
+    NSLog(@"current Thread : %@", [NSThread currentThread]);
     sleep(1);
     NSLog(@"task async1 end");
   });
@@ -92,12 +95,13 @@
   sleep(1);
   dispatch_async(self.serialQueue, ^{
     NSLog(@"task async2 start");
+    NSLog(@"current Thread : %@", [NSThread currentThread]);
     NSLog(@"task async2 end");
   });
   NSLog(@"custom Async end");
 }
 
-// 串行队列中添加同步任务 结果: 添加同步任务. 会阻塞当前串行线程,优先执行同步任务.
+// 串行队列中添加同步任务 结果: 添加同步任务. 会阻塞当前串行线程,按顺序执行.
 - (void)serialQueueAddSyncTask {
   NSLog(@"custom Async start");
   dispatch_sync(self.serialQueue, ^{
@@ -122,22 +126,26 @@
 // 串行队列添加混合任务 , 结果: 在串行队列中添加任务, 都是按添加顺序执行. 在串行队列任务中再次执行同步任务会产生死锁
 - (void)serialQueueAddTask {
   NSLog(@"custom Async start");
+  NSLog(@"current Thread : %@", [NSThread currentThread]);
 
   dispatch_sync(self.serialQueue, ^{
     NSLog(@"task sync0 start");
+    NSLog(@"current Thread : %@", [NSThread currentThread]);
     sleep(1);
     NSLog(@"task sync0 end");
   });
 
   dispatch_async(self.serialQueue, ^{
     NSLog(@"task async0 start");
-    sleep(3);
+    sleep(2);
+    NSLog(@"current Thread : %@", [NSThread currentThread]);
     NSLog(@"task async0 end");
   });
 
   dispatch_async(self.serialQueue, ^{
     NSLog(@"task async3 start");
     sleep(1);
+    NSLog(@"current Thread : %@", [NSThread currentThread]);
     NSLog(@"task async3 end");
   });
 
@@ -149,6 +157,7 @@
 
   dispatch_async(self.serialQueue, ^{
     NSLog(@"task async2 start");
+    NSLog(@"current Thread : %@", [NSThread currentThread]);
     NSLog(@"task async2 end");
   });
   NSLog(@"custom Async end");
@@ -156,8 +165,7 @@
 
 #pragma mark - /*********************/
 
-#warning FIFO???
-// 并发队列添加异步任务. 结果: 并发队列添加异步任务, 会开辟新线程. log显示任务的执行顺序不定???? FIFO????.任务执行结束的时长看任务的耗时
+// 并发队列添加异步任务. 结果: 并发队列添加异步任务, 会开辟新线程. log显示任务的执行顺序不定(可能原因为创建线程耗时. 或者添加到的线程有任务没有执行完?).任务执行结束的时长看任务的耗时
 - (void)concurrentQueueAddAsyncTask {
   NSLog(@"custom concurrent start");
 
@@ -180,7 +188,8 @@
   NSLog(@"custom concurrent end");
 }
 
-// 并发执行添加同步任务. 结果: 任务的执行顺序不定.任务执行结束的时长看任务的耗时
+
+// 并发执行添加同步任务. 结果: 任务按顺序执行fifo. 同步任务没有开辟线程的能力,所以等上一个任务执行完才会执行下一个任务
 - (void)concurrentQueueAddSyncTask {
   NSLog(@"custom concurrent start");
 
@@ -259,8 +268,6 @@
 
     NSLog(@"end");
   });
-
-
 }
 
 
