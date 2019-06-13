@@ -23,7 +23,7 @@
   self.serialQueue = dispatch_queue_create("serialQueue", DISPATCH_QUEUE_SERIAL);
   self.concurrentQueue = dispatch_queue_create("concurrentQueue", DISPATCH_QUEUE_CONCURRENT);
 
-//  [self mainQueueAddAsyncTask];
+  [self mainQueueAddAsyncTask];
 
 //  [self mainQueueAddSyncTask];
 
@@ -38,7 +38,7 @@
 
 //  [self concurrentQueueAddSyncTask];
 
-  [self concurrentQueueAddTask];
+//  [self concurrentQueueAddTask];
 }
 
 #pragma mark - 队列和任务
