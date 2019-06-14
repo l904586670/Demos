@@ -31,7 +31,7 @@
 
 //  [self serialQueueAddSyncTask];
 
-  [self serialQueueAddTask];
+//  [self serialQueueAddTask];
 
 
 //  [self concurrentQueueAddAsyncTask];
@@ -41,6 +41,8 @@
 //  [self concurrentQueueAddTask];
 
 //  [self concurrentQueueAddBarrier];
+
+  [self testGCDQueueGroup];
 }
 
 #pragma mark - 队列和任务
@@ -270,5 +272,62 @@
   });
 }
 
+#pragma mark - Group
+
+// 
+- (void)testGCDQueueGroup {
+  dispatch_group_t group = dispatch_group_create();
+
+  dispatch_group_async(group, dispatch_get_global_queue(0, 0), ^{
+    NSLog(@"模拟异步并发任务");
+    sleep(2);
+    NSLog(@"模拟异步并发任务 end");
+  });
+
+  dispatch_group_enter(group);
+  [self sendRequestSuccess:^{
+    dispatch_group_leave(group);
+    NSLog(@"wait end 0");
+  } fail:^{
+    NSLog(@"wait end 0");
+    dispatch_group_leave(group);
+  }];
+
+  dispatch_group_enter(group);
+  [self sendRequestSuccess:^{
+    dispatch_group_leave(group);
+    NSLog(@"wait end 1");
+  } fail:^{
+    dispatch_group_leave(group);
+    NSLog(@"wait end 1");
+  }];
+
+  NSLog(@"wait");
+  dispatch_group_wait(group, 1);
+  NSLog(@"wait end");
+
+  dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+    NSLog(@"group end");
+  });
+}
+
+- (void)sendRequestSuccess:(void(^)(void))successHandler
+                      fail:(void(^)(void))failHandler {
+  dispatch_async(dispatch_get_global_queue(0, 0), ^{
+    int randomTime = arc4random() % 4;
+    sleep(randomTime);
+
+    int success = arc4random() % 2;
+    if (success == 1) {
+      if (successHandler) {
+        successHandler();
+      }
+    } else {
+      if (failHandler) {
+        failHandler();
+      }
+    }
+  });
+}
 
 @end
