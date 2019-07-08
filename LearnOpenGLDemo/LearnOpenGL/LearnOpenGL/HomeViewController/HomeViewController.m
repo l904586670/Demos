@@ -15,6 +15,8 @@
 
 typedef NS_ENUM(NSInteger, DemoType) {
   DemoTypeDrawPicture = 0,
+  DemoTypeSimpleShader,
+  DemoTypeTransform3D,
   
   DemoTypeCount,
 };
@@ -90,7 +92,9 @@ typedef NS_ENUM(NSInteger, DemoType) {
     return nil;
   }
   NSArray <NSString *>*classes = @[
-                                   @"DrawTriangleViewController"
+                                   @"DrawTriangleViewController",
+                                   @"SimpleShaderViewController",
+                                   @"Transform3DViewController"
                                    ];
   return classes[type];
 
@@ -103,7 +107,9 @@ typedef NS_ENUM(NSInteger, DemoType) {
     return nil;
   }
   NSArray <NSString *>*titles = @[
-                                  @"绘制三角形和图片"
+                                  @"绘制三角形和图片",
+                                  @"应用简单shader",
+                                  @"openGL矩阵和3d变换"
                                   ];
   return titles[type];
 }
