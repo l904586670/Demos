@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface GLBaseViewController : GLKViewController <GLKViewControllerDelegate>
 
+@property (nonatomic, assign) BOOL hideGLConfig;
+
 @property (nonatomic, strong) GLKView *glkView;
 
 @property (nonatomic, strong, nullable) EAGLContext *content;

@@ -7,12 +7,12 @@ varying lowp vec4 varyColor;
 
 void main()
 {
-    varyColor = positionColor;
-    
-    vec4 vPos;
-    vPos = projectionMatrix * modelViewMatrix * position;
-    
-//    vPos = position;
-
-    gl_Position = vPos;
+  varyColor = positionColor;
+  
+  vec4 vPos;
+  vPos = projectionMatrix * modelViewMatrix * position;
+  
+  //    vPos = position;
+  
+  gl_Position = vPos;
 }

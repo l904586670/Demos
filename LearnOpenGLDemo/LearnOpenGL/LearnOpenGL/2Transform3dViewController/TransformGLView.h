@@ -12,6 +12,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TransformGLView : UIView
 
+@property (nonatomic, assign) BOOL bX;
+@property (nonatomic, assign) BOOL bY;
+
+- (void)start;
+
+- (void)end;
+
 @end
 
 NS_ASSUME_NONNULL_END

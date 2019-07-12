@@ -12,6 +12,8 @@
 
 @interface Transform3DViewController ()
 
+@property (nonatomic, strong) TransformGLView *glTransformView;
+
 @end
 
 @implementation Transform3DViewController
@@ -21,28 +23,28 @@
   
   self.view.backgroundColor = [UIColor whiteColor];
   
-//  CGSize srceenSize = [UIScreen mainScreen].bounds.size;
-//  CGRect frame = CGRectMake(0, 0, srceenSize.width, srceenSize.width);
+  CGSize screenSize = [UIScreen mainScreen].bounds.size;
+  CGFloat posY = CGRectGetMaxY(self.navigationController.navigationBar.frame);
+
+  CGRect contentFrame = CGRectMake(0, posY, screenSize.width, screenSize.height - posY);
   
-  TransformGLView *glView = [[TransformGLView alloc] initWithFrame:self.contentRect];
+  TransformGLView *glView = [[TransformGLView alloc] initWithFrame:contentFrame];
   [self.view addSubview:glView];
-}
-
-#pragma mark - GLKViewDelegate
-
-- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
-  glClearColor(0.95, 1.0, 1.0, 1.0);
-  glClear(GL_COLOR_BUFFER_BIT);
-}
-
-#pragma mark - GLKViewControllerDelegate
-
-- (void)glkViewControllerUpdate:(GLKViewController *)controller {
+  _glTransformView = glView;
   
+  
+  UISwitch *swt = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 100, 40)];
+  [swt addTarget:self action:@selector(onSwicth:) forControlEvents:UIControlEventValueChanged];
+  UIBarButtonItem *barBtn = [[UIBarButtonItem alloc] initWithCustomView:swt];
+  self.navigationItem.rightBarButtonItem = barBtn;
 }
 
-- (void)glkViewController:(GLKViewController *)controller willPause:(BOOL)pause {
-  
+- (void)onSwicth:(UISwitch *)sender {
+  if (sender.on) {
+    [self.glTransformView start];
+  } else {
+    [self.glTransformView end];
+  }
 }
 
 @end

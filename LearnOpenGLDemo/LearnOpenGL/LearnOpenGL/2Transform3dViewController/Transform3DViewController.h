@@ -6,11 +6,14 @@
 //  Copyright © 2019 Rock. All rights reserved.
 //
 
-#import "GLBaseViewController.h"
+#import <UIKit/UIKit.h>
+
+#import <GLKit/GLKit.h>
+#import <OpenGLES/ES3/gl.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Transform3DViewController : GLBaseViewController
+@interface Transform3DViewController : UIViewController
 
 @end
 

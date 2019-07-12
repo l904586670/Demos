@@ -14,32 +14,24 @@
 
 @implementation GLBaseViewController
 
-- (instancetype)init {
-  self = [super init];
-  if (self) {
-    
-  }
-  return self;
-}
-
 - (void)viewDidLoad {
   [super viewDidLoad];
   
-  self.delegate = self;
-  self.preferredFramesPerSecond = 60;
-  self.content = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
-  [EAGLContext setCurrentContext:self.content];
-  
-  
-  
-  GLKView *glkView = [[GLKView alloc] initWithFrame:[self contentRect] context:self.content];
-  self.glkView = glkView;
-  [self.view addSubview:glkView];
-  glkView.delegate = self;
-//  (GLKView *)self.view;
-//  glkView.context = self.content;
-  //  glkView.delegate = self;
-  glkView.drawableColorFormat = GLKViewDrawableColorFormatRGBA8888;  //颜色缓冲区格式
+  if (!_hideGLConfig) {
+    self.delegate = self;
+    self.preferredFramesPerSecond = 60;
+    self.content = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
+    [EAGLContext setCurrentContext:self.content];
+    
+    GLKView *glkView = [[GLKView alloc] initWithFrame:[self contentRect] context:self.content];
+    self.glkView = glkView;
+    [self.view addSubview:glkView];
+    glkView.delegate = self;
+    //  (GLKView *)self.view;
+    //  glkView.context = self.content;
+    //  glkView.delegate = self;
+    glkView.drawableColorFormat = GLKViewDrawableColorFormatRGBA8888;  //颜色缓冲区格式
+  }
 }
 
 - (CGRect)contentRect {
