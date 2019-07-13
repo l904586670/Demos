@@ -8,6 +8,8 @@
 
 #import "DrawTriangleViewController.h"
 
+#import "TriangleGLView.h"
+
 @interface DrawTriangleViewController () <GLKViewControllerDelegate>
 
 @property (nonatomic, strong) GLKBaseEffect *effect;
@@ -25,15 +27,21 @@
 @implementation DrawTriangleViewController
 
 - (void)viewDidLoad {
-  [super viewDidLoad];
+//  [super viewDidLoad];
   
-  [self setupUI];
+  self.hideGLConfig = YES;
   
-  [self uploadVertexArray];
+  TriangleGLView *triangleView = [[TriangleGLView alloc] initWithFrame:self.contentRect];
+  [self.view addSubview:triangleView];
+  [triangleView renderTriangle];
   
-  [self uploadPhotoVertexArray];
-  
-  [self loadTexture];
+//  [self setupUI];
+//
+//  [self uploadVertexArray];
+//
+//  [self uploadPhotoVertexArray];
+//
+//  [self loadTexture];
 }
 
 - (void)dealloc {

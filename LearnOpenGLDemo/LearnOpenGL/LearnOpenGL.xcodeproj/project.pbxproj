@@ -26,6 +26,8 @@
 		CE94D03122D04635003381F7 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE94D03022D04635003381F7 /* HomeViewController.m */; };
 		CE94D03522D04B9B003381F7 /* GLBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE94D03422D04B9B003381F7 /* GLBaseViewController.m */; };
 		CE94D03922D04D0F003381F7 /* DrawTriangleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE94D03822D04D0F003381F7 /* DrawTriangleViewController.m */; };
+		CE9AB31522D9B273002DD2B3 /* TriangleGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9AB31422D9B273002DD2B3 /* TriangleGLView.m */; };
+		CE9AB31822D9BF6B002DD2B3 /* triangleShaderV.vsh in Sources */ = {isa = PBXBuildFile; fileRef = CE9AB31622D9BF6B002DD2B3 /* triangleShaderV.vsh */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +64,10 @@
 		CE94D03422D04B9B003381F7 /* GLBaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLBaseViewController.m; sourceTree = "<group>"; };
 		CE94D03722D04D0F003381F7 /* DrawTriangleViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DrawTriangleViewController.h; sourceTree = "<group>"; };
 		CE94D03822D04D0F003381F7 /* DrawTriangleViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DrawTriangleViewController.m; sourceTree = "<group>"; };
+		CE9AB31322D9B273002DD2B3 /* TriangleGLView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TriangleGLView.h; sourceTree = "<group>"; };
+		CE9AB31422D9B273002DD2B3 /* TriangleGLView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TriangleGLView.m; sourceTree = "<group>"; };
+		CE9AB31622D9BF6B002DD2B3 /* triangleShaderV.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = triangleShaderV.vsh; sourceTree = "<group>"; };
+		CE9AB31722D9BF6B002DD2B3 /* triangleShaderF.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = triangleShaderF.vsh; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,12 +106,12 @@
 		CE04FD6C22D3649000B843B8 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				CE04FD6F22D3649000B843B8 /* GLESMath.c */,
+				CE04FD7222D3649000B843B8 /* GLESMath.h */,
+				CE04FD7022D3649000B843B8 /* GLESUtils.h */,
 				CE04FD6D22D3649000B843B8 /* GLESUtils.m */,
 				CE04FD6E22D3649000B843B8 /* Quaternion.h */,
-				CE04FD6F22D3649000B843B8 /* GLESMath.c */,
-				CE04FD7022D3649000B843B8 /* GLESUtils.h */,
 				CE04FD7122D3649000B843B8 /* Vector.h */,
-				CE04FD7222D3649000B843B8 /* GLESMath.h */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -196,10 +202,30 @@
 		CE94D03622D04CF7003381F7 /* 0DrawTriangleViewController */ = {
 			isa = PBXGroup;
 			children = (
+				CE9AB30F22D9B238002DD2B3 /* Shaders */,
+				CE9AB30E22D9B238002DD2B3 /* View */,
 				CE94D03722D04D0F003381F7 /* DrawTriangleViewController.h */,
 				CE94D03822D04D0F003381F7 /* DrawTriangleViewController.m */,
 			);
 			path = 0DrawTriangleViewController;
+			sourceTree = "<group>";
+		};
+		CE9AB30E22D9B238002DD2B3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CE9AB31322D9B273002DD2B3 /* TriangleGLView.h */,
+				CE9AB31422D9B273002DD2B3 /* TriangleGLView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CE9AB30F22D9B238002DD2B3 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				CE9AB31622D9BF6B002DD2B3 /* triangleShaderV.vsh */,
+				CE9AB31722D9BF6B002DD2B3 /* triangleShaderF.vsh */,
+			);
+			path = Shaders;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -277,6 +303,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE9AB31822D9BF6B002DD2B3 /* triangleShaderV.vsh in Sources */,
 				CE94D02822D045EE003381F7 /* main.m in Sources */,
 				CE94D01A22D045ED003381F7 /* AppDelegate.m in Sources */,
 				CE04FD7322D3649000B843B8 /* GLESUtils.m in Sources */,
@@ -288,6 +315,7 @@
 				CE04FD7722D364AD00B843B8 /* Transform3DViewController.m in Sources */,
 				CE04FD7A22D3651A00B843B8 /* TransformGLView.m in Sources */,
 				CE94D03122D04635003381F7 /* HomeViewController.m in Sources */,
+				CE9AB31522D9B273002DD2B3 /* TriangleGLView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
