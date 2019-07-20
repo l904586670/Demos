@@ -1,0 +1,33 @@
+//
+//  PrefixHeader.pch
+//  HuanXingKefuDemo
+//
+//  Created by User on 2019/7/16.
+//  Copyright © 2019 Rock. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+#import <HelpDeskLite/HelpDeskLite.h>
+#import "HelpDeskUI.h"
+
+#import "SRRefreshView.h"
+#import "UIImageView+WebCache.h"
+#import "UIButton+WebCache.h"
+#import "UIView+FLExtension.h"
+
+#import "HDChatViewController.h"
+#import "CSDemoAccountManager.h"
+#define MAS_SHORTHAND_GLOBALS
+#import "Masonry.h"
+#import <SVProgressHUD/SVProgressHUD.h>
+
+#import "JPUSHService.h"
+// iOS10 注册 APNs 所需头文件
+#ifdef NSFoundationVersionNumber_iOS_9_x_Max
+#import <UserNotifications/UserNotifications.h>
+#endif
+
+
+#endif /* PrefixHeader_pch */

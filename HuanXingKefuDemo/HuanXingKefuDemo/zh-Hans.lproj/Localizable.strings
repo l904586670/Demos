@@ -1,0 +1,331 @@
+/* 
+  Localizable.strings
+  HuanXingKefuDemo
+
+  Created by User on 2019/7/17.
+  Copyright © 2019 Rock. All rights reserved.
+*/
+
+// 环信国际化
+"search" = "搜索";
+"error" = "错误";
+"delete" = "删除";
+"copy" = "复制";
+"save" = "保存";
+"default" = "默认";
+
+"add" = "添加";
+"send" = "发送";
+"open" = "打开";
+"down" = "完成";
+"choose" = "选择";
+"accept" = "接受";
+"reject" = "拒绝";
+"retry" = "重试";
+"edit" = "编辑";
+
+"sendingApply" = "正在发送申请...";
+"acceptFail" = "接受失败";
+"rejectFail" = "拒绝失败";
+"refreshData" = "刷新数据...";
+"loadData" = "加载数据...";
+"saySomething" = "说点啥子吧";
+"searchResults" = "搜索结果";
+"doneWithCount" = "确定(%i)";
+"sureToDelete" = "请确定删除";
+"receiveCmd" = "有透传消息";
+"receiveMessage" = "您有一条新消息";
+"loginAtOtherDevice" = "你的账号已在其他地方登录";
+"loginUserRemoveFromServer" = "你的账号已被从服务器端移除";
+"userDidForbidByServer" = "服务被禁用";
+"userAccountDidForcedToLogout" = "账号被强制退出";
+"appkeyError" = "appkey错误";
+
+//general
+"prompta" = "提示";
+"ok" = "确定";
+"cancela" = "取消";
+
+"receiveCmdMessage" = "透传消息";
+
+"setNickname" = "设置昵称";
+"customerChat" = "联系客服";
+"customerUser" = "IM服务号";
+"commonProblems" = "常见问题";
+"restart" = "重新启动";
+"restartInfo" = "配置信息需要重新启动才能生效";
+
+//app
+"AppName" = "客服Demo";
+
+//apns
+"apns.failToRegisterApns" = "注册推送失败";
+"apns.failToBindDeviceToken" = "消息推送与设备绑定失败";
+
+//login
+"login.beginAutoLogin" = "自动登录开始...";
+"login.endAutoLogin" = "自动登录结束...";
+"login.errorAutoLogin" = "自动登录失败.";
+
+"Contacting..." = "联系客服中...";
+"loginFail" = "联系客服失败,请重试...";
+
+//setting
+"setting.feedback" = "意见反馈";
+
+//title
+"title.customer" = "客服";
+"title.mall" = "商城";
+"title.conversationTitle" = "会话";
+"title.setting" = "设置";
+"title.commodity" = "商品详情";
+"title.nickname" = "昵称";
+"title.satisfaction" = "满意度评价";
+"title.messagebox" = "留言箱";
+"title.leavemsg" = "留言";
+"title.leavemsgdetail" = "留言详情";
+"title.leavemsgsetting" = "留言设置";
+"title.reply" = "写评论";
+"title.projectId" = "留言ID(ProjectId)";
+"title.tenantId" = "租户ID(Tenantld)";
+
+//choice
+"choice.preSale" = "售前客服";
+"choice.afterSale" = "售后客服";
+
+//satisfaction
+"satisfaction.message" = "请对我的服务做出评价";
+"satisfaction.evaluate" = "立即评价";
+"satisfaction.evaluated" = "已评价";
+"satisfaction.nickname" = "客服昵称";
+"satisfaction.commit" = "提交";
+"satisfaction.alert" = "请先选择评星";
+
+//message
+"message.camera" = "相机";
+"message.image" = "图片";
+"message.location" = "位置";
+"message.voice" = "音频";
+"message.vidio" = "视频";
+"message.image1" = "[图片]";
+"message.location1" = "[位置]";
+"message.voice1" = "[音频]";
+"message.vidio1" = "[视频]";
+"message.beginReceiveOffine" = "开始接收离线消息";
+"message.endReceiveOffine" = "离线消息接收成功";
+"message.toolBar.inputPlaceHolder" = "输入新消息";
+"message.toolBar.record.loosenCancel" = " 松开手指，取消录音 ";
+"message.toolBar.record.touch" = "按住录音";
+"message.toolBar.record.send" = "松开发送";
+
+"media.timeShort" = "时间过短";
+
+"message.downloadingAudio" = "正在下载语音，稍后点击";
+"message.downloadingVideo" = "正在获取视频...";
+"message.videoFail" = "视频获取失败!";
+"message.downloadingImage" = "正在获取大图...";
+"message.imageFail" = "大图获取失败!";
+"message.thumImageFail" = "缩略图获取失败!";
+"message.simulatorNotSupportCamera" = "模拟器不支持拍照";
+"message.simulatorNotSupportVideo" = "模拟器不支持录像";
+"message.startRecordFail" = "开始录音失败";
+"message.failToPermission" = "未获取权限";
+"message.noMessage" = "消息已经清空";
+
+
+//reconnection
+"reconnection.ongoing" = "正在重连中...";
+"reconnection.fail" = "重连失败，稍候将继续重连";
+"reconnection.success" = "重连成功！";
+
+//location
+"location.messageType" = "位置信息";
+"location.fail" = "定位失败";
+"location.ongoning" = "正在定位...";
+
+//NSDateCategory
+"NSDateCategory.text1" = "1分钟内";
+"NSDateCategory.text2" = "%.f分钟前";
+"NSDateCategory.text3" = "%.f小时前";
+"NSDateCategory.text4" = "%.f天前";
+"NSDateCategory.text5" = "M月d日";
+"NSDateCategory.text6" = "%.f年前";
+"NSDateCategory.text7" = "昨天 %@";
+"NSDateCategory.text8" = "昨天HH:mm";
+"NSDateCategory.text9" = "凌晨hh:mm";
+"NSDateCategory.text10" = "上午hh:mm";
+"NSDateCategory.text11" = "下午hh:mm";
+"NSDateCategory.text12" = "晚上hh:mm";
+"NSDateCategory.text13" = "昨天HH:mm";
+"NSDateCategory.text14" = "今天 %@";
+
+//leaveMessage
+"leaveMessage.name" = "姓名";
+"leaveMessage.phone" = "电话";
+"leaveMessage.mail" = "邮箱";
+"leaveMessage.content" = "内容";
+"leaveMessage.leavemsg.sending" = "发送中...";
+"leaveMessage.leavesucceed" = "发送成功";
+"leaveMessage.leavefailed" = "发送失败";
+"leaveMessage.leavemsg.load" = "加载留言详情";
+"leaveMessage.leavemsg.loadsucceed" = "加载成功";
+"leaveMessage.leavemsg.loadfailed" = "加载失败";
+"leaveMessage.leavemsg.comment" = "评论";
+"leaveMessage.leavemsg.theme" = "主题";
+"leaveMessage.leavemsg.nickname" = "访客昵称:";
+"leaveMessage.leavemsg.content" = "详细信息";
+"leaveMessage.leavemsg.phone" = "手机:";
+"leaveMessage.leavemsg.qq" = "QQ:";
+"leaveMessage.leavemsg.weibo" = "微博:";
+"leaveMessage.leavemsg.mail" = "邮箱";
+"leaveMessage.leavemsg.time" = "时间";
+"leaveMessage.leavemsg.attachment" = "附件";
+"leaveMessage.leavemsg.reply" = "回复";
+"leaveMessage.leavemsg.addattachment" = "添加附件";
+"leaveMessage.leavemsg.replyempty" = "回复内容不能空";
+"leaveMessage.leavemsg.attachmentname" = "附件名称";
+"leaveMessage.leavemsg.uploadattachment" = "上传附件";
+"leaveMessage.leavemsg.uploadattachment.failed" = "上传附件失败";
+"uploading..." = "上传中...";
+"success!" = "成功";
+"failed" = "失败";
+
+// new
+"Header.image" = "em_main_introduce_zh";
+
+"em_example1_text" = "古驰亮色夹克";
+"em_example2_text" = "铂金女士手提袋";
+"em_example3_text" = "缪缪女士高跟鞋";
+"em_example4_text" = "卡地亚的一块手表";
+
+"em_example1_text_description" = "11月销量: 3399";
+"em_example2_text_description" = "11月销量: 20";
+"em_example3_text_description" = "11月销量: 435";
+"em_example4_text_description" = "11月销量: 10";
+
+"attach_picture" = "相册";
+"attach_take_pic" = "拍照";
+"attach_call_video" = "发起视频";
+"attach_location" = "位置";
+"leave_title" = "留言";
+"evaluation" = "评价";
+
+"recording_description" = "松开结束，手指上滑取消发送";
+"not_start_recording" = "还没开始录音";
+
+
+"leave_content" = "输入留言";
+"new_leave_item_hint_text" = "必填";
+
+"ticket_name" = "名字";
+"ticket_phone" = "电话";
+"ticket_email" = "邮箱";
+"ticket_theme" = "主题";
+"ticket_detail" = "详细信息";
+
+"new_leave_send_success" = "提交成功";
+"new_leave_send_descriptionOne" = "感谢您的留言.";
+"new_leave_send_descriptionTwo" = "我们将在第一时间对您进行答复，请耐心等待!";
+"send_failure_please" = "发送失败";
+"recorder_video_processing" = "发送中...";
+"message_content_beyond_limit" = "长度受限";
+"click_load_beyond_limit" = "长度受限";
+
+"customernumber" = "IM服务号";
+"login_user_nick" = "登录用户昵称";
+"set_tenantId" = "租户ID(TenantId)";
+"set_leave_messageid" = "留言ID(projectId)";
+
+"restarta" = "重启";
+"app_key_modifya" = "修改appkey之后需要重启";
+
+"em_example1_text_detail" = "product_details_zh_";
+
+"em_chat_I_focus" = "我正在看";
+
+"order_number" = "订单号:";
+
+"load_more" = "点击加载更多";
+"no_more" = "没有更多了";
+"no_leave_message" = "没有留言";
+
+"Please_fill_out_the_information" = "请填写信息";
+
+"easemob_cs_title" = "环信商城客服";
+"em_chat_invite_video_call" = "邀请客服进行实时视频";
+"have_connected_with" = "已经和对方建立连接，等待对方接受……";
+"In_the_call" = "视频通话中…";
+
+"video_call_hang_up" = "挂断";
+
+"the_other_party_no_response" = "对方没有响应";
+"the_other_party_refuses_to" = "对方拒接";
+"the_other_is_busy" = "对方正忙...";
+"the_connection_fails" = "连接失败";
+"the_function_is_not_supported" = "功能不支持";
+"each_other_offline" = "对方离线";
+
+"the_network_is_not_available" = "当前网络不可用";
+
+"the_voiceof_the_service_was_suspended" = "客服语音已经中断...";
+"the_voice_of_the_service_has_been_reconnection" = "客服语音已经重连";
+"the_video_of_the_service_was_suspended" = "客服视频已经中断...";
+"the_video_of_the_service_has_been_reconnection" = "客服视频已经重连";
+"are_making_video_calls_and_customer_service" = "正在与客服进行视频通话";
+"the_current_network_is_not_stable" = "当前网络不稳定";
+"the_current_network_has_been_interrupted" = "当前网络已经中断";
+
+"to_evaluate" = "去评价";
+
+"contact_name" = "联系人姓名";
+"contact_phone" = "联系人电话";
+"contact_email" = "联系人邮箱";
+
+"message_content_beyond_limit" = "字数超过限制";
+"know_the" = "知道了";
+
+"transfertocs" = "转人工客服";
+
+"qrcode" = "扫一扫";
+"qrcode_invalid" = "二维码无效";
+"qrcode_box" = "将二维码放入框中,即可自动扫描";
+
+"comment_suc" = "评价成功";
+"comment_fail" = "评价失败";
+"comment_submit" = "评价提交";
+
+"initialization_error" = "重要提示[初始化错误]";
+"appkey_updated" = "appkey 已更新";
+
+"setting_confirm" = "确认";
+
+"network_anomalies" = "网络异常,请重试!";
+"account_already_exists" = "注册账号已存在，请重试!";
+"without_permission" = "无权限，请改为开放注册模式!";
+
+"robot_menu" = "[机器人菜单]";
+"order_menu" = "[订单消息]";
+"track_message" = "[轨迹消息]";
+"evaluation_of_invitation" = "[评价邀请]";
+"graphic_message" = "[图文消息]";
+"form_message" = "[表单消息]";
+"cov_picture" = "[图片]";
+"cov_voice" = "[语音]";
+"cov_file" = "[文件]";
+"cov_location" = "[位置]";
+"big_expression" ="[表情]";
+
+"file" = "文件";
+"download" = "下载";
+"have_downloaded" = "已下载";
+"download_file" = "正在下载文件,请稍后点击";
+"not_support_preview_files" = "系统不支持预览此类文件";
+"in_the_download" = "下载中";
+
+"select_at_least_one_tag" = "至少选择一个标签!";
+
+"current_visitor_wait_count" = " 当前排队人数为：%d";
+
+"video_other_side_has_hungup" = "对方挂断了视频通话";
+
+"video_is_over" = "视频通话已经结束";

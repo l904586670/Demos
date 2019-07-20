@@ -1,0 +1,327 @@
+/* 
+  Localizable.strings
+  HuanXingKefuDemo
+
+  Created by User on 2019/7/17.
+  Copyright © 2019 Rock. All rights reserved.
+*/
+
+// 环信本地化
+"search" = "Search";
+"error" = "Error";
+"delete" = "Delete";
+"copy" = "Copy";
+"save" = "Save";
+"default" = "Default";
+
+"add" = "Add";
+"send" = "Send";
+"open" = "Open";
+"down" = "Down";
+"choose" = "Choose";
+"accept" = "Accept";
+"reject" = "Reject";
+"retry" = "Retry";
+"edit" = "Edit";
+
+"sendingApply" = "sending apply...";
+"acceptFail" = "accept failure";
+"rejectFail" = "reject failure";
+"refreshData" = "Refresh data...";
+"loadData" = "Load data...";
+"saySomething" = "Say somthing";
+"searchResults" = "The search results";
+"doneWithCount" = "Done(%i)";
+"sureToDelete" = "Please make sure to delete";
+"receiveCmd" = "receive cmd message";
+"receiveMessage" = "you have a new message";
+"loginAtOtherDevice" = "your login account has been in other places";
+"loginUserRemoveFromServer" = "your account has been removed from the server";
+"userAccountDidForcedToLogout" = "your account has been forced to logout";
+"userDidForbidByServer" = "forbid by server";
+"appkeyError" = "appkey error";
+
+//general
+"prompta" = "Prompt";
+"sure" = "OK";
+"cancela" = "Cancel";
+
+"receiveCmdMessage" = "Cmd Message";
+
+"setNickname" = "Nickname";
+"customerChat" = "Customer";
+"customerUser" = "IM Customer";
+"commonProblems" = "CommonProblems";
+"restart" = "Restart";
+"restartInfo" = "Configuration information need to reboot to take effect";
+
+//app
+"AppName" = "CustomerSystemDemo";
+
+//apns
+"apns.failToRegisterApns" = "Fail to register apns";
+"apns.failToBindDeviceToken" = "Fail to bind device token";
+
+//login
+"login.beginAutoLogin" = "Start automatic login...";
+"login.endAutoLogin" = "End automatic login...";
+"login.errorAutoLogin" = "Automatic logon failure.";
+
+"Contacting..." = "Contacting...";
+"loginFail" = "Contacting fail,please try again";
+
+//setting
+"setting.feedback" = "Feedback";
+
+//title
+"title.customer" = "Customer";
+"title.mall" = "Mall";
+"title.conversationTitle" = "Conversation";
+"title.setting" = "Set";
+"title.commodity" = "Detail";
+"title.nickname" = "Nickname";
+"title.satisfaction" = "Satisfaction Evaluation";
+"title.messagebox" = "Message Box";
+"title.leavemsg" = "Leave Message";
+"title.leavemsgdetail" = "Leave Message Detail";
+"title.leavemsgsetting" = "Leave Message Setting";
+"title.reply" = "Reply";
+"title.projectId" = "ProjectID";
+"title.tenantId" = "TenantID";
+
+//choice
+"choice.preSale" = "Pre Sale";
+"choice.afterSale" = "After Sales";
+
+//satisfaction
+"satisfaction.message" ="please evaluate my service";
+"satisfaction.evaluate" = "Evaluate";
+"satisfaction.evaluated" = "Evaluated";
+"satisfaction.nickname" = "nickname";
+"satisfaction.commit" = "commit";
+"satisfaction.alert" = "please evaluate first";
+
+//message
+"message.camera" = "Camera";
+"message.image" = "Image";
+"message.location" = "Location";
+"message.voice" = "audio";
+"message.vidio" = "vidio";
+"message.image1" = "[image]";
+"message.location1" = "[location]";
+"message.voice1" = "[audio]";
+"message.vidio1" = "[vidio]";
+"message.beginReceiveOffine" = "begin to receive offline messages";
+"message.endReceiveOffine" = "end to receive offline messages";
+"message.toolBar.inputPlaceHolder" = "input a new message";
+"message.toolBar.record.loosenCancel" = " loosen the fingers, to cancel sending ";
+"message.toolBar.record.touch" = "hold down to talk";
+"message.toolBar.record.send" = "loosen to send";
+"DXMessageToolBarDelegate.record" = "hold down to talk";
+"DXMessageToolBarDelegate.send" = "loosen to send";
+"media.timeShort" = "record time too short";
+
+"message.downloadingAudio" = "downloading voice, click later";
+"message.downloadingVideo" = "downloading video...";
+"message.videoFail" = "video for failure!";
+"message.downloadingImage" = "downloading a image...";
+"message.imageFail" = "image for failure!";
+"message.thumImageFail" = "thumbnail for failure!";
+"message.simulatorNotSupportCamera" = "simulator does not support taking picture";
+"message.simulatorNotSupportVideo" = "simulator does not support vidio";
+"message.startRecordFail" = "failure to start recording";
+"message.failToPermission" = "no recording permission";
+"message.noMessage" = "no messages";
+
+//reconnection
+"reconnection.ongoing" = "reconnecting...";
+"reconnection.fail" = "reconnection failure, later will continue to reconnection";
+"reconnection.success" = "reconnection successful！";
+
+//location
+"location.messageType" = "location message";
+"location.fail" = "locate failure";
+"location.ongoning" = "locating...";
+
+//NSDateCategory
+"NSDateCategory.text1" = "one minute";
+"NSDateCategory.text2" = "%.f minutes ago";
+"NSDateCategory.text3" = "%.f hours ago";
+"NSDateCategory.text4" = "%.f days ago";
+"NSDateCategory.text5" = "M-d";
+"NSDateCategory.text6" = "%.f years ago";
+"NSDateCategory.text7" = "M-d %@";
+"NSDateCategory.text8" = "M-d HH:mm";
+"NSDateCategory.text9" = "aa hh:mm";
+"NSDateCategory.text10" = "aa hh:mm";
+"NSDateCategory.text11" = "aa hh:mm";
+"NSDateCategory.text12" = "aa hh:mm";
+"NSDateCategory.text13" = "M-d HH:mm";
+"NSDateCategory.text14" = "today %@";
+
+//leaveMessage
+"leaveMessage.name" = "Name";
+"leaveMessage.phone" = "Phone";
+"leaveMessage.mail" = "Mail";
+"leaveMessage.content" = "Content";
+"leaveMessage.leavemsg.sending" = "Sending...";
+"leaveMessage.leavesucceed" = "Send succeed";
+"leaveMessage.leavefailed" = "Send failed";
+"leaveMessage.leavemsg.load" = "Loading...";
+"leaveMessage.leavemsg.loadsucceed" = "Load succeed";
+"leaveMessage.leavemsg.loadfailed" = "Load failed";
+"leaveMessage.leavemsg.comment" = "Comment";
+"leaveMessage.leavemsg.theme" = "Theme";
+"leaveMessage.leavemsg.nickname" = "Nickname:";
+"leaveMessage.leavemsg.content" = "Content";
+"leaveMessage.leavemsg.phone" = "Phone:";
+"leaveMessage.leavemsg.qq" = "QQ:";
+"leaveMessage.leavemsg.weibo" = "Weibo:";
+"leaveMessage.leavemsg.mail" = "Mail";
+"leaveMessage.leavemsg.time" = "Time";
+"leaveMessage.leavemsg.attachment" = "Attachment";
+"leaveMessage.leavemsg.reply" = "Reply";
+"leaveMessage.leavemsg.addattachment" = "Add Attachment";
+"leaveMessage.leavemsg.replyempty" = "Reply is empty";
+"leaveMessage.leavemsg.attachmentname" = "Attachment";
+"leaveMessage.leavemsg.uploadattachment" = "Upload attachment";
+"leaveMessage.leavemsg.uploadattachment.failed" = "Upload attachment failed";
+"uploading..." = "uploading...";
+"success!" = "success";
+"failed" = "failed";
+
+// new
+"Header.image" = "em_main_introduce";
+"em_example1_text" = "Crackie leather bomber";
+"em_example2_text" = "Birkin Bag";
+"em_example3_text" = "Jeffrey campbell duice pump";
+"em_example4_text" = "Cartier";
+
+"em_example1_text_description" = "November sales: 3399";
+"em_example2_text_description" = "November sales: 20";
+"em_example3_text_description" = "November sales: 435";
+"em_example4_text_description" = "November sales: 10";
+
+"attach_picture" = "Picture";
+"attach_take_pic" = "Capture";
+"attach_call_video" = "Call Video";
+"attach_location" = "Location";
+"leave_title" = "Note";
+"evaluation" = "Evaluation";
+
+"recording_description" = "Release to end, finger up to cancel sending";
+"not_start_recording" = "Didn't start the recording";
+
+"leave_content" = "Input content";
+"new_leave_item_hint_text" = "Required";
+
+"ticket_name" = "Name";
+"ticket_phone" = "Phone";
+"ticket_email" = "Email";
+"ticket_theme" = "Theme";
+"ticket_detail" = "Detail";
+
+"new_leave_send_success" = "Submit successful";
+"new_leave_send_descriptionOne" = "Thank you for your leave message.";
+"new_leave_send_descriptionTwo" = "We will give you a response at the first time!";
+"send_failure_please" = "Send failure";
+"recorder_video_processing" = "processing...";
+"message_content_beyond_limit" = "The message content beyond the limit";
+
+"customernumber" = "IM service No.";
+"login_user_nick" = "User Nick";
+"set_tenantId" = "TenantId";
+"set_leave_messageid" = "Leave Message ID";
+
+"restarta" = "Restart";
+"app_key_modifya" = "Appkey modify Need Restart";
+
+"em_example1_text_detail" = "product_details_";
+"em_chat_I_focus" = "I focus on";
+
+"order_number" = "Order number:";
+
+"load_more" = "Click to load more";
+"no_more" = "NO More";
+"no_leave_message" = "NO Leave Message";
+
+"Please_fill_out_the_information" = "Add information";
+
+"easemob_cs_title" = "EasemobMall Customer Service";
+"em_chat_invite_video_call" = "Invite customer service making a video call";
+"have_connected_with" = "Connected to the peer and waiting for the peer to accept";
+"In_the_call" = "In the call..";
+
+"video_call_hang_up" = "Hang Up";
+
+"the_other_party_no_response" = "The other party no response";
+"the_other_party_refuses_to" = "The other party refuses to";
+"the_other_is_busy" = "The other is busy...";
+"the_connection_fails" = "The connection fails";
+"the_function_is_not_supported" = "The function is not supported";
+"each_other_offline" = "Each other offline";
+
+"the_network_is_not_available" = "The network is not available";
+
+"the_voiceof_the_service_was_suspended" = "The voice of the service was suspended...";
+"the_voice_of_the_service_has_been_reconnection" = "The voice of the service has been reconnection";
+"the_video_of_the_service_was_suspended" = "The video of the service was suspended...";
+"the_video_of_the_service_has_been_reconnection" = "The video of the service has been reconnection";
+"are_making_video_calls_and_customer_service" = "Are making video calls and customer service";
+"the_current_network_is_not_stable" = "The current network is not stable";
+"the_current_network_has_been_interrupted" = "The current network has been interrupted";
+
+"to_evaluate" = "To evaluate";
+
+"contact_name" = "Contact Name";
+"contact_phone" = "Contact Phone";
+"contact_email" = "Contact Email";
+
+"message_content_beyond_limit" = "The message content beyond the limit";
+"know_the" = "Know The";
+
+"transfertocs" = "Transfer Kefu";
+
+"qrcode" = "QR Code";
+"qrcode_invalid" = "QrCode Invalid";
+"qrcode_box" = "Qr code to be included in the box, can automatically scan";
+
+"comment_suc" = "Add comment successful.";
+"comment_fail" = "Add comment fail.";
+"comment_submit" = "Comment submit.";
+
+"initialization_error" = "Initialization error!";
+"appkey_updated" = "Appkey has been updated";
+
+"setting_confirm" = "confirm";
+
+"network_anomalies" = "Network anomalies, please try again!";
+"account_already_exists" = "Registered account already exists, please try again!";
+"without_permission" = "Without permission, please sign in to open mode!";
+
+"robot_menu" = "[Robot Menu]";
+"order_menu" = "[Order Menu]";
+"track_message" = "[Track Message]";
+"evaluation_of_invitation" = "[Evaluation Invitation]";
+"graphic_message" = "[Graphic Message]";
+"form_message" = "[Form Message]";
+"cov_picture" = "[Picture]";
+"cov_voice" = "[Vioce]";
+"cov_file" = "[File]";
+"cov_location" = "[Location]";
+"big_expression" = "[Emoji]";
+
+"file" = "File";
+"download" = "Download";
+"have_downloaded" = "Have downloaded";
+"download_file" = "Is the download file, please click on the later";
+"not_support_preview_files" = "Such systems do not support preview files";
+"in_the_download" = "In the download";
+
+"select_at_least_one_tag" = "Select at least one tag!";
+
+"current_visitor_wait_count" = " The current queue number is ：%d";
+
+"video_other_side_has_hungup" = "The other side hung up the video call";
+
+"video_is_over" = "Video is over";
