@@ -29,13 +29,14 @@ typedef struct {
 //} Uniforms;
 
 
-vertex RasterizerData // 返回给片元着色器的结构体
-vertexShader( constant LYVertex *vertexArray [[ buffer(0) ]],
-             constant Uniforms& uniforms [[ buffer(1) ]],
+// 返回给片元着色器的结构体
+vertex RasterizerData vertexShader( constant LYVertex *vertexArray [[ buffer(0) ]],
+             constant Uniforms &uniforms [[ buffer(1) ]],
              uint vertexID [[ vertex_id ]] // vertex_id是顶点shader每次处理的index，用于定位当前的顶点
-            ) { // buffer表明是缓存数据，0是索引
+            )
+{ // buffer表明是缓存数据，0是索引
   RasterizerData out;
-  // 坐标为q
+  
   out.clipSpacePosition = uniforms.mvp_matrix * vertexArray[vertexID].position;
   out.colorCoordinate = vertexArray[vertexID].colorCoordinate;
   return out;

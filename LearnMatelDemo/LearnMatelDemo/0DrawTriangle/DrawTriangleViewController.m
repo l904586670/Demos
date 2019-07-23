@@ -23,6 +23,8 @@
 
 @property (nonatomic, strong) id <MTLRenderPipelineState> pipelineState;
 
+@property (nonatomic, assign) NSTimeInterval time;
+
 @end
 
 @implementation DrawTriangleViewController
@@ -194,10 +196,13 @@
 }
 
 - (matrix_float4x4)getMetalMatrix {
+  _time += 0.05;
+  CGFloat dx = sin(_time);
+  CGFloat dy = cos(_time);
+  
   matrix_float4x4 ret = (matrix_float4x4){
-    
-    simd_make_float4(1, 0, 0, 0),
-    simd_make_float4(0, 1, 0, 0),
+    simd_make_float4(1, 0, 0, dx),
+    simd_make_float4(0, 1, 0, dy),
     simd_make_float4(0, 0, 1, 0),
     simd_make_float4(0, 0, 0, 1),
   };
