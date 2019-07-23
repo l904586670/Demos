@@ -10,6 +10,7 @@
 
 typedef NS_ENUM(NSInteger, MetalDemoType) {
   MetalDemoTypeDrawTriangle = 0,
+  MetalDemoTypeSimpleImage,
   
   MetalDemoTypeCount,
 };
@@ -80,7 +81,7 @@ typedef NS_ENUM(NSInteger, MetalDemoType) {
 - (NSString *)classNameWithType:(MetalDemoType)type {
   NSArray *classes = @[
                       @"DrawTriangleViewController",
-                      @"DrawTriangleViewController"
+                      @"DrawImageViewController"
                       ];
   
   return classes[type];
