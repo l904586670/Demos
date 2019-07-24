@@ -19,6 +19,9 @@
 		CE3792E422E72BFD0010B8BD /* MetalBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3792E322E72BFD0010B8BD /* MetalBaseView.m */; };
 		CE3792E722E733470010B8BD /* img1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CE3792E622E733470010B8BD /* img1.jpg */; };
 		CE3792E922E737300010B8BD /* ImageBaseShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = CE3792E822E737300010B8BD /* ImageBaseShader.metal */; };
+		CE3792ED22E83DFE0010B8BD /* ThirdDimensionalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3792EC22E83DFE0010B8BD /* ThirdDimensionalViewController.m */; };
+		CE3792F122E83F340010B8BD /* BaseMetalView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3792F022E83F340010B8BD /* BaseMetalView.m */; };
+		CE9FB1D622E8480A00E2DEF1 /* CommonShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = CE9FB1D522E8480A00E2DEF1 /* CommonShader.metal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,13 +38,19 @@
 		CE28341422E3006E00793542 /* DrawTriangleViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DrawTriangleViewController.h; sourceTree = "<group>"; };
 		CE28341522E3006E00793542 /* DrawTriangleViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DrawTriangleViewController.m; sourceTree = "<group>"; };
 		CE28341722E30B3A00793542 /* triangle.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = triangle.metal; sourceTree = "<group>"; };
-		CE3792A522E5DA110010B8BD /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		CE3792DF22E72BD00010B8BD /* DrawImageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DrawImageViewController.h; sourceTree = "<group>"; };
 		CE3792E022E72BD00010B8BD /* DrawImageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DrawImageViewController.m; sourceTree = "<group>"; };
 		CE3792E222E72BFD0010B8BD /* MetalBaseView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MetalBaseView.h; sourceTree = "<group>"; };
 		CE3792E322E72BFD0010B8BD /* MetalBaseView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MetalBaseView.m; sourceTree = "<group>"; };
 		CE3792E622E733470010B8BD /* img1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = img1.jpg; sourceTree = "<group>"; };
 		CE3792E822E737300010B8BD /* ImageBaseShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = ImageBaseShader.metal; sourceTree = "<group>"; };
+		CE3792EB22E83DFE0010B8BD /* ThirdDimensionalViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThirdDimensionalViewController.h; sourceTree = "<group>"; };
+		CE3792EC22E83DFE0010B8BD /* ThirdDimensionalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThirdDimensionalViewController.m; sourceTree = "<group>"; };
+		CE3792EF22E83F340010B8BD /* BaseMetalView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseMetalView.h; sourceTree = "<group>"; };
+		CE3792F022E83F340010B8BD /* BaseMetalView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseMetalView.m; sourceTree = "<group>"; };
+		CE9FB1D522E8480A00E2DEF1 /* CommonShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = CommonShader.metal; sourceTree = "<group>"; };
+		CE9FB1D722E848B600E2DEF1 /* CommonDefinition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonDefinition.h; sourceTree = "<group>"; };
+		CEA2698322E841B6009F1C3A /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,10 +83,15 @@
 		CE2833FB22E2F63500793542 /* LearnMatelDemo */ = {
 			isa = PBXGroup;
 			children = (
-				CE3792E522E733470010B8BD /* Resource */,
 				CE28341322E3005B00793542 /* 0DrawTriangle */,
 				CE3792DE22E72BBA0010B8BD /* 1DrawImage */,
+				CE3792EA22E83DDA0010B8BD /* 2Draw3D */,
+				CE3792E522E733470010B8BD /* Resource */,
 				CE28341222E3001900793542 /* SupportFiles */,
+				CE3792EF22E83F340010B8BD /* BaseMetalView.h */,
+				CE3792F022E83F340010B8BD /* BaseMetalView.m */,
+				CE9FB1D722E848B600E2DEF1 /* CommonDefinition.h */,
+				CE9FB1D522E8480A00E2DEF1 /* CommonShader.metal */,
 			);
 			path = LearnMatelDemo;
 			sourceTree = "<group>";
@@ -103,7 +117,7 @@
 			children = (
 				CE28341422E3006E00793542 /* DrawTriangleViewController.h */,
 				CE28341522E3006E00793542 /* DrawTriangleViewController.m */,
-				CE3792A522E5DA110010B8BD /* Common.h */,
+				CEA2698322E841B6009F1C3A /* Common.h */,
 				CE28341722E30B3A00793542 /* triangle.metal */,
 			);
 			path = 0DrawTriangle;
@@ -127,6 +141,15 @@
 				CE3792E622E733470010B8BD /* img1.jpg */,
 			);
 			path = Resource;
+			sourceTree = "<group>";
+		};
+		CE3792EA22E83DDA0010B8BD /* 2Draw3D */ = {
+			isa = PBXGroup;
+			children = (
+				CE3792EB22E83DFE0010B8BD /* ThirdDimensionalViewController.h */,
+				CE3792EC22E83DFE0010B8BD /* ThirdDimensionalViewController.m */,
+			);
+			path = 2Draw3D;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -203,11 +226,14 @@
 				CE3792E122E72BD00010B8BD /* DrawImageViewController.m in Sources */,
 				CE28340122E2F63500793542 /* ViewController.m in Sources */,
 				CE28340C22E2F63700793542 /* main.m in Sources */,
+				CE3792F122E83F340010B8BD /* BaseMetalView.m in Sources */,
+				CE3792ED22E83DFE0010B8BD /* ThirdDimensionalViewController.m in Sources */,
 				CE3792E922E737300010B8BD /* ImageBaseShader.metal in Sources */,
 				CE28341822E30B3A00793542 /* triangle.metal in Sources */,
 				CE28341622E3006E00793542 /* DrawTriangleViewController.m in Sources */,
 				CE3792E422E72BFD0010B8BD /* MetalBaseView.m in Sources */,
 				CE2833FE22E2F63500793542 /* AppDelegate.m in Sources */,
+				CE9FB1D622E8480A00E2DEF1 /* CommonShader.metal in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

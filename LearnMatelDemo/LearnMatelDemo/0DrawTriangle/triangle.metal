@@ -7,6 +7,7 @@
 //
 
 #include <metal_stdlib>
+
 #import "Common.h"
 using namespace metal;
 
