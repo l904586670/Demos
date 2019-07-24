@@ -25,12 +25,16 @@
 
 @property (nonatomic, assign) NSTimeInterval time;
 
+@property (nonatomic, assign) BOOL addMatrix;
+
 @end
 
 @implementation DrawTriangleViewController
 
 - (void)viewDidLoad {
   [super viewDidLoad];
+  
+  [self setupUI];
   
   // 1. 初始化环境
   [self initiatizeMatel];
@@ -42,6 +46,17 @@
   [self setupPipeline];
 }
 
+#pragma mark - UI
+
+- (void)setupUI {
+  UISwitch *matrixSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 50, 40)];
+  [matrixSwitch addTarget:self action:@selector(onMatrixSwitch:) forControlEvents:UIControlEventValueChanged];
+  
+  UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:matrixSwitch];
+  self.navigationItem.rightBarButtonItem = item;
+}
+
+#pragma mark - Metal
 
 /**
  初始化GPU设备, 检测当前设备支不支持Metal.
@@ -195,10 +210,24 @@
   }
 }
 
+#pragma mark - Switch Action
+
+- (void)onMatrixSwitch:(UISwitch *)sender {
+  _addMatrix = sender.on;
+  
+  
+}
+
+#pragma mark - Private Methods
+
 - (matrix_float4x4)getMetalMatrix {
   _time += 0.05;
   CGFloat dx = sin(_time);
   CGFloat dy = cos(_time);
+  if (!_addMatrix) {
+    dx = 0;
+    dy = 0;
+  }
   
   matrix_float4x4 ret = (matrix_float4x4){
     simd_make_float4(1, 0, 0, dx),

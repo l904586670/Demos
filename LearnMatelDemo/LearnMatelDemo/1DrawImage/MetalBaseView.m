@@ -44,7 +44,7 @@
   _commandQueue = [_device newCommandQueue];
   
   _mtkView = [[MTKView alloc] initWithFrame:self.bounds device:_device];
-  _mtkView.clearColor = MTLClearColorMake(0.85, 0.85, 0.85, 1.0);
+  _mtkView.clearColor = MTLClearColorMake(1, 1, 1, 1.0);
   _mtkView.colorPixelFormat = MTLPixelFormatBGRA8Unorm;
   _mtkView.delegate = self;
   [self addSubview:_mtkView];
@@ -52,32 +52,31 @@
   _viewportSize = (vector_uint2){self.mtkView.drawableSize.width, self.mtkView.drawableSize.height};
 }
 
+typedef struct
+{
+  vector_float4 position;
+  vector_float2 textureCoord;
+} Vertex_img;
+
 - (void)loadModelData {
-//  顶点坐标范围 [-1, 1]. float  纹理坐标范围 [0, 1]
+  
+  
+//  顶点坐标范围 [-1, 1]. float  纹理坐标范围 [0, 1], 纹理默认是反转的
   // x, y, z, w,   texture x, y
-   
-  static const float vertex[] = {
-//    -0.5, 0.5, 0, 1,  0, 1,   // 左上
-//    0.5, 0.5, 0, 1,   1, 1,   // 右上
-//    0.5, -0.5, 0, 1,  1, 0,   // 右下
-//
-//    -0.5, -0.5, 0, 1, 0, 0,   // 左下
-//    -0.5, 0.5, 0, 1,  0, 1,   // 左上
-//    0.5, -0.5, 0, 1,  1, 0,   // 右下
-    
-      0.5, -0.5, 0.0, 1.0, 1.f, 1.f,
-      -0.5, -0.5, 0.0, 1.0, 0.f, 1.f ,
-      -0.5,  0.5, 0.0, 1.0, 0.f, 0.f,
-    
-      0.5, -0.5, 0.0, 1.0, 1.f, 1.f,
-      -0.5,  0.5, 0.0, 1.0, 0.f, 0.f,
-      0.5,  0.5, 0.0, 1.0, 1.f, 0.f,
+  static const Vertex_img vertex[] = {
+    { {  0.5, -0.5, 0.0, 1.0 },  { 1.f, 1.f } },
+    { { -0.5, -0.5, 0.0, 1.0 },  { 0.f, 1.f } },
+    { { -0.5,  0.5, 0.0, 1.0 },  { 0.f, 0.f } },
+
+    { {  0.5, -0.5, 0.0, 1.0 },  { 1.f, 1.f } },
+    { { -0.5,  0.5, 0.0, 1.0 },  { 0.f, 0.f } },
+    { {  0.5,  0.5, 0.0, 1.0 },  { 1.f, 0.f } },
   };
   
   // buffer, texture 可以理解为cpu 和 gpu都可以访问的内存块. 一般为CPU把数据写入buffer, buffer 把数据传给GPU. options 设置资源的管理方式
   self.vertexBuffer = [_device newBufferWithBytes:vertex length:sizeof(vertex) options:MTLResourceStorageModeShared];
   
-  self.vertexNumber = sizeof(vertex) / (sizeof(float) * 6);
+  self.vertexNumber = sizeof(vertex) / sizeof(Vertex_img);
   
   //
   UIImage *image = [UIImage imageNamed:@"img1.jpg"];
@@ -91,22 +90,13 @@
   self.texture = [_device newTextureWithDescriptor:textureDescriptor];
   MTLRegion region = {{ 0, 0, 0 }, {image.size.width, image.size.height, 1}}; // 纹理上传的范围
 
-  Byte *imageBytes = [self loadImage:image];
-  if (imageBytes) { // UIImage的数据需要转成二进制才能上传，且不用jpg、png的NSData
-    [self.texture replaceRegion:region
-                    mipmapLevel:0
-                      withBytes:imageBytes
-                    bytesPerRow:4 * image.size.width];
-    free(imageBytes); // 需要释放资源
-    imageBytes = NULL;
-  }
-//  __weak typeof(self) weakSelf = self;
-//  [self loadImage:image content:^(Byte *imgData, size_t bytesPerRow) {
-//    [weakSelf.texture replaceRegion:region
-//                        mipmapLevel:0
-//                          withBytes:imgData
-//                        bytesPerRow:bytesPerRow];
-//  }];
+  __weak typeof(self) weakSelf = self;
+  [self loadImage:image content:^(Byte *imgData, size_t bytesPerRow) {
+    [weakSelf.texture replaceRegion:region
+                        mipmapLevel:0
+                          withBytes:imgData
+                        bytesPerRow:bytesPerRow];
+  }];
 }
 
 - (void)setupPipeline {
@@ -137,7 +127,7 @@
   
   vertexDescriptor.layouts[0].stepRate = 1;
   vertexDescriptor.layouts[0].stepFunction = MTLVertexStepFunctionPerVertex;
-  vertexDescriptor.layouts[0].stride = sizeof(float) * 6;
+  vertexDescriptor.layouts[0].stride = sizeof(Vertex_img);
   
   pipelineStateDescriptor.vertexDescriptor = vertexDescriptor;
   
@@ -171,9 +161,9 @@
   //  MTLRenderPassDescriptor描述一系列attachments的值，类似GL的FrameBuffer；同时也用来创建MTLRenderCommandEncoder
   if(renderPassDescriptor) {
     
-    //    renderPassDescriptor.colorAttachments[0].texture = self.mtkView.currentDrawable.texture;
-    //    renderPassDescriptor.colorAttachments[0].loadAction = MTLLoadActionClear;
-//    renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(0.5, 0.5, 0.5, 1.0f); // 设置默认颜色
+    renderPassDescriptor.colorAttachments[0].texture = self.mtkView.currentDrawable.texture;
+    renderPassDescriptor.colorAttachments[0].loadAction = MTLLoadActionClear;
+    renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(1, 1, 1, 1.0f); // 设置渲染的背景颜色
     
     // Draw
     id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor]; //编码绘制指令的Encoder
@@ -227,7 +217,7 @@
   
   size_t bitsPerComponent = CGImageGetBitsPerComponent(spriteImage);
   size_t bytesPerRow = CGImageGetBytesPerRow(spriteImage);
-  size_t bitmapInfo = CGImageGetBitmapInfo(spriteImage);
+  CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(spriteImage);
   
   Byte *spriteData = (Byte *)calloc(width * height * 4, sizeof(Byte)); //rgba共4个byte
   
@@ -255,25 +245,5 @@
   spriteData = NULL;
 }
 
-- (Byte *)loadImage:(UIImage *)image {
-  // 1获取图片的CGImageRef
-  CGImageRef spriteImage = image.CGImage;
-  
-  // 2 读取图片的大小
-  size_t width = CGImageGetWidth(spriteImage);
-  size_t height = CGImageGetHeight(spriteImage);
-  
-  Byte * spriteData = (Byte *) calloc(width * height * 4, sizeof(Byte)); //rgba共4个byte
-  
-  CGContextRef spriteContext = CGBitmapContextCreate(spriteData, width, height, 8, width*4,
-                                                     CGImageGetColorSpace(spriteImage), kCGImageAlphaPremultipliedLast);
-  
-  // 3在CGContextRef上绘图
-  CGContextDrawImage(spriteContext, CGRectMake(0, 0, width, height), spriteImage);
-  
-  CGContextRelease(spriteContext);
-  
-  return spriteData;
-}
 
 @end
