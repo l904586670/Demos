@@ -11,9 +11,18 @@
 
 #import <simd/simd.h>
 
+// 涂抹区域点需要添加到静态变量中去. 随着涂抹点的个数增加.创建的地址大小也需增加.所以顶点信息只保存坐标信息
+typedef struct
+{
+  float x;
+  float y;
+//  vector_float2 position;
+//  vector_float4 color;
+} Vertex_t;
+
 // 顶点数据结构体
 typedef struct {
-  vector_float4 position;           // 坐标
+  vector_float2 position;           // 坐标x, y. 2d 绘图,不需要z和w分量
   vector_float4 colorCoordinate;    // 颜色
   vector_float2 textureCoordinate;  // 纹理坐标
 } VertexInfo;

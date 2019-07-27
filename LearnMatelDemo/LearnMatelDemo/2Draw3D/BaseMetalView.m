@@ -10,6 +10,7 @@
 
 #import "CommonDefinition.h"
 #import <GLKit/GLKit.h>
+#import "MetalLoadTextureTool.h"
 
 @interface BaseMetalView () <MTKViewDelegate>
 
@@ -88,27 +89,18 @@
   self.indexNumber = sizeof(indices) / sizeof(int);
   
   UIImage *image = [UIImage imageNamed:@"img1.jpg"];
-  
   // 创建纹理描述符
-  MTLTextureDescriptor *textureDescriptor = [[MTLTextureDescriptor alloc] init];
-  textureDescriptor.pixelFormat = MTLPixelFormatBGRA8Unorm;
-  textureDescriptor.width = image.size.width;
-  textureDescriptor.height = image.size.height;
-  
-  self.texture = [_device newTextureWithDescriptor:textureDescriptor];
-  MTLRegion region = {{ 0, 0, 0 }, {image.size.width, image.size.height, 1}}; // 纹理上传的范围
-  
-  __weak typeof(self) weakSelf = self;
-  [self loadImage:image content:^(Byte *imgData, size_t bytesPerRow) {
-    [weakSelf.texture replaceRegion:region
-                        mipmapLevel:0
-                          withBytes:imgData
-                        bytesPerRow:bytesPerRow];
-  }];
+  self.texture = [MetalLoadTextureTool textureWithImage:image device:_device];
 }
 
 - (void)setupPipeline {
+  NSError *error = nil;
+//  NSString * libraryFile = [[NSBundle mainBundle] pathForResource:@"CommonShader" ofType:@"metallib"];
+//  id <MTLLibrary> defaultLibrary = [_device newLibraryWithFile:libraryFile error:&error];
   id <MTLLibrary> defaultLibrary = [_device newDefaultLibrary];
+  if (error) {
+    NSAssert(NO, @"creat library error [CommonShader.metal]");
+  }
   id <MTLFunction> vertexFunc = [defaultLibrary newFunctionWithName:@"vertexShaderMain"];
   id <MTLFunction> fragmentFunc = [defaultLibrary newFunctionWithName:@"fragmentShaderMain"];
   
@@ -139,7 +131,6 @@
   pipelineStateDescriptor.vertexFunction = vertexFunc;
   pipelineStateDescriptor.fragmentFunction = fragmentFunc;
   
-  NSError *error = nil;
   _pipelineState = [_device newRenderPipelineStateWithDescriptor:pipelineStateDescriptor error:&error];
   if (error) {
     NSAssert(NO, @"creat pipelineState Error : %@", error.description);

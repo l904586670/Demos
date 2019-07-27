@@ -8,6 +8,8 @@
 
 #import "MetalBaseView.h"
 
+#import "MetalLoadTextureTool.h"
+
 @interface MetalBaseView () <MTKViewDelegate>
 
 @property (nonatomic, strong) id<MTLBuffer> vertexBuffer;
@@ -80,6 +82,11 @@ typedef struct
   
   //
   UIImage *image = [UIImage imageNamed:@"img1.jpg"];
+  
+  MTKTextureLoader *textureLoader = [[MTKTextureLoader alloc] initWithDevice:_device];
+  NSError * error = nil;
+  id<MTLTexture> sourceTexture = [textureLoader newTextureWithCGImage:image.CGImage options:nil error:&error];
+  self.texture = sourceTexture;
 
   // 创建纹理描述符
   MTLTextureDescriptor *textureDescriptor = [[MTLTextureDescriptor alloc] init];
@@ -91,12 +98,13 @@ typedef struct
   MTLRegion region = {{ 0, 0, 0 }, {image.size.width, image.size.height, 1}}; // 纹理上传的范围
 
   __weak typeof(self) weakSelf = self;
-  [self loadImage:image content:^(Byte *imgData, size_t bytesPerRow) {
+  [MetalLoadTextureTool loadImageWithImage:image conentBlock:^(Byte * _Nonnull imgData, size_t bytesPerRow) {
     [weakSelf.texture replaceRegion:region
                         mipmapLevel:0
                           withBytes:imgData
                         bytesPerRow:bytesPerRow];
   }];
+  
 }
 
 - (void)setupPipeline {
@@ -217,7 +225,6 @@ typedef struct
   
   size_t bitsPerComponent = CGImageGetBitsPerComponent(spriteImage);  //
   size_t bytesPerRow = CGImageGetBytesPerRow(spriteImage);    //
-  CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(spriteImage);
   
   Byte *spriteData = (Byte *)calloc(height * bytesPerRow, sizeof(Byte)); //rgba共4个byte
   
@@ -227,7 +234,7 @@ typedef struct
                                                      bitsPerComponent,
                                                      bytesPerRow,
                                                      CGImageGetColorSpace(spriteImage),
-                                                     bitmapInfo);
+                                                     kCGImageAlphaPremultipliedLast);
   if (!spriteContext) {
     free(spriteData);
     return;

@@ -21,7 +21,11 @@
 		CE3792E922E737300010B8BD /* ImageBaseShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = CE3792E822E737300010B8BD /* ImageBaseShader.metal */; };
 		CE3792ED22E83DFE0010B8BD /* ThirdDimensionalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3792EC22E83DFE0010B8BD /* ThirdDimensionalViewController.m */; };
 		CE3792F122E83F340010B8BD /* BaseMetalView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3792F022E83F340010B8BD /* BaseMetalView.m */; };
-		CE9FB1D622E8480A00E2DEF1 /* CommonShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = CE9FB1D522E8480A00E2DEF1 /* CommonShader.metal */; };
+		CE4865E222EA950E006DCD9C /* MetalLoadTextureTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4865E122EA950E006DCD9C /* MetalLoadTextureTool.m */; };
+		CEB753D122EAD4B9002CD97B /* CommonShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = CEB753D022EAD4B9002CD97B /* CommonShader.metal */; };
+		CEB753D822EC2129002CD97B /* KernelShaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB753D722EC2129002CD97B /* KernelShaderViewController.m */; };
+		CEB753DB22EC26D2002CD97B /* UIViewController+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB753DA22EC26D2002CD97B /* UIViewController+Utils.m */; };
+		CEB753DD22EC38D3002CD97B /* KernelShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = CEB753DC22EC38D3002CD97B /* KernelShader.metal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,9 +52,16 @@
 		CE3792EC22E83DFE0010B8BD /* ThirdDimensionalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThirdDimensionalViewController.m; sourceTree = "<group>"; };
 		CE3792EF22E83F340010B8BD /* BaseMetalView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseMetalView.h; sourceTree = "<group>"; };
 		CE3792F022E83F340010B8BD /* BaseMetalView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseMetalView.m; sourceTree = "<group>"; };
-		CE9FB1D522E8480A00E2DEF1 /* CommonShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = CommonShader.metal; sourceTree = "<group>"; };
+		CE4865E022EA950E006DCD9C /* MetalLoadTextureTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MetalLoadTextureTool.h; sourceTree = "<group>"; };
+		CE4865E122EA950E006DCD9C /* MetalLoadTextureTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MetalLoadTextureTool.m; sourceTree = "<group>"; };
 		CE9FB1D722E848B600E2DEF1 /* CommonDefinition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonDefinition.h; sourceTree = "<group>"; };
 		CEA2698322E841B6009F1C3A /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		CEB753D022EAD4B9002CD97B /* CommonShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = CommonShader.metal; sourceTree = "<group>"; };
+		CEB753D622EC2129002CD97B /* KernelShaderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KernelShaderViewController.h; sourceTree = "<group>"; };
+		CEB753D722EC2129002CD97B /* KernelShaderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KernelShaderViewController.m; sourceTree = "<group>"; };
+		CEB753D922EC26D2002CD97B /* UIViewController+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Utils.h"; sourceTree = "<group>"; };
+		CEB753DA22EC26D2002CD97B /* UIViewController+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Utils.m"; sourceTree = "<group>"; };
+		CEB753DC22EC38D3002CD97B /* KernelShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = KernelShader.metal; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,12 +97,11 @@
 				CE28341322E3005B00793542 /* 0DrawTriangle */,
 				CE3792DE22E72BBA0010B8BD /* 1DrawImage */,
 				CE3792EA22E83DDA0010B8BD /* 2Draw3D */,
+				CEB753D522EC1FCC002CD97B /* 3KernelShader */,
+				CE4865E022EA950E006DCD9C /* MetalLoadTextureTool.h */,
+				CE4865E122EA950E006DCD9C /* MetalLoadTextureTool.m */,
 				CE3792E522E733470010B8BD /* Resource */,
 				CE28341222E3001900793542 /* SupportFiles */,
-				CE3792EF22E83F340010B8BD /* BaseMetalView.h */,
-				CE3792F022E83F340010B8BD /* BaseMetalView.m */,
-				CE9FB1D722E848B600E2DEF1 /* CommonDefinition.h */,
-				CE9FB1D522E8480A00E2DEF1 /* CommonShader.metal */,
 			);
 			path = LearnMatelDemo;
 			sourceTree = "<group>";
@@ -103,6 +113,8 @@
 				CE2833FD22E2F63500793542 /* AppDelegate.m */,
 				CE2833FF22E2F63500793542 /* ViewController.h */,
 				CE28340022E2F63500793542 /* ViewController.m */,
+				CEB753D922EC26D2002CD97B /* UIViewController+Utils.h */,
+				CEB753DA22EC26D2002CD97B /* UIViewController+Utils.m */,
 				CE28340222E2F63500793542 /* Main.storyboard */,
 				CE28340522E2F63700793542 /* Assets.xcassets */,
 				CE28340722E2F63700793542 /* LaunchScreen.storyboard */,
@@ -146,10 +158,24 @@
 		CE3792EA22E83DDA0010B8BD /* 2Draw3D */ = {
 			isa = PBXGroup;
 			children = (
+				CEB753D022EAD4B9002CD97B /* CommonShader.metal */,
+				CE9FB1D722E848B600E2DEF1 /* CommonDefinition.h */,
+				CE3792EF22E83F340010B8BD /* BaseMetalView.h */,
+				CE3792F022E83F340010B8BD /* BaseMetalView.m */,
 				CE3792EB22E83DFE0010B8BD /* ThirdDimensionalViewController.h */,
 				CE3792EC22E83DFE0010B8BD /* ThirdDimensionalViewController.m */,
 			);
 			path = 2Draw3D;
+			sourceTree = "<group>";
+		};
+		CEB753D522EC1FCC002CD97B /* 3KernelShader */ = {
+			isa = PBXGroup;
+			children = (
+				CEB753D622EC2129002CD97B /* KernelShaderViewController.h */,
+				CEB753D722EC2129002CD97B /* KernelShaderViewController.m */,
+				CEB753DC22EC38D3002CD97B /* KernelShader.metal */,
+			);
+			path = 3KernelShader;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -225,6 +251,7 @@
 			files = (
 				CE3792E122E72BD00010B8BD /* DrawImageViewController.m in Sources */,
 				CE28340122E2F63500793542 /* ViewController.m in Sources */,
+				CEB753D822EC2129002CD97B /* KernelShaderViewController.m in Sources */,
 				CE28340C22E2F63700793542 /* main.m in Sources */,
 				CE3792F122E83F340010B8BD /* BaseMetalView.m in Sources */,
 				CE3792ED22E83DFE0010B8BD /* ThirdDimensionalViewController.m in Sources */,
@@ -232,8 +259,11 @@
 				CE28341822E30B3A00793542 /* triangle.metal in Sources */,
 				CE28341622E3006E00793542 /* DrawTriangleViewController.m in Sources */,
 				CE3792E422E72BFD0010B8BD /* MetalBaseView.m in Sources */,
+				CEB753DB22EC26D2002CD97B /* UIViewController+Utils.m in Sources */,
+				CEB753DD22EC38D3002CD97B /* KernelShader.metal in Sources */,
 				CE2833FE22E2F63500793542 /* AppDelegate.m in Sources */,
-				CE9FB1D622E8480A00E2DEF1 /* CommonShader.metal in Sources */,
+				CE4865E222EA950E006DCD9C /* MetalLoadTextureTool.m in Sources */,
+				CEB753D122EAD4B9002CD97B /* CommonShader.metal in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

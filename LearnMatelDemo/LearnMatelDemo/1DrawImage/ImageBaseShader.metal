@@ -36,7 +36,8 @@ vertex Vertex_out imgVertexShader( uint vertexID [[vertex_id]], constant Vertex_
 // 片段shader 函数
 fragment float4 imgFragmentShader( Vertex_out fragment_input [[stage_in]], texture2d<half> imgTexture [[ texture(0) ]] )
 {
-  // sampler是取样器. 图片
+  // sampler是取样器.
+//  mag_filter模式指定当区域大于纹理大小时，采样器应如何计算返回的颜色；min_filter模式指定当区域小于纹理大小时，采样器应如何计算返回的颜色。 为两个滤镜设置线性linear模式可使采样器平均给定纹理坐标周围的纹素颜色，从而使输出图像更平滑。
   constexpr sampler textureSampler (mag_filter::linear, min_filter::linear);
   
   half4 colorSample = imgTexture.sample(textureSampler, fragment_input.textureCoordinate); // 得到纹理对应位置的颜色

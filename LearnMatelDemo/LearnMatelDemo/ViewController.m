@@ -12,6 +12,7 @@ typedef NS_ENUM(NSInteger, MetalDemoType) {
   MetalDemoTypeDrawTriangle = 0,
   MetalDemoTypeSimpleImage,
   MetalDemoType3D,
+  MetalDemoTypeKernel,
   
   MetalDemoTypeCount,
 };
@@ -74,7 +75,8 @@ typedef NS_ENUM(NSInteger, MetalDemoType) {
   NSArray *titles = @[
                       @"画三角形",
                       @"绘制图片",
-                      @"绘制3d空间"
+                      @"绘制3d空间",
+                      @"日全食"
                       ];
   
   return titles[type];
@@ -84,7 +86,8 @@ typedef NS_ENUM(NSInteger, MetalDemoType) {
   NSArray *classes = @[
                       @"DrawTriangleViewController",
                       @"DrawImageViewController",
-                      @"ThirdDimensionalViewController"
+                      @"ThirdDimensionalViewController",
+                      @"KernelShaderViewController"
                       ];
   
   return classes[type];

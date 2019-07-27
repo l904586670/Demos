@@ -8,6 +8,8 @@
 
 #import "PaintingViewController.h"
 
+#import "PaintingView.h"
+
 @interface PaintingViewController ()
 
 @end
@@ -22,9 +24,14 @@
     safeAreaInsets = [UIApplication sharedApplication].delegate.window.safeAreaInsets;
   }
   
+  CGSize screenSize = [UIScreen mainScreen].bounds.size;
+  CGFloat posY = CGRectGetMaxY(self.navigationController.navigationBar.frame);
+  CGFloat height = screenSize.height - posY - safeAreaInsets.bottom;
   
+  CGRect frame = CGRectMake(0, posY, screenSize.width, height);
   
-  
+  PaintingView *paintView = [[PaintingView alloc] initWithFrame:frame];
+  [self.view addSubview:paintView];
 }
 
 

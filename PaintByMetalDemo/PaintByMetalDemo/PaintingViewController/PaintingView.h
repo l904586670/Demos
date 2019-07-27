@@ -12,8 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PaintingView : UIView
 
-@property (nonatomic, assign) CGPoint location;
-@property (nonatomic, assign) CGPoint previousLocation;
+@property (nonatomic, assign) float brushSize;  // 笔刷大小, default 30
+
+@property (nonatomic, strong) UIColor *bgColor;
 
 - (void)erase;
 - (void)setBrushColorWithRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue;
