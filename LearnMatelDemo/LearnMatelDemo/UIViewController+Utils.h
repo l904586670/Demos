@@ -12,11 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIViewController (Utils)
 
-@property (nonatomic, assign) UIEdgeInsets safeAreaEdgeInsets;
+@property (nonatomic, assign, readonly) UIEdgeInsets safeAreaEdgeInsets;
 
-@property (nonatomic, assign) CGRect contentRect;
+@property (nonatomic, assign, readonly) CGRect contentRect;
 
-@property (nonatomic, assign) CGSize screenSize;
+@property (nonatomic, assign, readonly) CGSize screenSize;
 
 @end
 

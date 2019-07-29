@@ -80,7 +80,7 @@
 - (void)setupMetalLayer {
   _metalLayer = [CAMetalLayer layer];
   
-  _metalLayer.bounds = CGRectMake(0, 0, self.screenSize.width, self.screenSize.width);
+  _metalLayer.bounds = CGRectMake(0, 0, self.screenSize.width, self.screenSize.width );
   _metalLayer.position = self.view.center;
   [self.view.layer addSublayer:_metalLayer];
   
@@ -123,7 +123,8 @@
     
     // https://developer.apple.com/library/archive/documentation/Miscellaneous/Conceptual/MetalProgrammingGuide/Compute-Ctx/Compute-Ctx.html#//apple_ref/doc/uid/TP40014221-CH6-SW1
     // 以下为设置并发线程。
-    // 设置纹理
+    
+    // threadsGroupCount.width * threadsGroupCount.height * threadsGroupCount.depth <= 1024
     MTLSize threadsGroupCount = MTLSizeMake(8, 8, 1);
     MTLSize threadsGroup = MTLSizeMake(_currentDrawable.texture.width / threadsGroupCount.width, _currentDrawable.texture.height / threadsGroupCount.height, 1);
 

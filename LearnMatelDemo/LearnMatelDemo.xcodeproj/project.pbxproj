@@ -26,6 +26,11 @@
 		CEB753D822EC2129002CD97B /* KernelShaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB753D722EC2129002CD97B /* KernelShaderViewController.m */; };
 		CEB753DB22EC26D2002CD97B /* UIViewController+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB753DA22EC26D2002CD97B /* UIViewController+Utils.m */; };
 		CEB753DD22EC38D3002CD97B /* KernelShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = CEB753DC22EC38D3002CD97B /* KernelShader.metal */; };
+		CEDDA33322EEA24E003A52A9 /* MagicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEDDA33222EEA24E003A52A9 /* MagicViewController.m */; };
+		CEDDA33522EEA621003A52A9 /* magicShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = CEDDA33422EEA621003A52A9 /* magicShader.metal */; };
+		CEDDA33922EECC13003A52A9 /* SphereLightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEDDA33822EECC13003A52A9 /* SphereLightViewController.m */; };
+		CEDDA33B22EECCA6003A52A9 /* sphereLightShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = CEDDA33A22EECCA6003A52A9 /* sphereLightShader.metal */; };
+		CEDDA34322EEFBEA003A52A9 /* texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CEDDA34222EEFBEA003A52A9 /* texture.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +67,14 @@
 		CEB753D922EC26D2002CD97B /* UIViewController+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Utils.h"; sourceTree = "<group>"; };
 		CEB753DA22EC26D2002CD97B /* UIViewController+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Utils.m"; sourceTree = "<group>"; };
 		CEB753DC22EC38D3002CD97B /* KernelShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = KernelShader.metal; sourceTree = "<group>"; };
+		CEDDA33122EEA24E003A52A9 /* MagicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MagicViewController.h; sourceTree = "<group>"; };
+		CEDDA33222EEA24E003A52A9 /* MagicViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MagicViewController.m; sourceTree = "<group>"; };
+		CEDDA33422EEA621003A52A9 /* magicShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = magicShader.metal; sourceTree = "<group>"; };
+		CEDDA33722EECC13003A52A9 /* SphereLightViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SphereLightViewController.h; sourceTree = "<group>"; };
+		CEDDA33822EECC13003A52A9 /* SphereLightViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SphereLightViewController.m; sourceTree = "<group>"; };
+		CEDDA33A22EECCA6003A52A9 /* sphereLightShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = sphereLightShader.metal; sourceTree = "<group>"; };
+		CEDDA34122EEDCD6003A52A9 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		CEDDA34222EEFBEA003A52A9 /* texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = texture.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +111,8 @@
 				CE3792DE22E72BBA0010B8BD /* 1DrawImage */,
 				CE3792EA22E83DDA0010B8BD /* 2Draw3D */,
 				CEB753D522EC1FCC002CD97B /* 3KernelShader */,
+				CEDDA33022EEA23C003A52A9 /* 4MagicView */,
+				CEDDA33622EECBE8003A52A9 /* 5LightView */,
 				CE4865E022EA950E006DCD9C /* MetalLoadTextureTool.h */,
 				CE4865E122EA950E006DCD9C /* MetalLoadTextureTool.m */,
 				CE3792E522E733470010B8BD /* Resource */,
@@ -120,6 +135,7 @@
 				CE28340722E2F63700793542 /* LaunchScreen.storyboard */,
 				CE28340A22E2F63700793542 /* Info.plist */,
 				CE28340B22E2F63700793542 /* main.m */,
+				CEDDA34122EEDCD6003A52A9 /* PrefixHeader.pch */,
 			);
 			name = SupportFiles;
 			sourceTree = "<group>";
@@ -150,6 +166,7 @@
 		CE3792E522E733470010B8BD /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				CEDDA34222EEFBEA003A52A9 /* texture.jpg */,
 				CE3792E622E733470010B8BD /* img1.jpg */,
 			);
 			path = Resource;
@@ -176,6 +193,26 @@
 				CEB753DC22EC38D3002CD97B /* KernelShader.metal */,
 			);
 			path = 3KernelShader;
+			sourceTree = "<group>";
+		};
+		CEDDA33022EEA23C003A52A9 /* 4MagicView */ = {
+			isa = PBXGroup;
+			children = (
+				CEDDA33122EEA24E003A52A9 /* MagicViewController.h */,
+				CEDDA33222EEA24E003A52A9 /* MagicViewController.m */,
+				CEDDA33422EEA621003A52A9 /* magicShader.metal */,
+			);
+			path = 4MagicView;
+			sourceTree = "<group>";
+		};
+		CEDDA33622EECBE8003A52A9 /* 5LightView */ = {
+			isa = PBXGroup;
+			children = (
+				CEDDA33722EECC13003A52A9 /* SphereLightViewController.h */,
+				CEDDA33822EECC13003A52A9 /* SphereLightViewController.m */,
+				CEDDA33A22EECCA6003A52A9 /* sphereLightShader.metal */,
+			);
+			path = 5LightView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,6 +272,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEDDA34322EEFBEA003A52A9 /* texture.jpg in Resources */,
 				CE28340922E2F63700793542 /* LaunchScreen.storyboard in Resources */,
 				CE3792E722E733470010B8BD /* img1.jpg in Resources */,
 				CE28340622E2F63700793542 /* Assets.xcassets in Resources */,
@@ -249,6 +287,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEDDA33322EEA24E003A52A9 /* MagicViewController.m in Sources */,
 				CE3792E122E72BD00010B8BD /* DrawImageViewController.m in Sources */,
 				CE28340122E2F63500793542 /* ViewController.m in Sources */,
 				CEB753D822EC2129002CD97B /* KernelShaderViewController.m in Sources */,
@@ -257,12 +296,15 @@
 				CE3792ED22E83DFE0010B8BD /* ThirdDimensionalViewController.m in Sources */,
 				CE3792E922E737300010B8BD /* ImageBaseShader.metal in Sources */,
 				CE28341822E30B3A00793542 /* triangle.metal in Sources */,
+				CEDDA33B22EECCA6003A52A9 /* sphereLightShader.metal in Sources */,
 				CE28341622E3006E00793542 /* DrawTriangleViewController.m in Sources */,
+				CEDDA33922EECC13003A52A9 /* SphereLightViewController.m in Sources */,
 				CE3792E422E72BFD0010B8BD /* MetalBaseView.m in Sources */,
 				CEB753DB22EC26D2002CD97B /* UIViewController+Utils.m in Sources */,
 				CEB753DD22EC38D3002CD97B /* KernelShader.metal in Sources */,
 				CE2833FE22E2F63500793542 /* AppDelegate.m in Sources */,
 				CE4865E222EA950E006DCD9C /* MetalLoadTextureTool.m in Sources */,
+				CEDDA33522EEA621003A52A9 /* magicShader.metal in Sources */,
 				CEB753D122EAD4B9002CD97B /* CommonShader.metal in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -407,6 +449,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = H8Z8H3RQUL;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = LearnMatelDemo/PrefixHeader.pch;
 				INFOPLIST_FILE = LearnMatelDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -425,6 +469,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = H8Z8H3RQUL;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = LearnMatelDemo/PrefixHeader.pch;
 				INFOPLIST_FILE = LearnMatelDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
