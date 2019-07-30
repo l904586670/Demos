@@ -11,7 +11,7 @@
 #import "Common.h"
 using namespace metal;
 
-// 传入的订单数据类型
+// 传入的顶点数据类型
 typedef struct
 {
   vector_float4 position;

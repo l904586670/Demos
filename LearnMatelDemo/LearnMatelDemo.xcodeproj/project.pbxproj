@@ -31,6 +31,9 @@
 		CEDDA33922EECC13003A52A9 /* SphereLightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEDDA33822EECC13003A52A9 /* SphereLightViewController.m */; };
 		CEDDA33B22EECCA6003A52A9 /* sphereLightShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = CEDDA33A22EECCA6003A52A9 /* sphereLightShader.metal */; };
 		CEDDA34322EEFBEA003A52A9 /* texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CEDDA34222EEFBEA003A52A9 /* texture.jpg */; };
+		CEDDA35222EFEF29003A52A9 /* TripleBufferViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEDDA35122EFEF29003A52A9 /* TripleBufferViewController.m */; };
+		CEDDA35422EFF4F7003A52A9 /* tripleBuffer.metal in Sources */ = {isa = PBXBuildFile; fileRef = CEDDA35322EFF4F7003A52A9 /* tripleBuffer.metal */; };
+		CEDDA35922F02F97003A52A9 /* VideoSessionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEDDA35822F02F97003A52A9 /* VideoSessionViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,6 +78,11 @@
 		CEDDA33A22EECCA6003A52A9 /* sphereLightShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = sphereLightShader.metal; sourceTree = "<group>"; };
 		CEDDA34122EEDCD6003A52A9 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		CEDDA34222EEFBEA003A52A9 /* texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = texture.jpg; sourceTree = "<group>"; };
+		CEDDA35022EFEF29003A52A9 /* TripleBufferViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TripleBufferViewController.h; sourceTree = "<group>"; };
+		CEDDA35122EFEF29003A52A9 /* TripleBufferViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TripleBufferViewController.m; sourceTree = "<group>"; };
+		CEDDA35322EFF4F7003A52A9 /* tripleBuffer.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = tripleBuffer.metal; sourceTree = "<group>"; };
+		CEDDA35722F02F97003A52A9 /* VideoSessionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoSessionViewController.h; sourceTree = "<group>"; };
+		CEDDA35822F02F97003A52A9 /* VideoSessionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoSessionViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +121,9 @@
 				CEB753D522EC1FCC002CD97B /* 3KernelShader */,
 				CEDDA33022EEA23C003A52A9 /* 4MagicView */,
 				CEDDA33622EECBE8003A52A9 /* 5LightView */,
+				CEDDA34F22EFEF16003A52A9 /* 6TripleBuffer */,
+				CEDDA35622F02F7C003A52A9 /* 7VideoSession */,
+				CEDDA35522F02F7C003A52A9 /* 8 */,
 				CE4865E022EA950E006DCD9C /* MetalLoadTextureTool.h */,
 				CE4865E122EA950E006DCD9C /* MetalLoadTextureTool.m */,
 				CE3792E522E733470010B8BD /* Resource */,
@@ -215,6 +226,32 @@
 			path = 5LightView;
 			sourceTree = "<group>";
 		};
+		CEDDA34F22EFEF16003A52A9 /* 6TripleBuffer */ = {
+			isa = PBXGroup;
+			children = (
+				CEDDA35022EFEF29003A52A9 /* TripleBufferViewController.h */,
+				CEDDA35122EFEF29003A52A9 /* TripleBufferViewController.m */,
+				CEDDA35322EFF4F7003A52A9 /* tripleBuffer.metal */,
+			);
+			path = 6TripleBuffer;
+			sourceTree = "<group>";
+		};
+		CEDDA35522F02F7C003A52A9 /* 8 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = 8;
+			sourceTree = "<group>";
+		};
+		CEDDA35622F02F7C003A52A9 /* 7VideoSession */ = {
+			isa = PBXGroup;
+			children = (
+				CEDDA35722F02F97003A52A9 /* VideoSessionViewController.h */,
+				CEDDA35822F02F97003A52A9 /* VideoSessionViewController.m */,
+			);
+			path = 7VideoSession;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -287,6 +324,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEDDA35222EFEF29003A52A9 /* TripleBufferViewController.m in Sources */,
 				CEDDA33322EEA24E003A52A9 /* MagicViewController.m in Sources */,
 				CE3792E122E72BD00010B8BD /* DrawImageViewController.m in Sources */,
 				CE28340122E2F63500793542 /* ViewController.m in Sources */,
@@ -295,9 +333,11 @@
 				CE3792F122E83F340010B8BD /* BaseMetalView.m in Sources */,
 				CE3792ED22E83DFE0010B8BD /* ThirdDimensionalViewController.m in Sources */,
 				CE3792E922E737300010B8BD /* ImageBaseShader.metal in Sources */,
+				CEDDA35922F02F97003A52A9 /* VideoSessionViewController.m in Sources */,
 				CE28341822E30B3A00793542 /* triangle.metal in Sources */,
 				CEDDA33B22EECCA6003A52A9 /* sphereLightShader.metal in Sources */,
 				CE28341622E3006E00793542 /* DrawTriangleViewController.m in Sources */,
+				CEDDA35422EFF4F7003A52A9 /* tripleBuffer.metal in Sources */,
 				CEDDA33922EECC13003A52A9 /* SphereLightViewController.m in Sources */,
 				CE3792E422E72BFD0010B8BD /* MetalBaseView.m in Sources */,
 				CEB753DB22EC26D2002CD97B /* UIViewController+Utils.m in Sources */,

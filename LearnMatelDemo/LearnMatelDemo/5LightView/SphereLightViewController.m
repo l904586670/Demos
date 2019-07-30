@@ -124,8 +124,8 @@
   if (!image) {
     NSAssert(NO, @"creat image fail, name [texture.jpg]");
   }
-//  NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"img1" ofType:@"jpg"];
-  // MTKTextureLoader 加载出的图片
+
+  // MTKTextureLoader 加载出的图片和原图会有色差
 //  MTKTextureLoader *textureLoader = [[MTKTextureLoader alloc] initWithDevice:_device];
 //  _texture = [textureLoader newTextureWithCGImage:image.CGImage options:nil error:nil];
   
