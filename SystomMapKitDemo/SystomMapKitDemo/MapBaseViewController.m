@@ -14,6 +14,13 @@
 #import "RandomTool.h"
 #import "CustomMapAnnotation.h"
 
+// 导航方式
+typedef NS_ENUM(NSInteger, NavigateMode) {
+  NavigateModeWalking = 0,  // 步行
+  NavigateModeDriving,      // 驾驶
+  NavigateModeTransit,      // 公共交通
+};
+
 static NSString * const kMapId = @"duohuanMapId";
 
 @interface MapBaseViewController () <MKMapViewDelegate, CLLocationManagerDelegate>
@@ -142,6 +149,33 @@ static NSString * const kMapId = @"duohuanMapId";
   }
 }
 
+- (void)navigateToTargetCoordinate:(CLLocationCoordinate2D)coordinate  mode:(NavigateMode)mode {
+  MKMapItem *myLocation = [MKMapItem mapItemForCurrentLocation];
+  MKPlacemark *placemark = [[MKPlacemark alloc] initWithCoordinate:coordinate addressDictionary:@{}];
+  
+  MKMapItem *toLocation = [[MKMapItem alloc] initWithPlacemark:placemark];
+  NSArray *items = @[myLocation, toLocation];
+  
+  NSMutableDictionary *options = [NSMutableDictionary dictionary];
+  [options setObject:[NSNumber numberWithInteger:MKMapTypeStandard] forKey:MKLaunchOptionsMapTypeKey];
+  [options setObject:[NSNumber numberWithBool:YES] forKey:MKLaunchOptionsShowsTrafficKey];
+  
+  NSString *directionsMode = nil;
+  if (NavigateModeWalking == mode) {
+    directionsMode = MKLaunchOptionsDirectionsModeWalking;
+  } else if (NavigateModeDriving == mode) {
+    directionsMode = MKLaunchOptionsDirectionsModeDriving;
+  } else if (NavigateModeTransit == mode) {
+    directionsMode = MKLaunchOptionsDirectionsModeTransit;
+  }
+  
+  [options setObject:directionsMode forKey:MKLaunchOptionsDirectionsModeKey];
+
+  [MKMapItem openMapsWithItems:items launchOptions:options];
+}
+
+
+#warning To Do 请求后台周边机器坐标信息
 /**
  根据当前的用户定位获取周边的设备位置信息
 
@@ -270,7 +304,7 @@ static NSString * const kMapId = @"duohuanMapId";
 
 // 点击标注时调用
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
-  NSLog(@"mapView: %s", __func__);
+//  NSLog(@"mapView: %s", __func__);
   
   if (view.annotation == mapView.userLocation) {
     return;
@@ -278,19 +312,26 @@ static NSString * const kMapId = @"duohuanMapId";
   
   UIAlertController *alertSheet = [UIAlertController alertControllerWithTitle:nil message:@"到这去" preferredStyle:UIAlertControllerStyleActionSheet];
   
-  UIAlertAction *sureAction = [UIAlertAction actionWithTitle:@"导航" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-    MKMapItem *myLocation = [MKMapItem mapItemForCurrentLocation];
+  UIAlertAction *walkAction = [UIAlertAction actionWithTitle:@"步行" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
     
-    MKPlacemark *placemark = [[MKPlacemark alloc] initWithCoordinate:view.annotation.coordinate addressDictionary:@{}];
-    
-    MKMapItem *toLocation = [[MKMapItem alloc] initWithPlacemark:placemark];
-    NSArray *items = @[myLocation,toLocation];
-    
-    NSDictionary *options = @{ MKLaunchOptionsDirectionsModeKey:MKLaunchOptionsDirectionsModeWalking, MKLaunchOptionsMapTypeKey: [NSNumber numberWithInteger:MKMapTypeStandard], MKLaunchOptionsShowsTrafficKey:@YES };
-    [MKMapItem openMapsWithItems:items launchOptions:options];
+    [self navigateToTargetCoordinate:view.annotation.coordinate
+                                mode:NavigateModeWalking];
   }];
+  UIAlertAction *driveAction = [UIAlertAction actionWithTitle:@"驾车" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    
+    [self navigateToTargetCoordinate:view.annotation.coordinate
+                                mode:NavigateModeDriving];
+  }];
+  UIAlertAction *busAction = [UIAlertAction actionWithTitle:@"公交" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    
+    [self navigateToTargetCoordinate:view.annotation.coordinate
+                                mode:NavigateModeTransit];
+  }];
+  
   UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
-  [alertSheet addAction:sureAction];
+  [alertSheet addAction:walkAction];
+  [alertSheet addAction:driveAction];
+  [alertSheet addAction:busAction];
   [alertSheet addAction:cancelAction];
   
   if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -349,8 +390,6 @@ static NSString * const kMapId = @"duohuanMapId";
               [self addPointAnnotationWithLatitude:[info[@"latitude"] doubleValue] longitude:[info[@"longitude"] doubleValue]];
             }
           }
-          
-#warning To Do ..
         }];
         weakSelf.testOnce = YES;
       }
@@ -389,19 +428,6 @@ static NSString * const kMapId = @"duohuanMapId";
 }
 - (void)mapView:(MKMapView *)mapView didAddOverlayRenderers:(NSArray<MKOverlayRenderer *> *)renderers {
 }
-
-#if TARGET_OS_IPHONE
-// Prefer -mapView:rendererForOverlay:
-- (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id <MKOverlay>)overlay{
-  
-  return nil;
-}
-// Called after the provided overlay views have been added and positioned in the map.
-// Prefer -mapView:didAddOverlayRenderers:
-- (void)mapView:(MKMapView *)mapView didAddOverlayViews:(NSArray *)overlayViews {
-  
-}
-#endif
 
 // Return nil for default MKClusterAnnotation, it is illegal to return a cluster annotation not containing the identical array of member annotations given.
 - (MKClusterAnnotation *)mapView:(MKMapView *)mapView clusterAnnotationForMemberAnnotations:(NSArray<id<MKAnnotation>>*)memberAnnotations API_AVAILABLE(ios(11.0)) {
