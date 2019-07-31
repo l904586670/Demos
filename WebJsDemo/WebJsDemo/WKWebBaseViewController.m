@@ -10,6 +10,9 @@
 
 #import "DHWeakProxy.h"
 
+static void * const kEstimatedProgressObserverContent = @"estimatedProgressContent";
+static void * const kTitleObserverContent = @"jsTitleContent";
+
 @interface WKWebBaseViewController ()<WKUIDelegate,
                                       WKNavigationDelegate,
                                       WKScriptMessageHandler>
@@ -40,6 +43,8 @@
   [self progressView];
   
   [self webView];
+  
+  [self addObserver];
   
   UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
   backBtn.frame = CGRectMake(0, 0, 100, 50);
@@ -186,7 +191,28 @@
   [_webView reload];
 }
 
+- (void)sendMessageToJSWith:(NSString *)js resultHandler:(void(^)(id data, NSError *error))result {
+  if (!js) {
+    return;
+  }
+  
+  [_webView evaluateJavaScript:js completionHandler:result];
+}
+
 #pragma mark - Private Methods
+
+- (void)addObserver {
+  //添加监测网页加载进度的观察者
+  [self.webView addObserver:self
+                 forKeyPath:@"estimatedProgress"
+                    options:NSKeyValueObservingOptionNew
+                    context:kEstimatedProgressObserverContent];
+  
+  [self.webView addObserver:self
+                 forKeyPath:@"title"
+                    options:NSKeyValueObservingOptionNew
+                    context:kTitleObserverContent];
+}
 
 //解决第一次进入的cookie丢失问题
 - (NSString *)readCurrentCookieWithDomain:(NSString *)domainStr {
@@ -240,6 +266,25 @@
   [_webView evaluateJavaScript:JSCookieString completionHandler:nil];
 }
 
+#pragma mark - KVO Action
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+  if (context == kEstimatedProgressObserverContent) {
+    
+    //    NSLog(@"网页加载进度 = %f",_webView.estimatedProgress);
+    self.progressView.progress = _webView.estimatedProgress;
+    if (_webView.estimatedProgress >= 1.0f) {
+      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.progressView.progress = 0;
+      });
+    }
+  } else if (context == kTitleObserverContent){
+    //    self.navigationItem.title = _webView.title;
+  } else {
+    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+  }
+}
+
 #pragma mark - WKScriptMessageHandler
 
 // 收到js消息时调用
@@ -286,20 +331,16 @@
 
 // 页面开始加载时调用
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(null_unspecified WKNavigation *)navigation {
-  
 }
 
 - (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(null_unspecified WKNavigation *)navigation {
-  
 }
 
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error {
-  
 }
 
 // 当内容开始返回时调用
 - (void)webView:(WKWebView *)webView didCommitNavigation:(null_unspecified WKNavigation *)navigation {
-  
 }
 
 // 页面加载完成之后调用
@@ -364,7 +405,6 @@
 
 // 进程被终止时调用
 - (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView {
-  
 }
 
 #pragma mark -- WKUIDelegate
@@ -382,7 +422,6 @@
  the UI as needed, such as by closing the containing browser tab or window.
  */
 - (void)webViewDidClose:(WKWebView *)webView {
-  
 }
 
 // web界面中有弹出警告框时调用
