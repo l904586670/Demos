@@ -7,6 +7,19 @@
 
 #import "YiquxPhotosUtility.h"
 
+@interface ImageInfoObject : NSObject
+
+@property (nonatomic, strong) UIImage *originImage;
+@property (nonatomic, strong) NSDictionary *info;
+
+@end
+
+@implementation ImageInfoObject
+
+@end
+
+
+
 @implementation YiquxPhotosUtility
 
 #pragma mark - Delete Album Data
@@ -94,17 +107,46 @@
 
 + (void)asynchRequestImagesWith:(PHFetchResult<PHAsset *> *)results
              completionHandler:(void(^)(NSArray *sortImages))hander {
-  NSMutableArray <UIImage *>*images = [NSMutableArray array];
-  for (PHAsset *asset in results) {
-    UIImage *originalImage = [[self class] synchRequestOriginImageWithAsset:asset];
-    if (originalImage) {
-      [images addObject:originalImage];
-    }
-  }
 
-  if (hander) {
-    hander(images);
-  }
+  NSMutableArray <NSNumber *>*requestIds = [NSMutableArray array];
+  NSMutableArray <ImageInfoObject *>*infoObjects = [NSMutableArray array];
+  
+  dispatch_group_t group = dispatch_group_create();
+  
+  [results enumerateObjectsUsingBlock:^(PHAsset * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    dispatch_group_enter(group);
+    NSInteger reuqestId = [[self class] asynchRequestAssetOriginalImageWithAsset:obj completionHandler:^(UIImage * _Nonnull originalImage, NSDictionary * _Nonnull info) {
+      ImageInfoObject *imgInfo = [[ImageInfoObject alloc] init];
+      imgInfo.originImage = originalImage;
+      imgInfo.info = info;
+      [infoObjects addObject:imgInfo];
+      dispatch_group_leave(group);
+    }];
+    
+    [requestIds addObject: [NSNumber numberWithInteger:reuqestId]];
+  }];
+  
+  
+  dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+    NSMutableArray <UIImage *>*sortedImages = [NSMutableArray array];
+    [requestIds enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+      for (NSInteger i = 0; i < infoObjects.count; i++) {
+        ImageInfoObject *imgInfo = infoObjects[i];
+        if ([imgInfo.info[PHImageResultRequestIDKey] integerValue] == [obj integerValue]) {
+          [sortedImages addObject:imgInfo.originImage];
+          
+          [infoObjects removeObject:imgInfo];
+          break;
+        }
+      }
+    }];
+
+    if (hander) {
+      hander(sortedImages);
+    }
+  });
+  
+  
 }
 
 + (NSArray <UIImage *>*)imagesWithImageAssets:(NSArray <PHAsset *>*)results {
@@ -221,7 +263,7 @@
 
 }
 
-+ (UIImage *)OriginImageWithAsset:(PHAsset *)asset {synchRequest
++ (UIImage *)synchRequestOriginImageWithAsset:(PHAsset *)asset {
   PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
   options.synchronous = YES;
   options.networkAccessAllowed = YES;

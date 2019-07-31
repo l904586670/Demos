@@ -1,8 +1,8 @@
 //
-//  CareraViewController.h
+//  CameraViewController.h
 //  CustomCameraDemo
 //
-//  Created by User on 2019/7/30.
+//  Created by User on 2019/7/31.
 //  Copyright © 2019 Rock. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CareraViewController : UIViewController
+@interface CameraViewController : UIViewController
 
 @end
 

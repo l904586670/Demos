@@ -10,8 +10,6 @@
 
 #import <UIKit/UIKit.h>
 
-#import "YiquxLogic.h"
-
 static const NSString *YQCameraAdjustingExposeureContext = @"camera_expose_id";
 
 // *****************************************************************
@@ -113,7 +111,7 @@ static const NSString *YQCameraAdjustingExposeureContext = @"camera_expose_id";
     }
   } else {
     if (error) {
-      YiquxLogFatal(@"Creat video Input error : %@", error.localizedDescription);
+      NSAssert(NO, @"Creat video Input error : %@", error.localizedDescription);
     }
     return NO;
   }
@@ -136,7 +134,7 @@ static const NSString *YQCameraAdjustingExposeureContext = @"camera_expose_id";
       }
     } else {
       if (error) {
-        YiquxLogFatal(@"Creat audio Input error : %@", error.localizedDescription);
+        NSAssert(NO, @"Creat audio Input error : %@", error.localizedDescription);
       }
       return NO;
     }
@@ -256,7 +254,8 @@ static const NSString *YQCameraAdjustingExposeureContext = @"camera_expose_id";
 - (void)videoZoomWithFactor:(CGFloat)factor {
   AVCaptureDevice *device = [self acticeCamera];
   if (factor < 1.0 || factor > device.activeFormat.videoMaxZoomFactor) {
-    YiquxLogFatal(@"Video zoom factor out [1, activeFormat.videoMaxZoomFactor]");
+    
+    NSAssert(NO, @"Video zoom factor out [1, activeFormat.videoMaxZoomFactor]");
   }
   
   factor = MAX(1, factor);
@@ -471,7 +470,7 @@ static const NSString *YQCameraAdjustingExposeureContext = @"camera_expose_id";
     [[NSFileManager defaultManager] removeItemAtPath:filePath error:nil];
     return [NSURL fileURLWithPath:filePath];
   } else {
-    YiquxLogFatal(@"Creat video folder Error : %@", folderName);
+    NSAssert(NO, @"Creat video folder Error : %@", folderName);
     return nil;
   }
 }
@@ -541,8 +540,6 @@ static const NSString *YQCameraAdjustingExposeureContext = @"camera_expose_id";
 
 - (void)captureOutput:(AVCapturePhotoOutput *)captureOutput didFinishProcessingPhotoSampleBuffer:(nullable CMSampleBufferRef)photoSampleBuffer previewPhotoSampleBuffer:(nullable CMSampleBufferRef)previewPhotoSampleBuffer resolvedSettings:(AVCaptureResolvedPhotoSettings *)resolvedSettings bracketSettings:(nullable AVCaptureBracketedStillImageSettings *)bracketSettings error:(nullable NSError *)error {
   if (NULL == photoSampleBuffer || error) {
-    YiquxLogError(@"Capture photo error: %@", error);
-    
     if (self.completeHandler) {
       self.completeHandler(nil);
     }
@@ -552,25 +549,25 @@ static const NSString *YQCameraAdjustingExposeureContext = @"camera_expose_id";
   
   NSData *imageData = [AVCapturePhotoOutput JPEGPhotoDataRepresentationForJPEGSampleBuffer:photoSampleBuffer previewPhotoSampleBuffer:previewPhotoSampleBuffer];
   
-  UIImage *image = [[UIImage imageWithData:imageData] fixOrientation];
-
-  if ([self acticeCamera].position == AVCaptureDevicePositionFront) {
-    image = [image flipHorizontal];
-  }
-  
-  if (CGSizeEqualToSize(_previewSize, CGSizeZero)) {
-    if (self.completeHandler) {
-      self.completeHandler(image);
-    }
-    
-    return;
-  }
-  
-  CGRect cropRect = [GeometryMath makeRectWithAspectRatioInsideRect:_previewSize boundingRect:CGRectMake(0, 0, image.size.width, image.size.height)];
-  UIImage *croppedImage = [image croppedImage:cropRect];
+//  UIImage *image = [[UIImage imageWithData:imageData] fixOrientation];
+//
+//  if ([self acticeCamera].position == AVCaptureDevicePositionFront) {
+//    image = [image flipHorizontal];
+//  }
+//
+//  if (CGSizeEqualToSize(_previewSize, CGSizeZero)) {
+//    if (self.completeHandler) {
+//      self.completeHandler(image);
+//    }
+//
+//    return;
+//  }
+//
+//  CGRect cropRect = [GeometryMath makeRectWithAspectRatioInsideRect:_previewSize boundingRect:CGRectMake(0, 0, image.size.width, image.size.height)];
+//  UIImage *croppedImage = [image croppedImage:cropRect];
   
   if (self.completeHandler) {
-    self.completeHandler(croppedImage);
+    self.completeHandler(nil);
   }
 }
 

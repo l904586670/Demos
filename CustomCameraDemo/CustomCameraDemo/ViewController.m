@@ -8,7 +8,9 @@
 
 #import "ViewController.h"
 
-#import "CareraViewController.h"
+#import "AlbumViewController.h"
+#import "CameraViewController.h"
+
 
 @interface ViewController ()
 
@@ -19,21 +21,42 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   
-  UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-  btn.frame = CGRectMake(0, 0, 300, 50);
-  btn.center = self.view.center;
-  [self.view addSubview:btn];
-  [btn setTitle:@"跳转到照相机界面" forState:UIControlStateNormal];
-  [btn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+  CGSize screenSize = [UIScreen mainScreen].bounds.size;
+  
+  CGFloat halfH = screenSize.height/2.0;
 
-  [btn addTarget:self
-          action:@selector(onCameraBtnTouch)
-forControlEvents:UIControlEventTouchUpInside];
+  CGRect frame = CGRectMake(0, halfH - 50, screenSize.width, 50);
+  [self buttonWithFrame:frame title:@"相册" action:@selector(onAlbum)];
+  
+  frame = CGRectOffset(frame, 0, 50);
+  [self buttonWithFrame:frame title:@"相机" action:@selector(onCamera)];
 }
 
-- (void)onCameraBtnTouch {
-  CareraViewController *cameraVC = [[CareraViewController alloc] init];
+- (UIButton *)buttonWithFrame:(CGRect)frame
+                        title:(NSString *)title
+                       action:(SEL)action {
+  UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+  btn.frame = frame;
+  
+  [self.view addSubview:btn];
+  [btn setTitle:title forState:UIControlStateNormal];
+  [btn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+  
+  [btn addTarget:self
+          action:action
+forControlEvents:UIControlEventTouchUpInside];
+  return btn;
+}
+
+- (void)onAlbum {
+  AlbumViewController *albumVC = [[AlbumViewController alloc] init];
+  [self.navigationController pushViewController:albumVC animated:YES];
+}
+
+- (void)onCamera {
+  CameraViewController *cameraVC = [[CameraViewController alloc] init];
   [self presentViewController:cameraVC animated:YES completion:nil];
 }
+
 
 @end
