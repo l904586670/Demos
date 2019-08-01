@@ -43,7 +43,7 @@ static const NSString *YQCameraAdjustingExposeureContext = @"camera_expose_id";
 
 - (instancetype)init {
   if (self = [super init]) {
-    _muteMode = NO;
+    
   }
   return self;
 }

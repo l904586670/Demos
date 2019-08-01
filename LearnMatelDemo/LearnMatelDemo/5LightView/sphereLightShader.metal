@@ -82,7 +82,6 @@ kernel void lightCompute (texture2d<float, access::write> output [[texture(0)]],
   // 朗伯（漫射）光的基本光模型，我们需要将法线与标准化光源相乘
   float light = dot(normal, source);  // dot 向量的标量积
   output.write(distance < 0 ? float4(float3(light), 1) : float4(0), gid);
-
 }
 
 
@@ -144,4 +143,31 @@ kernel void textureCompute(texture2d<float, access::write> output [[texture(0)]]
   t += 0.5;
   float4 color = input.sample(textureSampler, float2(s + timer * 0.1, t));
   output.write(distance < 0 ? color : float4(0), gid);
+}
+
+
+constant half3 kRec709Luma = half3(0.2126, 0.7152, 0.0722); // 把rgba转成亮度值
+// 灰度计算
+kernel void grayKernel(texture2d<float, access::write> output [[texture(0)]],
+                       texture2d<float, access::sample> input [[texture(1)]],
+                       constant float &timer [[buffer(0)]],
+                       uint2 gid [[thread_position_in_grid]])
+{
+ 
+  uint width = output.get_width();
+  uint height = output.get_height();
+ 
+  float2 uv = float2(gid) / float2(width, height);
+ 
+  constexpr sampler textureSampler(coord::normalized,
+                                   address::repeat,
+                                   min_filter::linear,
+                                   mag_filter::linear,
+                                   mip_filter::linear );
+
+  float4 color = input.sample(textureSampler, uv);
+  output.write(color, gid);
+
+//  half  gray     = dot(color.rgb, kRec709Luma); // 转换成亮度
+//  output.write(half4(gray, gray, gray, 1.0), gid); // 写回对应纹理
 }

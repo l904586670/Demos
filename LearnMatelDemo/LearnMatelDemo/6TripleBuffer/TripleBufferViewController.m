@@ -112,7 +112,7 @@ static const NSUInteger kMaxInflightBuffers = 3;
   _currentFrameIndex = (_currentFrameIndex + 1) % kMaxInflightBuffers;
   
   // Update the contents of the dynamic data buffer
-  _timer += 0.01;
+  _timer += 0.03;
   id<MTLBuffer> dynamicBuffer = _dynamicDataBuffers[_currentFrameIndex];
   memcpy(dynamicBuffer.contents, &_timer, sizeof(float));
 

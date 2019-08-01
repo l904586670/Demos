@@ -52,17 +52,17 @@ typedef NS_ENUM(NSInteger,YQCameraType) {
 @property(nonatomic, assign, readonly) NSUInteger cameraCount;
 
 @property(nonatomic, assign, readonly) BOOL cameraHasTorch;
+// 当前摄像头是否支持闪光灯
 @property(nonatomic, assign, readonly) BOOL cameraHasFlash;
+// 是否支持点击聚焦
 @property(nonatomic, assign, readonly) BOOL cameraSupportsTapToFocus;
+// 是否支持点击曝光
 @property(nonatomic, assign, readonly) BOOL cameraSupportsTapToExpose;
 
 @property(nonatomic, assign) AVCaptureTorchMode torchMode;
 @property(nonatomic, assign) AVCaptureFlashMode flashMode;
 
 @property(nonatomic, assign) CGSize previewSize; // 截取图片的比例
-
-// 不添加音频输入, 默认为 NO
-@property(nonatomic, assign) BOOL muteMode;
 
 // Session Configuration
 - (BOOL)setupSessionWithCameraType:(YQCameraType)cameraType;

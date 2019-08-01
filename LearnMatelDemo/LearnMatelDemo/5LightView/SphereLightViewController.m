@@ -50,7 +50,7 @@
   CGRect frame = CGRectMake(0, posY, self.screenSize.width, 50);
   frame = CGRectInset(frame, 2, 2);
   
-  UISegmentedControl *segmentControl = [[UISegmentedControl alloc] initWithItems:@[@"光照", @"噪点", @"纹理"]];
+  UISegmentedControl *segmentControl = [[UISegmentedControl alloc] initWithItems:@[@"光照", @"噪点", @"纹理", @"灰度"]];
   segmentControl.frame = frame;
   [self.view addSubview:segmentControl];
   _segIndex = 0;
@@ -117,6 +117,13 @@
   if (error) {
     NSAssert(NO, @"creat ComputePipelineState error");
   }
+  
+  id<MTLFunction> grayFunc = [library newFunctionWithName:@"grayKernel"];
+  _pipelineStates[3] = [_device newComputePipelineStateWithFunction:grayFunc error:&error];
+  if (error) {
+    NSAssert(NO, @"creat ComputePipelineState error");
+  }
+  
 }
 
 - (void)setupTexture {
@@ -125,7 +132,7 @@
     NSAssert(NO, @"creat image fail, name [texture.jpg]");
   }
 
-  // MTKTextureLoader 加载出的图片和原图会有色差
+  // MTKTextureLoader 加载出的图片和原图会有色差, 需要改变sg
 //  MTKTextureLoader *textureLoader = [[MTKTextureLoader alloc] initWithDevice:_device];
 //  _texture = [textureLoader newTextureWithCGImage:image.CGImage options:nil error:nil];
   
@@ -165,7 +172,7 @@
   id<MTLBuffer> timesBuffer = [_device newBufferWithBytes:&_times length:sizeof(float) options:MTLResourceCPUCacheModeDefaultCache];
   [commandEncoder setBuffer:timesBuffer offset:0 atIndex:0];
   
-  if (_segIndex == 2) {
+  if (_segIndex == 2 || _segIndex == 3) {
     [commandEncoder setTexture:self.texture atIndex:1];
   }
   

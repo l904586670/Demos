@@ -90,7 +90,7 @@
 + (void)requestCameraOrMicrophonePermission:(BOOL)isCamera
                           authorizedHandler:(authorizedBlock)authorizedCallback
                               deniedHandler:(deniedBlock)deniedCallback {
-  if (!(authorizedCallback && deniedCallback)) {
+  if (!authorizedCallback || !deniedCallback) {
     return;
   }
   
@@ -99,14 +99,25 @@
   
   switch (videoAuthStatus) {
     case AVAuthorizationStatusNotDetermined: {
-      [AVCaptureDevice requestAccessForMediaType:mediaType completionHandler:^(BOOL granted) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-          if (granted) {
-            authorizedCallback();
-          } else {
-            deniedCallback(AVAuthorizationStatusDenied);
-          }
-        });
+      [AVCaptureDevice requestAccessForMediaType:mediaType
+                               completionHandler:^(BOOL granted) {
+        
+                                 if ([NSThread isMainThread]) {
+                                   if (granted) {
+                                     authorizedCallback();
+                                   } else {
+                                     deniedCallback(AVAuthorizationStatusDenied);
+                                   }
+                                 } else {
+                                   dispatch_async(dispatch_get_main_queue(), ^{
+                                     if (granted) {
+                                       authorizedCallback();
+                                     } else {
+                                       deniedCallback(AVAuthorizationStatusDenied);
+                                     }
+                                   });
+                                 }
+        
       }];
       break;
     }
