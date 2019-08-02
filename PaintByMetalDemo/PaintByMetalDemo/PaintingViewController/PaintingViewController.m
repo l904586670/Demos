@@ -9,6 +9,7 @@
 #import "PaintingViewController.h"
 
 #import "PaintingView.h"
+#import "PaintMetalView.h"
 
 @interface PaintingViewController ()
 
@@ -30,7 +31,7 @@
   
   CGRect frame = CGRectMake(0, posY, screenSize.width, height);
   
-  PaintingView *paintView = [[PaintingView alloc] initWithFrame:frame];
+  PaintMetalView *paintView = [[PaintMetalView alloc] initWithFrame:frame];
   [self.view addSubview:paintView];
 }
 

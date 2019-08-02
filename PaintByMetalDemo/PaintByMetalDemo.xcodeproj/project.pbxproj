@@ -16,6 +16,8 @@
 		CE9FB1FD22E8831500E2DEF1 /* PaintingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9FB1FC22E8831500E2DEF1 /* PaintingViewController.m */; };
 		CE9FB20022E884F000E2DEF1 /* PaintingView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9FB1FF22E884F000E2DEF1 /* PaintingView.m */; };
 		CE9FB20222E886F300E2DEF1 /* PaintShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = CE9FB20122E886F300E2DEF1 /* PaintShader.metal */; };
+		CEB4ECDB22F436AB000C5881 /* PaintMetalLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB4ECDA22F436AB000C5881 /* PaintMetalLayer.m */; };
+		CEB4ECDE22F438F7000C5881 /* PaintMetalView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB4ECDD22F438F7000C5881 /* PaintMetalView.m */; };
 		CEB753D422EAD565002CD97B /* MetalLoadTextureTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB753D322EAD565002CD97B /* MetalLoadTextureTool.m */; };
 		CEDA0D7222E940D200C64083 /* Particle.png in Resources */ = {isa = PBXBuildFile; fileRef = CEDA0D7122E940D200C64083 /* Particle.png */; };
 /* End PBXBuildFile section */
@@ -37,6 +39,10 @@
 		CE9FB1FF22E884F000E2DEF1 /* PaintingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaintingView.m; sourceTree = "<group>"; };
 		CE9FB20122E886F300E2DEF1 /* PaintShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PaintShader.metal; sourceTree = "<group>"; };
 		CE9FB20322E8876F00E2DEF1 /* CommonDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonDefinition.h; sourceTree = "<group>"; };
+		CEB4ECD922F436AB000C5881 /* PaintMetalLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PaintMetalLayer.h; sourceTree = "<group>"; };
+		CEB4ECDA22F436AB000C5881 /* PaintMetalLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaintMetalLayer.m; sourceTree = "<group>"; };
+		CEB4ECDC22F438F7000C5881 /* PaintMetalView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PaintMetalView.h; sourceTree = "<group>"; };
+		CEB4ECDD22F438F7000C5881 /* PaintMetalView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaintMetalView.m; sourceTree = "<group>"; };
 		CEB753D222EAD565002CD97B /* MetalLoadTextureTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetalLoadTextureTool.h; sourceTree = "<group>"; };
 		CEB753D322EAD565002CD97B /* MetalLoadTextureTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetalLoadTextureTool.m; sourceTree = "<group>"; };
 		CEDA0D7122E940D200C64083 /* Particle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Particle.png; sourceTree = "<group>"; };
@@ -95,8 +101,12 @@
 				CE9FB20322E8876F00E2DEF1 /* CommonDefinition.h */,
 				CE9FB1FB22E8831500E2DEF1 /* PaintingViewController.h */,
 				CE9FB1FC22E8831500E2DEF1 /* PaintingViewController.m */,
+				CEB4ECD922F436AB000C5881 /* PaintMetalLayer.h */,
+				CEB4ECDA22F436AB000C5881 /* PaintMetalLayer.m */,
 				CE9FB1FE22E884F000E2DEF1 /* PaintingView.h */,
 				CE9FB1FF22E884F000E2DEF1 /* PaintingView.m */,
+				CEB4ECDC22F438F7000C5881 /* PaintMetalView.h */,
+				CEB4ECDD22F438F7000C5881 /* PaintMetalView.m */,
 				CE9FB20122E886F300E2DEF1 /* PaintShader.metal */,
 			);
 			path = PaintingViewController;
@@ -173,12 +183,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEB4ECDB22F436AB000C5881 /* PaintMetalLayer.m in Sources */,
 				CE9FB20222E886F300E2DEF1 /* PaintShader.metal in Sources */,
 				CE9FB1FD22E8831500E2DEF1 /* PaintingViewController.m in Sources */,
 				CE9FB1E922E881F300E2DEF1 /* ViewController.m in Sources */,
 				CE9FB20022E884F000E2DEF1 /* PaintingView.m in Sources */,
 				CE9FB1F422E881F400E2DEF1 /* main.m in Sources */,
 				CE9FB1E622E881F300E2DEF1 /* AppDelegate.m in Sources */,
+				CEB4ECDE22F438F7000C5881 /* PaintMetalView.m in Sources */,
 				CEB753D422EAD565002CD97B /* MetalLoadTextureTool.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

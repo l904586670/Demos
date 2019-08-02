@@ -22,6 +22,12 @@
 		CE3792ED22E83DFE0010B8BD /* ThirdDimensionalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3792EC22E83DFE0010B8BD /* ThirdDimensionalViewController.m */; };
 		CE3792F122E83F340010B8BD /* BaseMetalView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3792F022E83F340010B8BD /* BaseMetalView.m */; };
 		CE4865E222EA950E006DCD9C /* MetalLoadTextureTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4865E122EA950E006DCD9C /* MetalLoadTextureTool.m */; };
+		CEB4ECCB22F3D636000C5881 /* Reymarching.metal in Sources */ = {isa = PBXBuildFile; fileRef = CEB4ECC722F3D636000C5881 /* Reymarching.metal */; };
+		CEB4ECCC22F3D636000C5881 /* RaymarchingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB4ECC822F3D636000C5881 /* RaymarchingViewController.m */; };
+		CEB4ECCF22F3D64D000C5881 /* RayTracingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB4ECCE22F3D64D000C5881 /* RayTracingViewController.m */; };
+		CEB4ECD122F3D69A000C5881 /* ReytracingShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = CEB4ECD022F3D69A000C5881 /* ReytracingShader.metal */; };
+		CEB4ECD622F3DF0C000C5881 /* LightAndShadowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB4ECD522F3DF0C000C5881 /* LightAndShadowViewController.m */; };
+		CEB4ECD822F3E033000C5881 /* shadowShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = CEB4ECD722F3E033000C5881 /* shadowShader.metal */; };
 		CEB753D122EAD4B9002CD97B /* CommonShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = CEB753D022EAD4B9002CD97B /* CommonShader.metal */; };
 		CEB753D822EC2129002CD97B /* KernelShaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB753D722EC2129002CD97B /* KernelShaderViewController.m */; };
 		CEB753DB22EC26D2002CD97B /* UIViewController+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB753DA22EC26D2002CD97B /* UIViewController+Utils.m */; };
@@ -64,6 +70,16 @@
 		CE4865E122EA950E006DCD9C /* MetalLoadTextureTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MetalLoadTextureTool.m; sourceTree = "<group>"; };
 		CE9FB1D722E848B600E2DEF1 /* CommonDefinition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonDefinition.h; sourceTree = "<group>"; };
 		CEA2698322E841B6009F1C3A /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		CEB4ECC722F3D636000C5881 /* Reymarching.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Reymarching.metal; sourceTree = "<group>"; };
+		CEB4ECC822F3D636000C5881 /* RaymarchingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RaymarchingViewController.m; sourceTree = "<group>"; };
+		CEB4ECC922F3D636000C5881 /* RaymarchingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RaymarchingViewController.h; sourceTree = "<group>"; };
+		CEB4ECCD22F3D64D000C5881 /* RayTracingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RayTracingViewController.h; sourceTree = "<group>"; };
+		CEB4ECCE22F3D64D000C5881 /* RayTracingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RayTracingViewController.m; sourceTree = "<group>"; };
+		CEB4ECD022F3D69A000C5881 /* ReytracingShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = ReytracingShader.metal; sourceTree = "<group>"; };
+		CEB4ECD222F3DAFD000C5881 /* RayTracingTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RayTracingTypes.h; sourceTree = "<group>"; };
+		CEB4ECD422F3DF0C000C5881 /* LightAndShadowViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LightAndShadowViewController.h; sourceTree = "<group>"; };
+		CEB4ECD522F3DF0C000C5881 /* LightAndShadowViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LightAndShadowViewController.m; sourceTree = "<group>"; };
+		CEB4ECD722F3E033000C5881 /* shadowShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = shadowShader.metal; sourceTree = "<group>"; };
 		CEB753D022EAD4B9002CD97B /* CommonShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = CommonShader.metal; sourceTree = "<group>"; };
 		CEB753D622EC2129002CD97B /* KernelShaderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KernelShaderViewController.h; sourceTree = "<group>"; };
 		CEB753D722EC2129002CD97B /* KernelShaderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KernelShaderViewController.m; sourceTree = "<group>"; };
@@ -115,6 +131,7 @@
 		CE2833FB22E2F63500793542 /* LearnMatelDemo */ = {
 			isa = PBXGroup;
 			children = (
+				CEB4ECD322F3DEF1000C5881 /* 8lightingAndShadows */,
 				CE28341322E3005B00793542 /* 0DrawTriangle */,
 				CE3792DE22E72BBA0010B8BD /* 1DrawImage */,
 				CE3792EA22E83DDA0010B8BD /* 2Draw3D */,
@@ -123,7 +140,8 @@
 				CEDDA33622EECBE8003A52A9 /* 5LightView */,
 				CEDDA34F22EFEF16003A52A9 /* 6TripleBuffer */,
 				CEDDA35622F02F7C003A52A9 /* 7VideoSession */,
-				CEDDA35522F02F7C003A52A9 /* 8 */,
+				CEB4ECCA22F3D636000C5881 /* 8Raytracing */,
+				CEB4ECC622F3D636000C5881 /* 9Raymarching */,
 				CE4865E022EA950E006DCD9C /* MetalLoadTextureTool.h */,
 				CE4865E122EA950E006DCD9C /* MetalLoadTextureTool.m */,
 				CE3792E522E733470010B8BD /* Resource */,
@@ -196,6 +214,37 @@
 			path = 2Draw3D;
 			sourceTree = "<group>";
 		};
+		CEB4ECC622F3D636000C5881 /* 9Raymarching */ = {
+			isa = PBXGroup;
+			children = (
+				CEB4ECC722F3D636000C5881 /* Reymarching.metal */,
+				CEB4ECC822F3D636000C5881 /* RaymarchingViewController.m */,
+				CEB4ECC922F3D636000C5881 /* RaymarchingViewController.h */,
+			);
+			path = 9Raymarching;
+			sourceTree = "<group>";
+		};
+		CEB4ECCA22F3D636000C5881 /* 8Raytracing */ = {
+			isa = PBXGroup;
+			children = (
+				CEB4ECCD22F3D64D000C5881 /* RayTracingViewController.h */,
+				CEB4ECCE22F3D64D000C5881 /* RayTracingViewController.m */,
+				CEB4ECD222F3DAFD000C5881 /* RayTracingTypes.h */,
+				CEB4ECD022F3D69A000C5881 /* ReytracingShader.metal */,
+			);
+			path = 8Raytracing;
+			sourceTree = "<group>";
+		};
+		CEB4ECD322F3DEF1000C5881 /* 8lightingAndShadows */ = {
+			isa = PBXGroup;
+			children = (
+				CEB4ECD422F3DF0C000C5881 /* LightAndShadowViewController.h */,
+				CEB4ECD522F3DF0C000C5881 /* LightAndShadowViewController.m */,
+				CEB4ECD722F3E033000C5881 /* shadowShader.metal */,
+			);
+			path = 8lightingAndShadows;
+			sourceTree = "<group>";
+		};
 		CEB753D522EC1FCC002CD97B /* 3KernelShader */ = {
 			isa = PBXGroup;
 			children = (
@@ -234,13 +283,6 @@
 				CEDDA35322EFF4F7003A52A9 /* tripleBuffer.metal */,
 			);
 			path = 6TripleBuffer;
-			sourceTree = "<group>";
-		};
-		CEDDA35522F02F7C003A52A9 /* 8 */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = 8;
 			sourceTree = "<group>";
 		};
 		CEDDA35622F02F7C003A52A9 /* 7VideoSession */ = {
@@ -324,16 +366,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEB4ECD822F3E033000C5881 /* shadowShader.metal in Sources */,
 				CEDDA35222EFEF29003A52A9 /* TripleBufferViewController.m in Sources */,
 				CEDDA33322EEA24E003A52A9 /* MagicViewController.m in Sources */,
+				CEB4ECD122F3D69A000C5881 /* ReytracingShader.metal in Sources */,
+				CEB4ECCC22F3D636000C5881 /* RaymarchingViewController.m in Sources */,
 				CE3792E122E72BD00010B8BD /* DrawImageViewController.m in Sources */,
 				CE28340122E2F63500793542 /* ViewController.m in Sources */,
 				CEB753D822EC2129002CD97B /* KernelShaderViewController.m in Sources */,
 				CE28340C22E2F63700793542 /* main.m in Sources */,
+				CEB4ECD622F3DF0C000C5881 /* LightAndShadowViewController.m in Sources */,
 				CE3792F122E83F340010B8BD /* BaseMetalView.m in Sources */,
 				CE3792ED22E83DFE0010B8BD /* ThirdDimensionalViewController.m in Sources */,
+				CEB4ECCF22F3D64D000C5881 /* RayTracingViewController.m in Sources */,
 				CE3792E922E737300010B8BD /* ImageBaseShader.metal in Sources */,
 				CEDDA35922F02F97003A52A9 /* VideoSessionViewController.m in Sources */,
+				CEB4ECCB22F3D636000C5881 /* Reymarching.metal in Sources */,
 				CE28341822E30B3A00793542 /* triangle.metal in Sources */,
 				CEDDA33B22EECCA6003A52A9 /* sphereLightShader.metal in Sources */,
 				CE28341622E3006E00793542 /* DrawTriangleViewController.m in Sources */,

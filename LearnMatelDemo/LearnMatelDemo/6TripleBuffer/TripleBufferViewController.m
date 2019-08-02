@@ -90,17 +90,16 @@ static const NSUInteger kMaxInflightBuffers = 3;
   UIImage *image = [UIImage imageNamed:@"img1.jpg"];
   self.inputTexture = [MetalLoadTextureTool textureWithImage:image device:_device];
   
-  
   // Create a FIFO queue of three dynamic data buffers
   // This ensures that the CPU and GPU are never accessing the same buffer simultaneously
-  MTLResourceOptions bufferOptions = MTLResourceCPUCacheModeDefaultCache;
-  NSMutableArray *mutableDynamicDataBuffers = [NSMutableArray arrayWithCapacity:kMaxInflightBuffers];
-  for(int i = 0; i < kMaxInflightBuffers; i++) {
-    // Create a new buffer with enough capacity to store one instance of the dynamic buffer data
-    id<MTLBuffer> dynamicDataBuffer = [_device newBufferWithLength:sizeof(float) options:bufferOptions];
-    [mutableDynamicDataBuffers addObject:dynamicDataBuffer];
-  }
-  _dynamicDataBuffers = [mutableDynamicDataBuffers copy];
+//  MTLResourceOptions bufferOptions = MTLResourceCPUCacheModeDefaultCache;
+//  NSMutableArray *mutableDynamicDataBuffers = [NSMutableArray arrayWithCapacity:kMaxInflightBuffers];
+//  for(int i = 0; i < kMaxInflightBuffers; i++) {
+//    // Create a new buffer with enough capacity to store one instance of the dynamic buffer data
+//    id<MTLBuffer> dynamicDataBuffer = [_device newBufferWithLength:sizeof(float) options:bufferOptions];
+//    [mutableDynamicDataBuffers addObject:dynamicDataBuffer];
+//  }
+//  _dynamicDataBuffers = [mutableDynamicDataBuffers copy];
 }
 
 - (void)renderDynamic {
@@ -113,11 +112,15 @@ static const NSUInteger kMaxInflightBuffers = 3;
   
   // Update the contents of the dynamic data buffer
   _timer += 0.03;
-  id<MTLBuffer> dynamicBuffer = _dynamicDataBuffers[_currentFrameIndex];
-  memcpy(dynamicBuffer.contents, &_timer, sizeof(float));
+//  id<MTLBuffer> dynamicBuffer = _dynamicDataBuffers[_currentFrameIndex];
+//  memcpy(dynamicBuffer.contents, &_timer, sizeof(float));
 
+  
   // Create a command buffer and render command encoder
   id<MTLCommandBuffer> commandBuffer = [_commandQueue commandBuffer];
+  [commandBuffer addCompletedHandler:^(id<MTLCommandBuffer> _Nonnull cmdBuffer) {
+    dispatch_semaphore_signal(self->_frameBoundarySemaphore);
+  }];
   
   id<MTLComputeCommandEncoder> encoder = [commandBuffer computeCommandEncoder];
 
@@ -127,6 +130,7 @@ static const NSUInteger kMaxInflightBuffers = 3;
   [encoder setTexture:drawable.texture atIndex:0];
   [encoder setTexture:self.inputTexture atIndex:1];
   
+  id<MTLBuffer> dynamicBuffer = [_device newBufferWithBytes:&_timer length:sizeof(float) options:MTLResourceCPUCacheModeDefaultCache];
   [encoder setBuffer:dynamicBuffer offset:0 atIndex:0];
   
   

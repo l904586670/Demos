@@ -57,12 +57,12 @@ static const CGBitmapInfo kBitmapInfoBGRA8Unorm = kCGImageAlphaPremultipliedFirs
   descriptor.width = width;
   descriptor.height = height;
   
-  descriptor.usage = MTLTextureUsageShaderRead | MTLTextureUsageShaderWrite;
+//  descriptor.usage = MTLTextureUsageShaderRead | MTLTextureUsageShaderWrite;
   
   // mipmap 为了加快渲染速度和减少图像锯齿，贴图被处理成由一系列被预先计算和优化过的图片组成的文档,这样的贴图被称为 MIP map 或者 mipmap。这个技术在三维游戏中被非常广泛的使用
-  descriptor.mipmapLevelCount = 1; // default 1
-  descriptor.sampleCount = 1; // 指定每个像素中的样本数。 default 1
-  descriptor.arrayLength = 1; // 指定一个MTLTextureType1DArray或MTLTextureType2DArray类型纹理对象的数组元素的数量 default 1
+//  descriptor.mipmapLevelCount = 1; // default 1
+//  descriptor.sampleCount = 1; // 指定每个像素中的样本数。 default 1
+//  descriptor.arrayLength = 1; // 指定一个MTLTextureType1DArray或MTLTextureType2DArray类型纹理对象的数组元素的数量 default 1
 //  descriptor.resourceOptions = MTLResourceOptionCPUCacheModeDefault; // 指定其内存分配的行为
   
   /*
@@ -70,7 +70,7 @@ static const CGBitmapInfo kBitmapInfoBGRA8Unorm = kCGImageAlphaPremultipliedFirs
   Private Storage: 仅 GPU 可读写这块内存，可以通过 Blit 命令等进行拷贝。
   Managed Storage: 仅在 macOS 中允许。仅 GPU 可读写这块内存，但 Metal 会创建一块镜像内存供 CPU 使用。
    */
-  descriptor.storageMode = MTLStorageModeShared;
+//  descriptor.storageMode = MTLStorageModeShared;
   
   return descriptor;
 }

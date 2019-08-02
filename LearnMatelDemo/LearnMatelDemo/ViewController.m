@@ -17,6 +17,9 @@ typedef NS_ENUM(NSInteger, MetalDemoType) {
   MetalDemoTypeSphereLight,
   MetalDemoTypeTripleBuffer,
   MetalDemoTypeVideoSession,
+  MetalDemoTypeShadow,
+  MetalDemoTypeRayTracing,
+  MetalDemoTypeRaymarching,
   
   MetalDemoTypeCount,
 };
@@ -84,7 +87,10 @@ typedef NS_ENUM(NSInteger, MetalDemoType) {
                       @"特效",
                       @"球体灯光",
                       @"三重缓冲",
-                      @"渲染视频流"
+                      @"渲染视频流",
+                      @"灯光和阴影",
+                      @"光线追踪",
+                      @"Raymarching"
                       ];
   
   return titles[type];
@@ -99,7 +105,11 @@ typedef NS_ENUM(NSInteger, MetalDemoType) {
                       @"MagicViewController",
                       @"SphereLightViewController",
                       @"TripleBufferViewController",
-                      @"VideoSessionViewController"
+                      @"VideoSessionViewController",
+                      @"LightAndShadowViewController",
+                      
+                      @"RayTracingViewController",
+                      @"RaymarchingViewController"
                       ];
   
   return classes[type];

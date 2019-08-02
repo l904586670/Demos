@@ -1,114 +1,82 @@
 //
-//  PaintingView.m
+//  PaintMetalView.m
 //  PaintByMetalDemo
 //
-//  Created by User on 2019/7/24.
+//  Created by User on 2019/8/2.
 //  Copyright © 2019 Rock. All rights reserved.
 //
 
-#import "PaintingView.h"
-
-#import <Metal/Metal.h>
-#import <MetalKit/MetalKit.h>
+#import "PaintMetalView.h"
 
 #import "MetalLoadTextureTool.h"
 #import "CommonDefinition.h"
 
-// 缓冲最大个数
 static const NSUInteger kMaxInflightBuffers = 3;
 
-@interface PaintingView () <MTKViewDelegate>
+@interface PaintMetalView ()
 
-@property (nonatomic, strong) MTKView *mtkView;
-@property (nonatomic, strong) id<MTLDevice>               device; // GPU
+@property (nonatomic, strong) id<MTLDevice> device;
+@property (nonatomic, strong) id<MTLCommandQueue> commandQueue;
+@property (nonatomic, strong) id<MTLRenderPipelineState> renderPipelineState;
 
-@property (nonatomic, strong) id<MTLCommandQueue>         commandQueue;
-@property (nonatomic, strong) id <MTLRenderPipelineState> pipelineState;
-
+@property (nonatomic, strong) id<MTLTexture> brushTexture;
 @property (nonatomic, strong) id<MTLTexture> paintTexture;
-@property (nonatomic, strong) id<MTLTexture> brushTexture;      // 笔刷纹理
 
 @property (nonatomic, assign) BOOL firstTouch;
 @property (nonatomic, assign) CGPoint location;
 @property (nonatomic, assign) CGPoint previousLocation;
-
-@property (nonatomic, assign) BOOL renderComplete;
-
 @property (nonatomic, strong) dispatch_semaphore_t frameBoundarySemaphore;
+
+@property (nonatomic, assign) float brushSize;  // 笔刷大小, default 30
+
+@property (nonatomic, strong) UIColor *bgColor;
 
 @end
 
-@implementation PaintingView
+@implementation PaintMetalView
+
++ (Class)layerClass {
+  return [CAMetalLayer class];
+}
 
 - (instancetype)initWithFrame:(CGRect)frame {
   self = [super initWithFrame:frame];
   if (self) {
     self.backgroundColor = [UIColor whiteColor];
-    
-    _bgColor = [UIColor whiteColor];
     _brushSize = 30.0;
     
-    [self initiatizeMatel];
-    
-    [self loadTextureData];
-    
-    [self setupPipeline];
-    
-    [self clearPaint];
-
+    [self configureMetal];
   }
   return self;
 }
 
+#pragma mark - Metal
 
-#pragma mark - Setup Metal Config
-
-- (void)initiatizeMatel {
-  // get the Dvice
-  _device = MTLCreateSystemDefaultDevice();
-  if (!_device) {
-    NSAssert(NO, @"current device GPU not support Metal");
-  } else {
-    NSLog(@"current GPU name : %@", _device.name);
+- (void)configureMetal {
+  self.device = MTLCreateSystemDefaultDevice();
+  if (!self.device) {
+    NSAssert(NO, @"device don't support metal");
   }
+  self.device = self.device;
   
-  _mtkView = [[MTKView alloc] initWithFrame:self.bounds device:_device];
-//  _mtkView.delegate = self;
-  _mtkView.colorPixelFormat = MTLPixelFormatBGRA8Unorm;
-  _mtkView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-  [self addSubview:_mtkView];
-  _mtkView.framebufferOnly = YES;
-  _mtkView.clearColor = [self clearColorFromColor:_bgColor];
+  self.commandQueue = [self.device newCommandQueue];
   
-  _mtkView.enableSetNeedsDisplay = NO;
-  _mtkView.paused = NO;
+  CAMetalLayer *layer = (CAMetalLayer *)self.layer;
   
-  // Create a CommandQueue
-  _commandQueue = [_device newCommandQueue];
+  layer.framebufferOnly = YES;
+  layer.pixelFormat = MTLPixelFormatBGRA8Unorm;
+  layer.contentsScale = [UIScreen mainScreen].scale;
+  layer.device = self.device;
+  layer.opaque = NO;
   
   _frameBoundarySemaphore = dispatch_semaphore_create(kMaxInflightBuffers);
-}
-
-- (void)loadTextureData {
-  UIImage *brushImage = [UIImage imageNamed:@"Particle.png"];
-  if (!brushImage) {
-    NSAssert(NO, @"Not find Particle.png");
-    return;
-  }
   
-  _brushTexture = [MetalLoadTextureTool textureWithImage:brushImage device:_device];
-
-  size_t width = CGRectGetWidth(self.frame) * [UIScreen mainScreen].scale;
-  size_t height = CGRectGetHeight(self.frame) * [UIScreen mainScreen].scale;
-  MTLTextureDescriptor *paintDescriptor = [[MTLTextureDescriptor alloc] init];
-  paintDescriptor.pixelFormat = MTLPixelFormatBGRA8Unorm;
-  paintDescriptor.width = width;
-  paintDescriptor.height = height;
-  paintDescriptor.usage = MTLTextureUsageShaderRead | MTLTextureUsageRenderTarget;
-  self.paintTexture = [_device newTextureWithDescriptor:paintDescriptor];
+  [self setupPipelineState];
+  
+  [self loadTextureData];
 }
 
-- (void)setupPipeline {
+- (void)setupPipelineState {
   id <MTLLibrary> defaultLibrary = [_device newDefaultLibrary];
   id <MTLFunction> vertexFunc = [defaultLibrary newFunctionWithName:@"vertexPaintShader"];
   id <MTLFunction> fragmentFunc = [defaultLibrary newFunctionWithName:@"fragmentPaintShader"];
@@ -127,6 +95,7 @@ static const NSUInteger kMaxInflightBuffers = 3;
   // 涂抹的时候需要打开融合. 使纹理的透明度信息和原有内容融合. 否则,涂抹纹理会显示黑色
   // 是否允许颜色融合
   pipelineStateDescriptor.colorAttachments[0].blendingEnabled = YES;
+  // 融合方式
   pipelineStateDescriptor.colorAttachments[0].rgbBlendOperation = MTLBlendOperationAdd;
   pipelineStateDescriptor.colorAttachments[0].alphaBlendOperation = MTLBlendOperationAdd;
   pipelineStateDescriptor.colorAttachments[0].sourceRGBBlendFactor = MTLBlendFactorSourceAlpha;
@@ -134,14 +103,33 @@ static const NSUInteger kMaxInflightBuffers = 3;
   pipelineStateDescriptor.colorAttachments[0].destinationRGBBlendFactor = MTLBlendFactorOneMinusSourceAlpha;
   pipelineStateDescriptor.colorAttachments[0].destinationAlphaBlendFactor = MTLBlendFactorOneMinusSourceAlpha;
   
-//  pipelineStateDescriptor.alphaToCoverageEnabled = YES; // 如果alphaToCoverageEnabled设置为YES，则colorAttachments[0]读取用于输出的alpha通道片段，并用于确定覆盖掩码
-//  pipelineStateDescriptor.alphaToOneEnabled = YES; // alpha通道片段值colorAttachments[0]被强制为1.0
- 
+  //  pipelineStateDescriptor.alphaToCoverageEnabled = YES; // 如果alphaToCoverageEnabled设置为YES，则colorAttachments[0]读取用于输出的alpha通道片段，并用于确定覆盖掩码
+  //  pipelineStateDescriptor.alphaToOneEnabled = YES; // alpha通道片段值colorAttachments[0]被强制为1.0
+  
   NSError *error = nil;
-  _pipelineState = [_device newRenderPipelineStateWithDescriptor:pipelineStateDescriptor error:&error];
+  _renderPipelineState = [_device newRenderPipelineStateWithDescriptor:pipelineStateDescriptor error:&error];
   if (error) {
     NSAssert(NO, @"creat pipelineState Error : %@", error.description);
   }
+}
+
+- (void)loadTextureData {
+  UIImage *brushImage = [UIImage imageNamed:@"Particle.png"];
+  if (!brushImage) {
+    NSAssert(NO, @"Not find Particle.png");
+    return;
+  }
+  
+  _brushTexture = [MetalLoadTextureTool textureWithImage:brushImage device:_device];
+  
+  size_t width = CGRectGetWidth(self.frame) * [UIScreen mainScreen].scale;
+  size_t height = CGRectGetHeight(self.frame) * [UIScreen mainScreen].scale;
+  MTLTextureDescriptor *paintDescriptor = [[MTLTextureDescriptor alloc] init];
+  paintDescriptor.pixelFormat = MTLPixelFormatBGRA8Unorm;
+  paintDescriptor.width = width;
+  paintDescriptor.height = height;
+  paintDescriptor.usage = MTLTextureUsageShaderRead | MTLTextureUsageRenderTarget;
+  self.paintTexture = [_device newTextureWithDescriptor:paintDescriptor];
 }
 
 #pragma mark - Base Methods
@@ -156,8 +144,8 @@ static const NSUInteger kMaxInflightBuffers = 3;
   static Vertex_t *vertextData = NULL;
   static NSUInteger vertexMax = 64;
   NSUInteger vertexCount = 0;
-
-//   Allocate vertex array buffer
+  
+  //   Allocate vertex array buffer
   if (vertextData == NULL) {
     vertextData = malloc(vertexMax * sizeof(Vertex_t));
   }
@@ -172,8 +160,8 @@ static const NSUInteger kMaxInflightBuffers = 3;
       vertexMax = 2 * vertexMax;
       vertextData = realloc(vertextData, vertexMax * sizeof(Vertex_t));
     }
-
-//        屏幕坐标 转换到 [-1.0, 1.0];
+    
+    //        屏幕坐标 转换到 [-1.0, 1.0];
     float posX = (start.x + (end.x - start.x) * ((float)(i + 1) / (float)count)) *2.0  / CGRectGetWidth(self.bounds) - 1.0;
     float posY = 1.0 -  (start.y + (end.y - start.y) * ((float)(i + 1) / (float)count)) *2.0 / CGRectGetHeight(self.bounds);
     if (posX > 1.0) {
@@ -188,9 +176,9 @@ static const NSUInteger kMaxInflightBuffers = 3;
     if (posY < -1.0) {
       posY = -1.0;
     }
-
+    
     vertextData[i] = (Vertex_t){posX, posY};
-//    NSLog(@"x : %g, y : %g", posX, posY);
+    //    NSLog(@"x : %g, y : %g", posX, posY);
     vertexCount += 1;
   }
   
@@ -208,34 +196,35 @@ static const NSUInteger kMaxInflightBuffers = 3;
    // 处理高并发数据
    4. id<MTLComputeCommandEncoder> computeEncoder = [commandBuffer computeCommandEncoder];
    */
-
-  MTLRenderPassDescriptor *renderPassDescriptor = _mtkView.currentRenderPassDescriptor;
-//  [MTLRenderPassDescriptor renderPassDescriptor];
-  renderPassDescriptor.colorAttachments[0].loadAction = MTLLoadActionLoad;
-  renderPassDescriptor.colorAttachments[0].clearColor = [self clearColorFromColor:_bgColor];
+  CAMetalLayer *layer = (CAMetalLayer *)self.layer;
+  id<CAMetalDrawable> drawable = [layer nextDrawable];
+  
+  MTLRenderPassDescriptor *renderPassDescriptor = [MTLRenderPassDescriptor renderPassDescriptor];
+  renderPassDescriptor.colorAttachments[0].loadAction = MTLLoadActionClear;
+  renderPassDescriptor.colorAttachments[0].clearColor = [self clearColorFromColor:[UIColor blackColor]];
   renderPassDescriptor.colorAttachments[0].storeAction = MTLStoreActionStore;
-  renderPassDescriptor.colorAttachments[0].texture = self.mtkView.currentDrawable.texture;
+  renderPassDescriptor.colorAttachments[0].texture = drawable.texture;
   
   id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor]; //编码绘制指令的Encoder
   if (!renderEncoder) {
     NSLog(@"renderEncoder fail");
     return;
   }
-
-//  [renderEncoder setViewport:(MTLViewport){0.0, 0.0, metalLayer.drawableSize.width, metalLayer.drawableSize.height, -1.0, 1.0}]; // 设置显示区域
   
-  [renderEncoder setRenderPipelineState:_pipelineState]; // 设置渲染管道，以保证顶点和片元两个shader会被调用
+  [renderEncoder setViewport:(MTLViewport){0.0, 0.0, drawable.texture.width, drawable.texture.height, -1.0, 1.0}]; // 设置显示区域
+  
+  [renderEncoder setRenderPipelineState:self.renderPipelineState]; // 设置渲染管道，以保证顶点和片元两个shader会被调用
   
   // 设置顶点信息
   [renderEncoder setVertexBytes:vertextData length:sizeof(Vertex_t) * vertexCount atIndex:0];
   
   // 传入brushSize尺寸信息
-  float brushW = _brushSize * _mtkView.drawableSize.width / CGRectGetWidth(self.frame);
+  float brushW = _brushSize * [UIScreen mainScreen].scale;
   [renderEncoder setVertexBytes:&brushW length:sizeof(float) atIndex:1];
- 
+  
   // 传入纹理信息
   [renderEncoder setFragmentTexture:self.brushTexture atIndex:0];
-
+  
   UIColor *redColor = [UIColor redColor];
   const CGFloat *components = CGColorGetComponents(redColor.CGColor);
   simd_float4 paintColor = {components[0], components[1], components[2], components[3]};
@@ -246,72 +235,8 @@ static const NSUInteger kMaxInflightBuffers = 3;
   [renderEncoder endEncoding]; // 结束
   
   //Committing a CommandBuffer
-  [commandBuffer presentDrawable:_mtkView.currentDrawable]; // 显示
+  [commandBuffer presentDrawable:[layer nextDrawable]]; // 显示
   [commandBuffer commit];
-  
-//  [_mtkView draw];
-}
-
-#pragma mark - Public Methods
-
-- (void)clearPaint {
-  __weak typeof(self) weakSelf = self;
-  [self.commandQueue.commandBuffer addCompletedHandler:^void(id<MTLCommandBuffer> cmdBuf){
-    // 命令全都执行完之后，将mCurrentDrawable置空，表示可以绘制下面一帧
-    weakSelf.renderComplete = NO;
-  }];
-  
-  id<MTLCommandBuffer> commandBuffer = [_commandQueue commandBuffer];
-  
-  MTLRenderPassDescriptor *descriptor = [MTLRenderPassDescriptor renderPassDescriptor];
-  // colorAttachments 用于保存绘图结果并在屏幕上显示
-  descriptor.colorAttachments[0].loadAction = MTLLoadActionLoad;
-  descriptor.colorAttachments[0].clearColor = [self clearColorFromColor:[UIColor redColor]];
-  descriptor.colorAttachments[0].storeAction = MTLStoreActionStore;
-  descriptor.colorAttachments[0].texture = _paintTexture;
-  
-  id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:descriptor]; //编码绘制指令的Encoder
-  if (!renderEncoder) {
-    NSLog(@"renderEncoder fail");
-    return;
-  }
-  
-//  [renderEncoder setViewport:(MTLViewport){0.0, 0.0, _paintTexture.width, _paintTexture.height, -1.0, 1.0}]; // 设置显示区域
-  [renderEncoder endEncoding]; // 结束
-  [commandBuffer presentDrawable:self.mtkView.currentDrawable]; // 显示
-  [commandBuffer commit];
-}
-
-#pragma mark - Private Methods
-
-
-/// 获取下一帧的drawble以及下一帧渲染遍描述符
-/// @preturn 下一帧的渲染遍描述符
-- (MTLRenderPassDescriptor *)renderPassDescriptor {
-  CAMetalLayer *metalLayer = (CAMetalLayer *)self.layer;
-  id<CAMetalDrawable> drawable = metalLayer.nextDrawable;
-  
-  MTLRenderPassDescriptor *descriptor = [MTLRenderPassDescriptor renderPassDescriptor];
-  
-  /*
-   渲染开始时执行的操作.
-   MTLLoadActionClear : 在开始前做一次清除操作,所有像素值变为.clearColor中的值
-   MTLLoadActionLoad : 保留了纹理的现有内容
-   MTLLoadActionDontCare : 渲染开始时像素值为任意值, 允许GPU避免加载纹理的现有内容，从而确保最佳性
-   */
-  descriptor.colorAttachments[0].loadAction = MTLLoadActionLoad;
-  // loadAction == MTLLoadActionClear时调用. 为每一个像素点赋值
-//  descriptor.colorAttachments[0].clearColor = MTLClearColorMake(0.85, 0.85, 0.85, 1.0f);
-  /*
-   渲染结束时执行的操作
-   MTLStoreActionStore : 将渲染传递的最终结果保存到附件
-   
-   MTLStoreActionDontCare : 在渲染过程完成后，将附件保留在未定义状态。这可以提高性能，因为它使实现能够避免保留渲染结果所需的任何工作
-   */
-  descriptor.colorAttachments[0].storeAction = MTLStoreActionStore;
-  descriptor.colorAttachments[0].texture = drawable.texture;
-
-  return descriptor;
 }
 
 #pragma mark - OverWirte Methods
@@ -374,16 +299,6 @@ static const NSUInteger kMaxInflightBuffers = 3;
   } else {
     return MTLClearColorMake(1.0, 1.0, 1.0, 1.0);
   }
-}
-
-#pragma mark - MTKViewDelegate
-
-- (void)mtkView:(nonnull MTKView *)view drawableSizeWillChange:(CGSize)size {
-  
-}
-
-- (void)drawInMTKView:(nonnull MTKView *)view {
-  
 }
 
 @end

@@ -19,7 +19,6 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   
-  
   CGSize screenSize = [UIScreen mainScreen].bounds.size;
   CGFloat posY = CGRectGetMaxY(self.navigationController.navigationBar.frame);
   CGRect frame = CGRectMake(0, posY, screenSize.width, screenSize.height);

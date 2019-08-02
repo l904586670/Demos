@@ -42,10 +42,17 @@ vertex PaintVertexOut vertexPaintShader( constant PaintVertexIn *vertexIn [[buff
 
 
 // stage_in表示这个数据来自光栅化。（光栅化是顶点处理之后的步骤，业务层无法修改）
-fragment float4 fragmentPaintShader( PaintVertexOut in [[stage_in]], texture2d<half> brushTexture [[texture(0)]], const device float4 &brushColor [[buffer(0)]], float2 pointCoord [[point_coord]], float4 lastColor [[color(0)]] )
+fragment float4 fragmentPaintShader( PaintVertexOut in [[stage_in]], texture2d<float, access::sample> brushTexture [[texture(0)]], constant float4 &brushColor [[buffer(0)]], float2 pointCoord [[point_coord]], float4 lastColor [[color(0)]] )
 {
-  constexpr sampler texSampler (mag_filter::linear, min_filter::linear);
-  half4 texel = half4(brushTexture.sample(texSampler, pointCoord));
+  constexpr sampler textureSampler(coord::normalized,
+                                   address::repeat,
+                                   min_filter::linear,
+                                   mag_filter::linear,
+                                   mip_filter::linear );
+//  constexpr sampler textureSampler (mag_filter::linear, min_filter::linear);
+  float4 texel = brushTexture.sample(textureSampler, pointCoord);
+  half alphaInfo = clamp(texel.a, 0.0, 1.0);
   
-  return float4( brushColor * texel.a);
+//  return mix(lastColor * brushColor * alphaInfo);
+  return float4(lastColor * brushColor * alphaInfo);
 }
