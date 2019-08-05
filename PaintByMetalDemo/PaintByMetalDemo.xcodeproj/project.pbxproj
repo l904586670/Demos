@@ -14,12 +14,13 @@
 		CE9FB1F122E881F400E2DEF1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE9FB1EF22E881F400E2DEF1 /* LaunchScreen.storyboard */; };
 		CE9FB1F422E881F400E2DEF1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9FB1F322E881F400E2DEF1 /* main.m */; };
 		CE9FB1FD22E8831500E2DEF1 /* PaintingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9FB1FC22E8831500E2DEF1 /* PaintingViewController.m */; };
-		CE9FB20022E884F000E2DEF1 /* PaintingView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9FB1FF22E884F000E2DEF1 /* PaintingView.m */; };
 		CE9FB20222E886F300E2DEF1 /* PaintShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = CE9FB20122E886F300E2DEF1 /* PaintShader.metal */; };
-		CEB4ECDB22F436AB000C5881 /* PaintMetalLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB4ECDA22F436AB000C5881 /* PaintMetalLayer.m */; };
 		CEB4ECDE22F438F7000C5881 /* PaintMetalView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB4ECDD22F438F7000C5881 /* PaintMetalView.m */; };
-		CEB753D422EAD565002CD97B /* MetalLoadTextureTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB753D322EAD565002CD97B /* MetalLoadTextureTool.m */; };
 		CEDA0D7222E940D200C64083 /* Particle.png in Resources */ = {isa = PBXBuildFile; fileRef = CEDA0D7122E940D200C64083 /* Particle.png */; };
+		CEE5628722F80B55002ECB00 /* EraseMetalView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE5628622F80B55002ECB00 /* EraseMetalView.m */; };
+		CEE5628A22F80DFD002ECB00 /* DHMetalHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE5628922F80DFD002ECB00 /* DHMetalHelper.m */; };
+		CEE5628C22F816E4002ECB00 /* img1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CEE5628B22F816E4002ECB00 /* img1.jpg */; };
+		CEE5628F22F81BA5002ECB00 /* EraseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE5628E22F81BA5002ECB00 /* EraseViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,17 +36,18 @@
 		CE9FB1F322E881F400E2DEF1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CE9FB1FB22E8831500E2DEF1 /* PaintingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PaintingViewController.h; sourceTree = "<group>"; };
 		CE9FB1FC22E8831500E2DEF1 /* PaintingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaintingViewController.m; sourceTree = "<group>"; };
-		CE9FB1FE22E884F000E2DEF1 /* PaintingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PaintingView.h; sourceTree = "<group>"; };
-		CE9FB1FF22E884F000E2DEF1 /* PaintingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaintingView.m; sourceTree = "<group>"; };
 		CE9FB20122E886F300E2DEF1 /* PaintShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PaintShader.metal; sourceTree = "<group>"; };
 		CE9FB20322E8876F00E2DEF1 /* CommonDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonDefinition.h; sourceTree = "<group>"; };
-		CEB4ECD922F436AB000C5881 /* PaintMetalLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PaintMetalLayer.h; sourceTree = "<group>"; };
-		CEB4ECDA22F436AB000C5881 /* PaintMetalLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaintMetalLayer.m; sourceTree = "<group>"; };
 		CEB4ECDC22F438F7000C5881 /* PaintMetalView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PaintMetalView.h; sourceTree = "<group>"; };
 		CEB4ECDD22F438F7000C5881 /* PaintMetalView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaintMetalView.m; sourceTree = "<group>"; };
-		CEB753D222EAD565002CD97B /* MetalLoadTextureTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetalLoadTextureTool.h; sourceTree = "<group>"; };
-		CEB753D322EAD565002CD97B /* MetalLoadTextureTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetalLoadTextureTool.m; sourceTree = "<group>"; };
 		CEDA0D7122E940D200C64083 /* Particle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Particle.png; sourceTree = "<group>"; };
+		CEE5628522F80B55002ECB00 /* EraseMetalView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EraseMetalView.h; sourceTree = "<group>"; };
+		CEE5628622F80B55002ECB00 /* EraseMetalView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EraseMetalView.m; sourceTree = "<group>"; };
+		CEE5628822F80DFD002ECB00 /* DHMetalHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DHMetalHelper.h; sourceTree = "<group>"; };
+		CEE5628922F80DFD002ECB00 /* DHMetalHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DHMetalHelper.m; sourceTree = "<group>"; };
+		CEE5628B22F816E4002ECB00 /* img1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = img1.jpg; sourceTree = "<group>"; };
+		CEE5628D22F81BA5002ECB00 /* EraseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EraseViewController.h; sourceTree = "<group>"; };
+		CEE5628E22F81BA5002ECB00 /* EraseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EraseViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,8 +80,6 @@
 		CE9FB1E322E881F300E2DEF1 /* PaintByMetalDemo */ = {
 			isa = PBXGroup;
 			children = (
-				CEB753D222EAD565002CD97B /* MetalLoadTextureTool.h */,
-				CEB753D322EAD565002CD97B /* MetalLoadTextureTool.m */,
 				CE9FB1E422E881F300E2DEF1 /* AppDelegate.h */,
 				CE9FB1E522E881F300E2DEF1 /* AppDelegate.m */,
 				CE9FB1E722E881F300E2DEF1 /* ViewController.h */,
@@ -97,17 +97,20 @@
 		CE9FB1FA22E8830500E2DEF1 /* PaintingViewController */ = {
 			isa = PBXGroup;
 			children = (
+				CEE5628B22F816E4002ECB00 /* img1.jpg */,
+				CEE5628822F80DFD002ECB00 /* DHMetalHelper.h */,
+				CEE5628922F80DFD002ECB00 /* DHMetalHelper.m */,
 				CEDA0D7122E940D200C64083 /* Particle.png */,
 				CE9FB20322E8876F00E2DEF1 /* CommonDefinition.h */,
 				CE9FB1FB22E8831500E2DEF1 /* PaintingViewController.h */,
 				CE9FB1FC22E8831500E2DEF1 /* PaintingViewController.m */,
-				CEB4ECD922F436AB000C5881 /* PaintMetalLayer.h */,
-				CEB4ECDA22F436AB000C5881 /* PaintMetalLayer.m */,
-				CE9FB1FE22E884F000E2DEF1 /* PaintingView.h */,
-				CE9FB1FF22E884F000E2DEF1 /* PaintingView.m */,
+				CEE5628D22F81BA5002ECB00 /* EraseViewController.h */,
+				CEE5628E22F81BA5002ECB00 /* EraseViewController.m */,
 				CEB4ECDC22F438F7000C5881 /* PaintMetalView.h */,
 				CEB4ECDD22F438F7000C5881 /* PaintMetalView.m */,
 				CE9FB20122E886F300E2DEF1 /* PaintShader.metal */,
+				CEE5628522F80B55002ECB00 /* EraseMetalView.h */,
+				CEE5628622F80B55002ECB00 /* EraseMetalView.m */,
 			);
 			path = PaintingViewController;
 			sourceTree = "<group>";
@@ -170,6 +173,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE9FB1F122E881F400E2DEF1 /* LaunchScreen.storyboard in Resources */,
+				CEE5628C22F816E4002ECB00 /* img1.jpg in Resources */,
 				CE9FB1EE22E881F400E2DEF1 /* Assets.xcassets in Resources */,
 				CE9FB1EC22E881F300E2DEF1 /* Main.storyboard in Resources */,
 				CEDA0D7222E940D200C64083 /* Particle.png in Resources */,
@@ -183,15 +187,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEB4ECDB22F436AB000C5881 /* PaintMetalLayer.m in Sources */,
 				CE9FB20222E886F300E2DEF1 /* PaintShader.metal in Sources */,
+				CEE5628A22F80DFD002ECB00 /* DHMetalHelper.m in Sources */,
 				CE9FB1FD22E8831500E2DEF1 /* PaintingViewController.m in Sources */,
+				CEE5628722F80B55002ECB00 /* EraseMetalView.m in Sources */,
 				CE9FB1E922E881F300E2DEF1 /* ViewController.m in Sources */,
-				CE9FB20022E884F000E2DEF1 /* PaintingView.m in Sources */,
 				CE9FB1F422E881F400E2DEF1 /* main.m in Sources */,
 				CE9FB1E622E881F300E2DEF1 /* AppDelegate.m in Sources */,
+				CEE5628F22F81BA5002ECB00 /* EraseViewController.m in Sources */,
 				CEB4ECDE22F438F7000C5881 /* PaintMetalView.m in Sources */,
-				CEB753D422EAD565002CD97B /* MetalLoadTextureTool.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
