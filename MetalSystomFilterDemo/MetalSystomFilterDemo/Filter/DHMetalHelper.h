@@ -51,6 +51,11 @@ NS_ASSUME_NONNULL_BEGIN
                                  height:(NSUInteger)height
                                  device:(id<MTLDevice>)device;
 
++ (id<MTLTexture>)emptyTextureWithWidth:(NSUInteger)width
+                                 height:(NSUInteger)height
+                                 device:(id<MTLDevice>)device
+                                  usage:(MTLTextureUsage)usage;
+
 /**
  从UIImage 中读取图片data数据. 担心忘记释放data 和 bitmapContext colorSpace 所以以block的形式
  

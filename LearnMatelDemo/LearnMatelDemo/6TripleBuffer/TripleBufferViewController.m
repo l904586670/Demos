@@ -13,7 +13,7 @@
 #import <MetalKit/MetalKit.h>
 
 #import "UIViewController+Utils.h"
-#import "MetalLoadTextureTool.h"
+#import "DHMetalHelper.h"
 
 // 缓冲最大个数
 static const NSUInteger kMaxInflightBuffers = 3;
@@ -88,7 +88,7 @@ static const NSUInteger kMaxInflightBuffers = 3;
 
 - (void)loadTexture {
   UIImage *image = [UIImage imageNamed:@"img1.jpg"];
-  self.inputTexture = [MetalLoadTextureTool textureWithImage:image device:_device];
+  self.inputTexture = [DHMetalHelper textureWithImage:image device:_device];
   
   // Create a FIFO queue of three dynamic data buffers
   // This ensures that the CPU and GPU are never accessing the same buffer simultaneously

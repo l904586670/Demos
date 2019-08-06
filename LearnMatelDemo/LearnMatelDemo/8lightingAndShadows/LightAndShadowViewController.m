@@ -12,7 +12,7 @@
 #import <MetalKit/MetalKit.h>
 
 #import "UIViewController+Utils.h"
-#import "MetalLoadTextureTool.h"
+#import "DHMetalHelper.h"
 
 @interface LightAndShadowViewController () <MTKViewDelegate>
 
@@ -92,7 +92,7 @@
     NSAssert(NO, @"creat image fail, name [texture.jpg]");
   }
   
-  _intputTexture = [MetalLoadTextureTool textureWithImage:image device:_device];
+  _intputTexture = [DHMetalHelper textureWithImage:image device:_device];
 }
 
 - (void)render {

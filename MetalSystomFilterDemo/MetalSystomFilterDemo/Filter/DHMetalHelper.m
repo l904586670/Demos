@@ -16,7 +16,18 @@
 static const size_t kBitsPerComponent = 8;
 static const size_t kBytesPerPixel = 4;
 static const CGBitmapInfo kBitmapInfoBGRA8Unorm = kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Little;
-
+/*
+ CGImageByteOrderInfo | CGImageAlphaInfo 组合后CGBitmapInfo 的颜色空间的格式
+ 
+         CGBitmapInfo bitmapInfo = kCGBitmapByteOrder32Little | kCGImageAlphaLast; // 像素存储格式0xABGR 像素类型RGBA
+ 
+         CGBitmapInfo bitmapInfo = kCGBitmapByteOrder32Little | kCGImageAlphaFirst; // 像素存储格式0xBGRA 像素类型ARGB
+ 
+         CGBitmapInfo bitmapInfo = kCGBitmapByteOrder32Big | kCGImageAlphaLast; // 像素存储格式0xRGBA 像素类型RGBA
+ 
+         CGBitmapInfo bitmapInfo = kCGBitmapByteOrder32Big | kCGImageAlphaFirst; // 像素存储格式0xARGB 像素类型ARGB
+https://blog.csdn.net/jeffasd/article/details/80571366
+ */
 
 @implementation DHMetalHelper
 
@@ -75,11 +86,21 @@ static const CGBitmapInfo kBitmapInfoBGRA8Unorm = kCGImageAlphaPremultipliedFirs
 + (id<MTLTexture>)emptyTextureWithWidth:(NSUInteger)width
                                  height:(NSUInteger)height
                                  device:(id<MTLDevice>)device {
+  return [[self class] emptyTextureWithWidth:width
+                                      height:height
+                                      device:device
+                                       usage:MTLTextureUsageShaderRead | MTLTextureUsageRenderTarget];
+}
+
++ (id<MTLTexture>)emptyTextureWithWidth:(NSUInteger)width
+                                 height:(NSUInteger)height
+                                 device:(id<MTLDevice>)device
+                                  usage:(MTLTextureUsage)usage {
   NSParameterAssert(device);
   
   // 空纹理一般会用来写入内容
   MTLTextureDescriptor *descriptor = [[self class] textureDescriptorWithWidth:width height:height];
-  descriptor.usage = MTLTextureUsageShaderRead | MTLTextureUsageRenderTarget;
+  descriptor.usage = usage;
   return [device newTextureWithDescriptor:descriptor];
 }
 
@@ -139,6 +160,7 @@ static const CGBitmapInfo kBitmapInfoBGRA8Unorm = kCGImageAlphaPremultipliedFirs
                                                      bytesPerRow,
                                                      colorSpace,
                                                      kBitmapInfoBGRA8Unorm);
+
   if (!bitmapContext) {
     free(imageData);
     NSAssert(NO, @"get imageData fail");
@@ -158,37 +180,54 @@ static const CGBitmapInfo kBitmapInfoBGRA8Unorm = kCGImageAlphaPremultipliedFirs
 }
 
 + (UIImage *)imageFromTexture:(id<MTLTexture>)texture {
-  size_t width = texture.width;
-  size_t height = texture.height;
-  size_t bytesPerRow = width * kBytesPerPixel;
+  // The total number of bytes of the texture
+  NSUInteger imageByteCount = texture.width * texture.height * kBytesPerPixel;
   
-  void *imageData = malloc(width * height * kBytesPerPixel);
+  // The number of bytes for each image row
+  size_t bytesPerRow = texture.width * kBytesPerPixel;
   
-  [texture getBytes:imageData bytesPerRow:bytesPerRow fromRegion:MTLRegionMake2D(0, 0, width, height) mipmapLevel:0];
+  // An empty buffer that will contain the image
+  void *src = calloc(imageByteCount, sizeof(Byte));
+//  void *src = malloc(imageByteCount);
   
-  CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-  
+  // Gets the bytes from the texture
+  MTLRegion region = MTLRegionMake2D(0, 0, texture.width, texture.height);
+  // 用 没有 slice 的那个方法有时会损失数据
+  [texture getBytes:src
+        bytesPerRow:bytesPerRow
+      bytesPerImage:0
+         fromRegion:region
+        mipmapLevel:0
+              slice:0];
+
+  // Creates an image context
   CGBitmapInfo bitmapInfo = kCGBitmapByteOrderDefault;
   if (MTLPixelFormatBGRA8Unorm == texture.pixelFormat) {
-    bitmapInfo = kBitmapInfoBGRA8Unorm;
+    bitmapInfo = kCGImageByteOrder32Little | kCGImageAlphaPremultipliedFirst;
   } else if (MTLPixelFormatRGBA8Unorm == texture.pixelFormat) {
-    bitmapInfo = kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big;
+    bitmapInfo = kCGBitmapByteOrder32Big | kCGImageAlphaPremultipliedLast;
   } else {
-    free(imageData);
-    CGColorSpaceRelease(colorSpace);
+    free(src);
     NSAssert(NO, @"this pixelFormatType is not support");
     return nil;
   }
   
-  CGDataProviderRef provider = CGDataProviderCreateWithData(nil, imageData, width * height * kBytesPerPixel, nil);
-  CGImageRef imageRef = CGImageCreate(width, height, kBitsPerComponent, kBytesPerPixel * kBitsPerComponent, bytesPerRow, colorSpace, bitmapInfo, provider, nil, true, kCGRenderingIntentDefault);
-  UIImage *dstImage = [UIImage imageWithCGImage:imageRef];
+  // Creates the image from the graphics context
+  CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+  CGContextRef context = CGBitmapContextCreate(src, texture.width, texture.height, kBitsPerComponent, bytesPerRow, colorSpace, bitmapInfo);
   
-  free(imageData);
+  if (!context) {
+    NSAssert(NO, @"creat CGContextRef fail");
+  }
+  
+  CGImageRef imageRef = CGBitmapContextCreateImage(context);
+  UIImage *resultImg = [UIImage imageWithCGImage:imageRef];
+ 
+  free(src);
   CGColorSpaceRelease(colorSpace);
   CGImageRelease(imageRef);
   
-  return dstImage;
+  return resultImg;
 }
 
 #pragma mark - MTLRenderPipelineState

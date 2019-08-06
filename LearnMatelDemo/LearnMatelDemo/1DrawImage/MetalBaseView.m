@@ -8,7 +8,7 @@
 
 #import "MetalBaseView.h"
 
-#import "MetalLoadTextureTool.h"
+#import "DHMetalHelper.h"
 
 @interface MetalBaseView () <MTKViewDelegate>
 
@@ -83,28 +83,9 @@ typedef struct
   //
   UIImage *image = [UIImage imageNamed:@"img1.jpg"];
   
-  MTKTextureLoader *textureLoader = [[MTKTextureLoader alloc] initWithDevice:_device];
-  NSError * error = nil;
-  id<MTLTexture> sourceTexture = [textureLoader newTextureWithCGImage:image.CGImage options:nil error:&error];
-  self.texture = sourceTexture;
 
   // 创建纹理描述符
-  MTLTextureDescriptor *textureDescriptor = [[MTLTextureDescriptor alloc] init];
-  textureDescriptor.pixelFormat = MTLPixelFormatBGRA8Unorm;
-  textureDescriptor.width = image.size.width;
-  textureDescriptor.height = image.size.height;
-  
-  self.texture = [_device newTextureWithDescriptor:textureDescriptor];
-  MTLRegion region = {{ 0, 0, 0 }, {image.size.width, image.size.height, 1}}; // 纹理上传的范围
-
-  __weak typeof(self) weakSelf = self;
-  [MetalLoadTextureTool loadImageWithImage:image conentBlock:^(Byte * _Nonnull imgData, size_t bytesPerRow) {
-    [weakSelf.texture replaceRegion:region
-                        mipmapLevel:0
-                          withBytes:imgData
-                        bytesPerRow:bytesPerRow];
-  }];
-  
+  self.texture = [DHMetalHelper textureWithImage:image device:_device];
 }
 
 - (void)setupPipeline {

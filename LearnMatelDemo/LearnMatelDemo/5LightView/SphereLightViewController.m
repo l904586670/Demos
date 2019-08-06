@@ -12,7 +12,7 @@
 #import <MetalKit/MetalKit.h>
 
 #import "UIViewController+Utils.h"
-#import "MetalLoadTextureTool.h"
+#import "DHMetalHelper.h"
 
 @interface SphereLightViewController () <MTKViewDelegate>
 
@@ -132,11 +132,11 @@
     NSAssert(NO, @"creat image fail, name [texture.jpg]");
   }
 
-  // MTKTextureLoader 加载出的图片和原图会有色差, 需要改变sg
+  // MTKTextureLoader 加载出的图片和原图会有色差, 需要改变sgba
 //  MTKTextureLoader *textureLoader = [[MTKTextureLoader alloc] initWithDevice:_device];
 //  _texture = [textureLoader newTextureWithCGImage:image.CGImage options:nil error:nil];
   
-  _texture = [MetalLoadTextureTool textureWithImage:image device:_device];
+  _texture = [DHMetalHelper textureWithImage:image device:_device];
 }
 
 - (void)render {

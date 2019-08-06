@@ -10,7 +10,7 @@
 
 #import "CommonDefinition.h"
 #import <GLKit/GLKit.h>
-#import "MetalLoadTextureTool.h"
+#import "DHMetalHelper.h"
 
 @interface BaseMetalView () <MTKViewDelegate>
 
@@ -90,7 +90,7 @@
   
   UIImage *image = [UIImage imageNamed:@"img1.jpg"];
   // 创建纹理描述符
-  self.texture = [MetalLoadTextureTool textureWithImage:image device:_device];
+  self.texture = [DHMetalHelper textureWithImage:image device:_device];
 }
 
 - (void)setupPipeline {

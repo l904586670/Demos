@@ -146,7 +146,7 @@ kernel void textureCompute(texture2d<float, access::write> output [[texture(0)]]
 }
 
 
-constant half3 kRec709Luma = half3(0.2126, 0.7152, 0.0722); // 把rgba转成亮度值
+constant float3 kRec709Luma = float3(0.2126, 0.7152, 0.0722); // 把rgba转成亮度值
 // 灰度计算
 kernel void grayKernel(texture2d<float, access::write> output [[texture(0)]],
                        texture2d<float, access::sample> input [[texture(1)]],
@@ -166,8 +166,6 @@ kernel void grayKernel(texture2d<float, access::write> output [[texture(0)]],
                                    mip_filter::linear );
 
   float4 color = input.sample(textureSampler, uv);
-  output.write(color, gid);
-
-//  half  gray     = dot(color.rgb, kRec709Luma); // 转换成亮度
-//  output.write(half4(gray, gray, gray, 1.0), gid); // 写回对应纹理
+  float gray = dot(color.rgb, kRec709Luma); // 转换成亮度
+  output.write(float4(gray, gray, gray, 1.0), gid); // 写回对应纹理
 }
