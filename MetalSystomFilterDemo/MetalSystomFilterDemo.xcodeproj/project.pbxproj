@@ -17,7 +17,11 @@
 		CEE2CE6D22F9824A0030C714 /* BaseFilter.metal in Sources */ = {isa = PBXBuildFile; fileRef = CEE2CE6822F9824A0030C714 /* BaseFilter.metal */; };
 		CEE2CE6E22F9824A0030C714 /* BaseMetalShaderFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE2CE6922F9824A0030C714 /* BaseMetalShaderFilter.m */; };
 		CEE2CE6F22F9824A0030C714 /* DHMetalHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE2CE6A22F9824A0030C714 /* DHMetalHelper.m */; };
-		CEE2CE7222F982630030C714 /* LutFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE2CE7122F982630030C714 /* LutFilterViewController.m */; };
+		CEE2CE7922FA69330030C714 /* lut-4.png in Resources */ = {isa = PBXBuildFile; fileRef = CEE2CE7422FA69320030C714 /* lut-4.png */; };
+		CEE2CE7A22FA69330030C714 /* lut-0.png in Resources */ = {isa = PBXBuildFile; fileRef = CEE2CE7522FA69320030C714 /* lut-0.png */; };
+		CEE2CE7B22FA69330030C714 /* lut-1.png in Resources */ = {isa = PBXBuildFile; fileRef = CEE2CE7622FA69320030C714 /* lut-1.png */; };
+		CEE2CE7C22FA69330030C714 /* lut-3.png in Resources */ = {isa = PBXBuildFile; fileRef = CEE2CE7722FA69320030C714 /* lut-3.png */; };
+		CEE2CE7D22FA69330030C714 /* lut-2.png in Resources */ = {isa = PBXBuildFile; fileRef = CEE2CE7822FA69320030C714 /* lut-2.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,8 +42,11 @@
 		CEE2CE6A22F9824A0030C714 /* DHMetalHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DHMetalHelper.m; sourceTree = "<group>"; };
 		CEE2CE6B22F9824A0030C714 /* CommonDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonDefine.h; sourceTree = "<group>"; };
 		CEE2CE6C22F9824A0030C714 /* BaseMetalShaderFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseMetalShaderFilter.h; sourceTree = "<group>"; };
-		CEE2CE7022F982630030C714 /* LutFilterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LutFilterViewController.h; sourceTree = "<group>"; };
-		CEE2CE7122F982630030C714 /* LutFilterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LutFilterViewController.m; sourceTree = "<group>"; };
+		CEE2CE7422FA69320030C714 /* lut-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lut-4.png"; sourceTree = "<group>"; };
+		CEE2CE7522FA69320030C714 /* lut-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lut-0.png"; sourceTree = "<group>"; };
+		CEE2CE7622FA69320030C714 /* lut-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lut-1.png"; sourceTree = "<group>"; };
+		CEE2CE7722FA69320030C714 /* lut-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lut-3.png"; sourceTree = "<group>"; };
+		CEE2CE7822FA69320030C714 /* lut-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lut-2.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,11 +79,10 @@
 		CEE2CE3E22F913D10030C714 /* MetalSystomFilterDemo */ = {
 			isa = PBXGroup;
 			children = (
+				CEE2CE7322FA69320030C714 /* Resource */,
 				CEE2CE6622F9824A0030C714 /* Filter */,
 				CEE2CE3F22F913D10030C714 /* AppDelegate.h */,
 				CEE2CE4022F913D10030C714 /* AppDelegate.m */,
-				CEE2CE7022F982630030C714 /* LutFilterViewController.h */,
-				CEE2CE7122F982630030C714 /* LutFilterViewController.m */,
 				CEE2CE4822F913D20030C714 /* Assets.xcassets */,
 				CEE2CE5522F913F70030C714 /* img1.jpg */,
 				CEE2CE4D22F913D20030C714 /* Info.plist */,
@@ -100,6 +106,18 @@
 				CEE2CE6A22F9824A0030C714 /* DHMetalHelper.m */,
 			);
 			path = Filter;
+			sourceTree = "<group>";
+		};
+		CEE2CE7322FA69320030C714 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				CEE2CE7422FA69320030C714 /* lut-4.png */,
+				CEE2CE7522FA69320030C714 /* lut-0.png */,
+				CEE2CE7622FA69320030C714 /* lut-1.png */,
+				CEE2CE7722FA69320030C714 /* lut-3.png */,
+				CEE2CE7822FA69320030C714 /* lut-2.png */,
+			);
+			path = Resource;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -160,8 +178,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEE2CE4C22F913D20030C714 /* LaunchScreen.storyboard in Resources */,
+				CEE2CE7C22FA69330030C714 /* lut-3.png in Resources */,
+				CEE2CE7B22FA69330030C714 /* lut-1.png in Resources */,
 				CEE2CE5622F913F70030C714 /* img1.jpg in Resources */,
+				CEE2CE7D22FA69330030C714 /* lut-2.png in Resources */,
+				CEE2CE7922FA69330030C714 /* lut-4.png in Resources */,
 				CEE2CE4922F913D20030C714 /* Assets.xcassets in Resources */,
+				CEE2CE7A22FA69330030C714 /* lut-0.png in Resources */,
 				CEE2CE4722F913D10030C714 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -174,7 +197,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEE2CE4422F913D10030C714 /* ViewController.m in Sources */,
-				CEE2CE7222F982630030C714 /* LutFilterViewController.m in Sources */,
 				CEE2CE6F22F9824A0030C714 /* DHMetalHelper.m in Sources */,
 				CEE2CE4F22F913D20030C714 /* main.m in Sources */,
 				CEE2CE6D22F9824A0030C714 /* BaseFilter.metal in Sources */,

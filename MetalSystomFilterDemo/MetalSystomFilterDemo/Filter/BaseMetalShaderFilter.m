@@ -16,8 +16,9 @@
 @property (nonatomic, strong) id<MTLDevice> device;
 @property (nonatomic, strong) id<MTLCommandQueue> commandQueue;
 @property (nonatomic, strong) id<MTLComputePipelineState> computePipelineState;
+@property (nonatomic, strong) id<MTLComputePipelineState> lutPipelineState;
 
-@property (nonatomic, strong) dispatch_semaphore_t frameBoundarySemaphore;
+//@property (nonatomic, strong) dispatch_semaphore_t frameBoundarySemaphore;
 @end
 
 @implementation BaseMetalShaderFilter
@@ -54,7 +55,9 @@
   
   _computePipelineState = [DHMetalHelper computePipelineStateWithDevice:_device kernelName:@"baseFilterKernel"];
   
-  _frameBoundarySemaphore = dispatch_semaphore_create(1); // 当前的纹理处理完在处理下一次
+  _lutPipelineState = [DHMetalHelper computePipelineStateWithDevice:_device kernelName:@"lookUpTableShader"];
+  
+//  _frameBoundarySemaphore = dispatch_semaphore_create(1); // 当前的纹理处理完在处理下一次
 }
 
 #pragma mark - Public Methods
@@ -65,9 +68,9 @@
   }
   
   id<MTLCommandBuffer> commandBuffer = [_commandQueue commandBuffer];
-  [commandBuffer addCompletedHandler:^(id<MTLCommandBuffer> _Nonnull cmdBuffer) {
-    dispatch_semaphore_signal(self->_frameBoundarySemaphore);
-  }];
+//  [commandBuffer addCompletedHandler:^(id<MTLCommandBuffer> _Nonnull cmdBuffer) {
+//    dispatch_semaphore_signal(self->_frameBoundarySemaphore);
+//  }];
   
   id<MTLComputeCommandEncoder> computeEncoder = [commandBuffer computeCommandEncoder];
   if (!computeEncoder) {
@@ -88,21 +91,60 @@
   [computeEncoder setBytes:&_temperature length:sizeof(float) atIndex:3];
   [computeEncoder setBytes:&_alpha length:sizeof(float) atIndex:4];
   
-  MTLSize threadsPerThreadgroup = MTLSizeMake(_computePipelineState.threadExecutionWidth, _computePipelineState.maxTotalThreadsPerThreadgroup / _computePipelineState.threadExecutionWidth, 1);
-  MTLSize threadgroupsPerGrid = MTLSizeMake((inputTexture.width + threadsPerThreadgroup.width - 1) / threadsPerThreadgroup.width, (inputTexture.height + threadsPerThreadgroup.height - 1) / threadsPerThreadgroup.height, 1);
-  
-  /*
-   MTLSize threadsGroupCount = MTLSizeMake(16, 16, 1);
-   MTLSize threadsGroup = MTLSizeMake(_currentDrawable.texture.width / threadsGroupCount.width, _currentDrawable.texture.height / threadsGroupCount.height, 1);
-   */
-  
-  [computeEncoder dispatchThreadgroups:threadgroupsPerGrid threadsPerThreadgroup:threadsPerThreadgroup];
+  // 最大化利用GPU性能
+  NSUInteger wid = self.computePipelineState.threadExecutionWidth;
+  NSUInteger hei = self.computePipelineState.maxTotalThreadsPerThreadgroup / wid;
+  MTLSize threadgroupsPerGrid = {(inputTexture.width + wid - 1) / wid,(inputTexture.height + hei - 1) / hei,1};
+  MTLSize threadsPerThreadgroup = {wid, hei, 1};
+ 
+  [computeEncoder dispatchThreadgroups:threadgroupsPerGrid
+                 threadsPerThreadgroup:threadsPerThreadgroup];
   [computeEncoder endEncoding];
   [commandBuffer commit];
 
   [commandBuffer waitUntilCompleted];
   
-  dispatch_semaphore_wait(_frameBoundarySemaphore, DISPATCH_TIME_FOREVER);
+//  dispatch_semaphore_wait(_frameBoundarySemaphore, DISPATCH_TIME_FOREVER);
+  
+  return [DHMetalHelper imageFromTexture:outputTexture];
+}
+
+- (UIImage *)lutFilterWithOriginImage:(UIImage *)image lutImage:(UIImage *)lutImage {
+  NSParameterAssert(image);
+  NSParameterAssert(lutImage);
+
+  id<MTLCommandBuffer> commandBuffer = [_commandQueue commandBuffer];
+
+  id<MTLComputeCommandEncoder> computeEncoder = [commandBuffer computeCommandEncoder];
+  if (!computeEncoder) {
+    return nil;
+  }
+  
+  id<MTLTexture> inputTexture = [DHMetalHelper textureWithImage:image device:_device usage:MTLTextureUsageShaderRead];
+  id<MTLTexture> outputTexture = [DHMetalHelper emptyTextureWithWidth:image.size.width height:image.size.height device:_device usage:MTLTextureUsageShaderWrite];
+  id<MTLTexture> lutTexture = [DHMetalHelper textureWithImage:lutImage device:_device usage:MTLTextureUsageShaderRead];
+  
+  [computeEncoder setComputePipelineState:_lutPipelineState];
+  
+  [computeEncoder setTexture:inputTexture atIndex:0];  // 输入纹理
+  [computeEncoder setTexture:outputTexture atIndex:1]; // 输出纹理
+  [computeEncoder setTexture:lutTexture atIndex:2]; // look up table image texture
+  
+ 
+  // 最大化利用GPU性能
+  NSUInteger wid = self.computePipelineState.threadExecutionWidth;
+  NSUInteger hei = self.computePipelineState.maxTotalThreadsPerThreadgroup / wid;
+  MTLSize threadgroupsPerGrid = {(inputTexture.width + wid - 1) / wid,(inputTexture.height + hei - 1) / hei,1};
+  MTLSize threadsPerThreadgroup = {wid, hei, 1};
+  
+  [computeEncoder dispatchThreadgroups:threadgroupsPerGrid
+                 threadsPerThreadgroup:threadsPerThreadgroup];
+  [computeEncoder endEncoding];
+  [commandBuffer commit];
+  
+  [commandBuffer waitUntilCompleted];
+  
+  //  dispatch_semaphore_wait(_frameBoundarySemaphore, DISPATCH_TIME_FOREVER);
   
   return [DHMetalHelper imageFromTexture:outputTexture];
 }

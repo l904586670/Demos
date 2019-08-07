@@ -80,7 +80,8 @@ kernel void lookUpTableShader(texture2d<float, access::read> inputTexture [[text
 {
   // 正常的纹理颜色
   float4 sourceColor = inputTexture.read(gid);
-  float blueColor = textureColor.b * 63.0; // 蓝色部分[0, 63] 共64种
+  constexpr sampler textureSampler (mag_filter::linear, min_filter::linear);
+  float blueColor = sourceColor.b * 63.0; // 蓝色部分[0, 63] 共64种
   
   float2 quad1; // 第一个正方形的位置, 假如blueColor=22.5，则y=22/8=2，x=22-8*2=6，即是第2行，第6个正方形；（因为y是纵坐标）
   quad1.y = floor(floor(blueColor) * 0.125);
@@ -91,16 +92,16 @@ kernel void lookUpTableShader(texture2d<float, access::read> inputTexture [[text
   quad2.x = ceil(blueColor) - (quad2.y * 8.0);
   
   float2 texPos1; // 计算颜色(r,b,g)在第一个正方形中对应位置
-  texPos1.x = ((quad1.x * 64) +  textureColor.r*63 + 0.5)/512.0;
-  texPos1.y = ((quad1.y * 64) +  textureColor.g*63 + 0.5)/512.0;
+  texPos1.x = ((quad1.x * 64) +  sourceColor.r*63 + 0.5)/512.0;
+  texPos1.y = ((quad1.y * 64) +  sourceColor.g*63 + 0.5)/512.0;
   
   
   float2 texPos2; // 同上
-  texPos2.x = ((quad2.x * 64) +  textureColor.r*63 + 0.5)/512.0;
-  texPos2.y = ((quad2.y * 64) +  textureColor.g*63 + 0.5)/512.0;
+  texPos2.x = ((quad2.x * 64) +  sourceColor.r*63 + 0.5)/512.0;
+  texPos2.y = ((quad2.y * 64) +  sourceColor.g*63 + 0.5)/512.0;
   
-  float4 newColor1 = lookupTableTexture.sample(textureSampler, texPos1); // 正方形1的颜色值
-  float4 newColor2 = lookupTableTexture.sample(textureSampler, texPos2); // 正方形2的颜色值
+  float4 newColor1 = lutTexture.sample(textureSampler, texPos1); // 正方形1的颜色值
+  float4 newColor2 = lutTexture.sample(textureSampler, texPos2); // 正方形2的颜色值
   
   float4 newColor = mix(newColor1, newColor2, fract(blueColor)); // 根据小数点的部分进行mix
   float4 resultColor = float4(newColor.rgb, newColor.a * sourceColor.a);

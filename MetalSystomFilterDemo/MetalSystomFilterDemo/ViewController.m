@@ -34,14 +34,17 @@
   NSArray *titles = @[@"饱和度", @"对比度", @"亮度", @"色温", @"透明度"];
   CGSize screenSize = [UIScreen mainScreen].bounds.size;
   CGRect firstItemRect = CGRectMake(60, CGRectGetMaxY(frame) + 10, screenSize.width - 70, 40);
+  CGFloat maxPosY = 0.0;
   for (NSInteger i = 0; i < titles.count; i++) {
     UISlider *slider = [self sliderWithFrame:CGRectOffset(firstItemRect, 0, i * 40) title:titles[i]];
     slider.tag = i;
     if (i == (titles.count - 1)) {
       slider.value = 1.0;
+      maxPosY = CGRectGetMaxY(slider.frame);
     }
   }
   
+  [self lutBtnUIWithPosY:maxPosY + 10.0];
 }
 
 - (CGRect)innerRectWithAspectRatio:(CGSize)aspectRatio outRect:(CGRect)outRect {
@@ -87,6 +90,27 @@
   return slider;
 }
 
+- (void)lutBtnUIWithPosY:(CGFloat)posY {
+  NSArray *titiles = @[@"原始", @"lut1", @"lut2", @"lut3", @"lut4"];
+  CGSize screenSize = [UIScreen mainScreen].bounds.size;
+  CGFloat itmeWidth = (screenSize.width - 20) / titiles.count;
+  CGFloat posX = 10.0;
+  for (NSInteger i = 0; i < titiles.count; i++) {
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btn setTitle:titiles[i] forState:UIControlStateNormal];
+    [btn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [self.view addSubview:btn];
+    btn.frame = CGRectMake(posX + i * itmeWidth, posY, itmeWidth, 40);
+    [btn addTarget:self
+            action:@selector(onLutFilterTouch:)
+  forControlEvents:UIControlEventTouchUpInside];
+    btn.tag = i;
+  }
+  
+}
+
+#pragma mark - Action
+
 - (void)onSliderValueChangeEnd:(UISlider *)sender {
   NSInteger index = sender.tag;
   CGFloat minValue = 0.0;
@@ -116,6 +140,16 @@
   }
   
   UIImage *resultImage = [[BaseMetalShaderFilter shareInstance] filterWithOriginImage:_originImage];
+  _imgView.image = resultImage;
+}
+
+
+- (void)onLutFilterTouch:(UIButton *)sender {
+  NSInteger index = sender.tag;
+  
+  UIImage *lutImage = [UIImage imageNamed:[NSString stringWithFormat:@"lut-%@.png", @(index)]];
+  
+  UIImage *resultImage = [[BaseMetalShaderFilter shareInstance] lutFilterWithOriginImage:_originImage lutImage:lutImage];
   _imgView.image = resultImage;
 }
 

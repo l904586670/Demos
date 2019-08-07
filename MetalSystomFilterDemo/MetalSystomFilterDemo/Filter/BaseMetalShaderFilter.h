@@ -43,6 +43,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UIImage *)filterWithOriginImage:(UIImage *)image;
 
+- (UIImage *)lutFilterWithOriginImage:(UIImage *)image
+                             lutImage:(UIImage *)lutImage;
+
 @end
 
 NS_ASSUME_NONNULL_END
