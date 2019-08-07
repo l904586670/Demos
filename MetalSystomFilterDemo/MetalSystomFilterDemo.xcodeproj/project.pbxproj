@@ -40,7 +40,6 @@
 		CEE2CE6822F9824A0030C714 /* BaseFilter.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = BaseFilter.metal; sourceTree = "<group>"; };
 		CEE2CE6922F9824A0030C714 /* BaseMetalShaderFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseMetalShaderFilter.m; sourceTree = "<group>"; };
 		CEE2CE6A22F9824A0030C714 /* DHMetalHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DHMetalHelper.m; sourceTree = "<group>"; };
-		CEE2CE6B22F9824A0030C714 /* CommonDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonDefine.h; sourceTree = "<group>"; };
 		CEE2CE6C22F9824A0030C714 /* BaseMetalShaderFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseMetalShaderFilter.h; sourceTree = "<group>"; };
 		CEE2CE7422FA69320030C714 /* lut-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lut-4.png"; sourceTree = "<group>"; };
 		CEE2CE7522FA69320030C714 /* lut-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lut-0.png"; sourceTree = "<group>"; };
@@ -101,7 +100,6 @@
 				CEE2CE6822F9824A0030C714 /* BaseFilter.metal */,
 				CEE2CE6C22F9824A0030C714 /* BaseMetalShaderFilter.h */,
 				CEE2CE6922F9824A0030C714 /* BaseMetalShaderFilter.m */,
-				CEE2CE6B22F9824A0030C714 /* CommonDefine.h */,
 				CEE2CE6722F9824A0030C714 /* DHMetalHelper.h */,
 				CEE2CE6A22F9824A0030C714 /* DHMetalHelper.m */,
 			);

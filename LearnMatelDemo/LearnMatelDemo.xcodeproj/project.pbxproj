@@ -131,9 +131,6 @@
 		CE2833FB22E2F63500793542 /* LearnMatelDemo */ = {
 			isa = PBXGroup;
 			children = (
-				CEE2CE5E22F92D530030C714 /* DHMetalHelper.h */,
-				CEE2CE5D22F92D520030C714 /* DHMetalHelper.m */,
-				CEB4ECD322F3DEF1000C5881 /* 8lightingAndShadows */,
 				CE28341322E3005B00793542 /* 0DrawTriangle */,
 				CE3792DE22E72BBA0010B8BD /* 1DrawImage */,
 				CE3792EA22E83DDA0010B8BD /* 2Draw3D */,
@@ -144,6 +141,9 @@
 				CEDDA35622F02F7C003A52A9 /* 7VideoSession */,
 				CEB4ECCA22F3D636000C5881 /* 8Raytracing */,
 				CEB4ECC622F3D636000C5881 /* 9Raymarching */,
+				CEB4ECD322F3DEF1000C5881 /* 10lightingAndShadows */,
+				CEE2CE5E22F92D530030C714 /* DHMetalHelper.h */,
+				CEE2CE5D22F92D520030C714 /* DHMetalHelper.m */,
 				CE3792E522E733470010B8BD /* Resource */,
 				CE28341222E3001900793542 /* SupportFiles */,
 			);
@@ -235,14 +235,14 @@
 			path = 8Raytracing;
 			sourceTree = "<group>";
 		};
-		CEB4ECD322F3DEF1000C5881 /* 8lightingAndShadows */ = {
+		CEB4ECD322F3DEF1000C5881 /* 10lightingAndShadows */ = {
 			isa = PBXGroup;
 			children = (
 				CEB4ECD422F3DF0C000C5881 /* LightAndShadowViewController.h */,
 				CEB4ECD522F3DF0C000C5881 /* LightAndShadowViewController.m */,
 				CEB4ECD722F3E033000C5881 /* shadowShader.metal */,
 			);
-			path = 8lightingAndShadows;
+			path = 10lightingAndShadows;
 			sourceTree = "<group>";
 		};
 		CEB753D522EC1FCC002CD97B /* 3KernelShader */ = {

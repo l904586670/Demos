@@ -133,7 +133,6 @@ static const NSUInteger kMaxInflightBuffers = 3;
   id<MTLBuffer> dynamicBuffer = [_device newBufferWithBytes:&_timer length:sizeof(float) options:MTLResourceCPUCacheModeDefaultCache];
   [encoder setBuffer:dynamicBuffer offset:0 atIndex:0];
   
-  
   MTLSize threadsGroupCount = MTLSizeMake(8, 8, 1);
   MTLSize threadsGroup = MTLSizeMake(drawable.texture.width / threadsGroupCount.width, drawable.texture.height / threadsGroupCount.height, 1);
   
