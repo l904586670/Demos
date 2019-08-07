@@ -139,8 +139,8 @@
 				CEDDA33622EECBE8003A52A9 /* 5LightView */,
 				CEDDA34F22EFEF16003A52A9 /* 6TripleBuffer */,
 				CEDDA35622F02F7C003A52A9 /* 7VideoSession */,
-				CEB4ECCA22F3D636000C5881 /* 8Raytracing */,
-				CEB4ECC622F3D636000C5881 /* 9Raymarching */,
+				CEB4ECC622F3D636000C5881 /* 8Raymarching */,
+				CEB4ECCA22F3D636000C5881 /* 9RayTracing */,
 				CEB4ECD322F3DEF1000C5881 /* 10lightingAndShadows */,
 				CEE2CE5E22F92D530030C714 /* DHMetalHelper.h */,
 				CEE2CE5D22F92D520030C714 /* DHMetalHelper.m */,
@@ -214,17 +214,17 @@
 			path = 2Draw3D;
 			sourceTree = "<group>";
 		};
-		CEB4ECC622F3D636000C5881 /* 9Raymarching */ = {
+		CEB4ECC622F3D636000C5881 /* 8Raymarching */ = {
 			isa = PBXGroup;
 			children = (
 				CEB4ECC722F3D636000C5881 /* Reymarching.metal */,
 				CEB4ECC822F3D636000C5881 /* RaymarchingViewController.m */,
 				CEB4ECC922F3D636000C5881 /* RaymarchingViewController.h */,
 			);
-			path = 9Raymarching;
+			path = 8Raymarching;
 			sourceTree = "<group>";
 		};
-		CEB4ECCA22F3D636000C5881 /* 8Raytracing */ = {
+		CEB4ECCA22F3D636000C5881 /* 9RayTracing */ = {
 			isa = PBXGroup;
 			children = (
 				CEB4ECCD22F3D64D000C5881 /* RayTracingViewController.h */,
@@ -232,7 +232,7 @@
 				CEB4ECD222F3DAFD000C5881 /* RayTracingTypes.h */,
 				CEB4ECD022F3D69A000C5881 /* ReytracingShader.metal */,
 			);
-			path = 8Raytracing;
+			path = 9RayTracing;
 			sourceTree = "<group>";
 		};
 		CEB4ECD322F3DEF1000C5881 /* 10lightingAndShadows */ = {

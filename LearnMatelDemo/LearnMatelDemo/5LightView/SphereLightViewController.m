@@ -26,6 +26,7 @@
 @property (nonatomic, assign) NSInteger segIndex;
 
 @property (nonatomic, strong) id<MTLTexture> texture;
+@property (nonatomic, strong) id<MTLTexture> beautyTexture;
 
 @end
 
@@ -50,7 +51,7 @@
   CGRect frame = CGRectMake(0, posY, self.screenSize.width, 50);
   frame = CGRectInset(frame, 2, 2);
   
-  UISegmentedControl *segmentControl = [[UISegmentedControl alloc] initWithItems:@[@"光照", @"噪点", @"纹理", @"灰度"]];
+  UISegmentedControl *segmentControl = [[UISegmentedControl alloc] initWithItems:@[@"光照", @"噪点", @"纹理", @"灰度", @"边缘检测"]];
   segmentControl.frame = frame;
   [self.view addSubview:segmentControl];
   _segIndex = 0;
@@ -124,6 +125,13 @@
     NSAssert(NO, @"creat ComputePipelineState error");
   }
   
+  
+  
+  id<MTLFunction> sibelFunc = [library newFunctionWithName:@"sobelKernel"];
+  _pipelineStates[4] = [_device newComputePipelineStateWithFunction:sibelFunc error:&error];
+  if (error) {
+    NSAssert(NO, @"creat ComputePipelineState error");
+  }
 }
 
 - (void)setupTexture {
@@ -137,6 +145,9 @@
 //  _texture = [textureLoader newTextureWithCGImage:image.CGImage options:nil error:nil];
   
   _texture = [DHMetalHelper textureWithImage:image device:_device];
+  
+  image = [UIImage imageNamed:@"img1.jpg"];
+  _beautyTexture = [DHMetalHelper textureWithImage:image device:_device];
 }
 
 - (void)render {
@@ -174,6 +185,8 @@
   
   if (_segIndex == 2 || _segIndex == 3) {
     [commandEncoder setTexture:self.texture atIndex:1];
+  } else if (_segIndex == 4) {
+    [commandEncoder setTexture:_beautyTexture atIndex:1];
   }
   
   // threadsGroupCount.width * threadsGroupCount.height * threadsGroupCount.depth <= 1024

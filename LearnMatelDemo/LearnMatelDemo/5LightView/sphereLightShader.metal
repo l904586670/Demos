@@ -169,3 +169,40 @@ kernel void grayKernel(texture2d<float, access::write> output [[texture(0)]],
   float gray = dot(color.rgb, kRec709Luma); // 转换成亮度
   output.write(float4(gray, gray, gray, 1.0), gid); // 写回对应纹理
 }
+
+
+// 边缘检测
+/*
+ Sobel算子的实现需要访问像素周边的8个像素的值，在compute shader中，我们可以通过修改grid的xy坐标进行操作。在拿到位置的坐标后，通过sourceTexture.read读取像素值，分别算出横向和竖向的差别h和v，统一转亮度值。最后求h和v的向量和，再写回纹理中。
+ */
+constant int sobelStep = 2;
+kernel void sobelKernel(texture2d<float, access::write> output [[texture(0)]], texture2d<float, access::read> input [[texture(1)]],  uint2 grid [[thread_position_in_grid]])
+{
+  /*
+   
+   行数     9个像素          位置
+   上     | * * * |      | 左 中 右 |
+   中     | * * * |      | 左 中 右 |
+   下     | * * * |      | 左 中 右 |
+   
+   */
+  float4 topLeft = input.read(uint2(grid.x - sobelStep, grid.y - sobelStep)); // 左上
+  float4 top = input.read(uint2(grid.x, grid.y - sobelStep)); // 上
+  float4 topRight = input.read(uint2(grid.x + sobelStep, grid.y - sobelStep)); // 右上
+  float4 centerLeft = input.read(uint2(grid.x - sobelStep, grid.y)); // 中左
+  float4 centerRight = input.read(uint2(grid.x + sobelStep, grid.y)); // 中右
+  float4 bottomLeft = input.read(uint2(grid.x - sobelStep, grid.y + sobelStep)); // 下左
+  float4 bottom = input.read(uint2(grid.x, grid.y + sobelStep)); // 下中
+  float4 bottomRight = input.read(uint2(grid.x + sobelStep, grid.y + sobelStep)); // 下右
+  
+  float4 h = -topLeft - 2.0 * top - topRight + bottomLeft + 2.0 * bottom + bottomRight; // 横方向差别
+  float4 v = -bottom - 2.0 * centerLeft - topLeft + bottomRight + 2.0 * centerRight + topRight; // 竖方向差别
+  
+  float  grayH  = dot(h.rgb, kRec709Luma); // 转换成亮度
+  float  grayV  = dot(v.rgb, kRec709Luma); // 转换成亮度
+  
+  // sqrt(h^2 + v^2)，相当于求点到(h, v)的距离，所以可以用length
+  half color = length(half2(grayH, grayV));
+  
+  output.write(float4(color, color, color, 1.0), grid); // 写回对应纹理
+}

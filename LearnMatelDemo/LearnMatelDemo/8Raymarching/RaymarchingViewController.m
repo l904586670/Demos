@@ -72,27 +72,13 @@ static const NSUInteger kMaxInflightBuffers = 3;
   }
   
   _frameBoundarySemaphore = dispatch_semaphore_create(kMaxInflightBuffers);
-  _currentFrameIndex = 0;
+  
 }
 
 - (void)render {
-  if (_renderComplete) {
-    NSLog(@"render don't complete");
-    return;
-  }
-  
-  _renderComplete = YES;
-  __weak typeof(self) weakSelf = self;
   id<MTLCommandBuffer> commandBuffer = [_commandQueue commandBuffer];
-  [commandBuffer addCompletedHandler:^(id<MTLCommandBuffer> _Nonnull cmdBuf) {
-    //    __strong __typeof(self) strongSelf = weakSelf;
-    weakSelf.renderComplete = NO;
-    //    NSLog(@"renderComplete : %@", @(strongSelf.renderComplete));
-  }];
-  
   id <MTLComputeCommandEncoder> commandEncoder = [commandBuffer computeCommandEncoder];
   if (!commandEncoder) {
-    _renderComplete = NO;
     return;
   }
   
@@ -114,6 +100,12 @@ static const NSUInteger kMaxInflightBuffers = 3;
   // 设置并发线程。
   [commandEncoder dispatchThreadgroups:threadsGroup threadsPerThreadgroup:threadsGroupCount];
   [commandEncoder endEncoding];
+  
+  dispatch_semaphore_wait(_frameBoundarySemaphore, DISPATCH_TIME_FOREVER);
+  __weak typeof(self) weakSelf = self;
+  [commandBuffer addCompletedHandler:^(id<MTLCommandBuffer> _Nonnull cmdBuffer) {
+    dispatch_semaphore_signal(weakSelf.frameBoundarySemaphore);
+  }];
   
   //
   [commandBuffer presentDrawable:self.mtkView.currentDrawable];

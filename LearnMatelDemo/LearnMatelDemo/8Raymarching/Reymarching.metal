@@ -35,6 +35,13 @@ float distToSphere(Ray ray, Sphere s) {
   return length(ray.origin - s.center) - s.radius;
 }
 
+float distToScene(Ray r) {
+  Sphere s = Sphere(float3(1.), 0.5);
+  Ray repeatRay = r;
+  repeatRay.origin = fmod(r.origin, 2.0);
+  return distToSphere(repeatRay, s);
+}
+
 float distP(float2 point, float2 center, float radius)
 {
   return length(point - center) - radius;
@@ -49,17 +56,21 @@ kernel void reymarchShader(texture2d<float,access::write> output [[texture(0)]],
   float2 uv = float2(gid) / float2(width, height);
   uv = uv * 2.0 - 1.0;
   
-  Sphere s = Sphere(float3(0.), 1.);
-  Ray ray = Ray(float3(0., 0., -3.), normalize(float3(uv, 1.0)));
+  float3 camPos = float3(1000. + sin(timer) + 1., 1000. + cos(timer) + 1., timer);
+  // 创建一个射线
+  Ray ray = Ray(camPos, normalize(float3(uv, 1.)));
+  
+  
   float3 col = float3(0.);
   for (int i=0.; i<100.; i++) {
-    float dist = distToSphere(ray, s);
+    float dist = distToScene(ray);
     if (dist < 0.001) {
       col = float3(1.);
       break;
     }
     ray.origin += ray.direction * dist;
   }
-  output.write(float4(col, 1.), gid);
-
+  float3 posRelativeToCamera = ray.origin - camPos;
+  output.write(float4(col * abs((posRelativeToCamera) / 10.0), 1.), gid);
+//  output.write(float4(col * abs((ray.origin - 1000.) / 10.0), 1.), gid);
 }

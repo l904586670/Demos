@@ -89,8 +89,8 @@ typedef NS_ENUM(NSInteger, MetalDemoType) {
                       @"三重缓冲",
                       @"渲染视频流",
                       @"灯光和阴影",
-                      @"光线追踪",
-                      @"Raymarching"
+                      @"Raymarching",
+                      @"光线追踪"
                       ];
   
   return titles[type];
@@ -107,9 +107,9 @@ typedef NS_ENUM(NSInteger, MetalDemoType) {
                       @"TripleBufferViewController",
                       @"VideoSessionViewController",
                       @"LightAndShadowViewController",
+                      @"RaymarchingViewController",
+                      @"RayTracingViewController"
                       
-                      @"RayTracingViewController",
-                      @"RaymarchingViewController"
                       ];
   
   return classes[type];
