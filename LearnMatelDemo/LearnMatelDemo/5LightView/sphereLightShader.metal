@@ -159,6 +159,7 @@ kernel void grayKernel(texture2d<float, access::write> output [[texture(0)]],
  
   float2 uv = float2(gid) / float2(width, height);
  
+  
   constexpr sampler textureSampler(coord::normalized,
                                    address::repeat,
                                    min_filter::linear,
