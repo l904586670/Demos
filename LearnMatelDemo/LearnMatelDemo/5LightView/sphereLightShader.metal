@@ -121,7 +121,7 @@ kernel void textureCompute(texture2d<float, access::write> output [[texture(0)]]
 //  output.write(color, gid);
 
   float2 uv = float2(gid) / float2(width, height);
-  uv = uv * 2.0 - 1.0;  // 找到中心点
+  uv = uv * 2.0 - 1.0;  
   float radius = 0.5;
   float distance = length(uv) - radius;
 
