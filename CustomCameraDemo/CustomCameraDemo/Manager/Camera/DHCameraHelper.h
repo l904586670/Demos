@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (AVCaptureDevice *)audioDevice;
 
 // 获取后置双摄输入设置
-+ (AVCaptureDevice *)dualCameraDevice API_AVAILABLE(ios(10.2));
++ (AVCaptureDevice *)dualCameraDevice;
 
 
 @end

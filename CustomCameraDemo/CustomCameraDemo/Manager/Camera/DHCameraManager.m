@@ -61,8 +61,6 @@
   return _captureSession;
 }
 
-
-
 - (AVCapturePhotoSettings *)imageOutputSettings {
   NSUInteger rawFormat = self.photoOutput.availableRawPhotoPixelFormatTypes.firstObject.unsignedIntegerValue;
   self.photoSettings = [AVCapturePhotoSettings photoSettingsWithRawPixelFormatType:(OSType)rawFormat];
