@@ -8,12 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		8CEA1C8C23019E6D00F306B2 /* LBCameraManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEA1C8B23019E6D00F306B2 /* LBCameraManager.m */; };
+		8CEA1C952301AFE600F306B2 /* camera-toke.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CEA1C8E2301AFE500F306B2 /* camera-toke.png */; };
+		8CEA1C962301AFE600F306B2 /* Size.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CEA1C8F2301AFE500F306B2 /* Size.png */; };
+		8CEA1C972301AFE600F306B2 /* 闪光灯-关.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CEA1C902301AFE500F306B2 /* 闪光灯-关.png */; };
+		8CEA1C982301AFE600F306B2 /* 拍照.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CEA1C912301AFE500F306B2 /* 拍照.png */; };
+		8CEA1C992301AFE600F306B2 /* 聚焦热力图.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CEA1C922301AFE500F306B2 /* 聚焦热力图.png */; };
+		8CEA1C9A2301AFE600F306B2 /* 闪光灯-开.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CEA1C932301AFE500F306B2 /* 闪光灯-开.png */; };
+		8CEA1C9B2301AFE600F306B2 /* 相机翻转.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CEA1C942301AFE500F306B2 /* 相机翻转.png */; };
 		CEA0A95C22F18BE100F781E4 /* AlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA0A95B22F18BE100F781E4 /* AlbumViewController.m */; };
 		CEA0A95F22F18BF400F781E4 /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA0A95E22F18BF400F781E4 /* CameraViewController.m */; };
 		CEA0A96222F18C8100F781E4 /* UserAuthorization.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA0A96022F18C8100F781E4 /* UserAuthorization.m */; };
 		CEA0A96522F190F900F781E4 /* AlbumAssetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA0A96422F190F900F781E4 /* AlbumAssetCell.m */; };
 		CEB0A40F22F2833B0089BDEB /* DHCameraManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB0A40E22F2833B0089BDEB /* DHCameraManager.m */; };
-		CEB0A41122F298B80089BDEB /* camera-toke.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB0A41022F298B80089BDEB /* camera-toke.png */; };
 		CEB0A41922F2CE700089BDEB /* DHCameraHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB0A41822F2CE700089BDEB /* DHCameraHelper.m */; };
 		CEDDA36822F0376E003A52A9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CEDDA36722F0376E003A52A9 /* AppDelegate.m */; };
 		CEDDA36B22F0376E003A52A9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEDDA36A22F0376E003A52A9 /* ViewController.m */; };
@@ -29,6 +35,13 @@
 /* Begin PBXFileReference section */
 		8CEA1C8A23019E6D00F306B2 /* LBCameraManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBCameraManager.h; sourceTree = "<group>"; };
 		8CEA1C8B23019E6D00F306B2 /* LBCameraManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBCameraManager.m; sourceTree = "<group>"; };
+		8CEA1C8E2301AFE500F306B2 /* camera-toke.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera-toke.png"; sourceTree = "<group>"; };
+		8CEA1C8F2301AFE500F306B2 /* Size.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Size.png; sourceTree = "<group>"; };
+		8CEA1C902301AFE500F306B2 /* 闪光灯-关.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "闪光灯-关.png"; sourceTree = "<group>"; };
+		8CEA1C912301AFE500F306B2 /* 拍照.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "拍照.png"; sourceTree = "<group>"; };
+		8CEA1C922301AFE500F306B2 /* 聚焦热力图.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "聚焦热力图.png"; sourceTree = "<group>"; };
+		8CEA1C932301AFE500F306B2 /* 闪光灯-开.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "闪光灯-开.png"; sourceTree = "<group>"; };
+		8CEA1C942301AFE500F306B2 /* 相机翻转.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "相机翻转.png"; sourceTree = "<group>"; };
 		CEA0A95A22F18BE100F781E4 /* AlbumViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlbumViewController.h; sourceTree = "<group>"; };
 		CEA0A95B22F18BE100F781E4 /* AlbumViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlbumViewController.m; sourceTree = "<group>"; };
 		CEA0A95D22F18BF400F781E4 /* CameraViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraViewController.h; sourceTree = "<group>"; };
@@ -39,7 +52,6 @@
 		CEA0A96422F190F900F781E4 /* AlbumAssetCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlbumAssetCell.m; sourceTree = "<group>"; };
 		CEB0A40D22F2833B0089BDEB /* DHCameraManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DHCameraManager.h; sourceTree = "<group>"; };
 		CEB0A40E22F2833B0089BDEB /* DHCameraManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DHCameraManager.m; sourceTree = "<group>"; };
-		CEB0A41022F298B80089BDEB /* camera-toke.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera-toke.png"; sourceTree = "<group>"; };
 		CEB0A41222F2B4C60089BDEB /* AVCapturePhotoOutputHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AVCapturePhotoOutputHeader.h; sourceTree = "<group>"; };
 		CEB0A41322F2B98F0089BDEB /* AVCapturePhotoSettingsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AVCapturePhotoSettingsHeader.h; sourceTree = "<group>"; };
 		CEB0A41722F2CE700089BDEB /* DHCameraHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DHCameraHelper.h; sourceTree = "<group>"; };
@@ -73,6 +85,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8CEA1C8D2301AFE500F306B2 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				8CEA1C8E2301AFE500F306B2 /* camera-toke.png */,
+				8CEA1C8F2301AFE500F306B2 /* Size.png */,
+				8CEA1C902301AFE500F306B2 /* 闪光灯-关.png */,
+				8CEA1C912301AFE500F306B2 /* 拍照.png */,
+				8CEA1C922301AFE500F306B2 /* 聚焦热力图.png */,
+				8CEA1C932301AFE500F306B2 /* 闪光灯-开.png */,
+				8CEA1C942301AFE500F306B2 /* 相机翻转.png */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
 		CEDDA35A22F0376E003A52A9 = {
 			isa = PBXGroup;
 			children = (
@@ -92,7 +118,7 @@
 		CEDDA36522F0376E003A52A9 /* CustomCameraDemo */ = {
 			isa = PBXGroup;
 			children = (
-				CEB0A41022F298B80089BDEB /* camera-toke.png */,
+				8CEA1C8D2301AFE500F306B2 /* Resource */,
 				CEDDA36622F0376E003A52A9 /* AppDelegate.h */,
 				CEDDA36722F0376E003A52A9 /* AppDelegate.m */,
 				CEDDA36922F0376E003A52A9 /* ViewController.h */,
@@ -209,10 +235,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CEA1C9B2301AFE600F306B2 /* 相机翻转.png in Resources */,
+				8CEA1C972301AFE600F306B2 /* 闪光灯-关.png in Resources */,
 				CEDDA37322F03770003A52A9 /* LaunchScreen.storyboard in Resources */,
+				8CEA1C992301AFE600F306B2 /* 聚焦热力图.png in Resources */,
+				8CEA1C9A2301AFE600F306B2 /* 闪光灯-开.png in Resources */,
 				CEDDA37022F03770003A52A9 /* Assets.xcassets in Resources */,
+				8CEA1C982301AFE600F306B2 /* 拍照.png in Resources */,
+				8CEA1C962301AFE600F306B2 /* Size.png in Resources */,
 				CEDDA36E22F0376E003A52A9 /* Main.storyboard in Resources */,
-				CEB0A41122F298B80089BDEB /* camera-toke.png in Resources */,
+				8CEA1C952301AFE600F306B2 /* camera-toke.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
