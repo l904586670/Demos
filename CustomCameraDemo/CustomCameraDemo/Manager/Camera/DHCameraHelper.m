@@ -30,7 +30,7 @@
   return nil;
 }
 
-+ (AVCaptureDevice *)dualCameraDevice API_AVAILABLE(ios(10.2)) {
++ (AVCaptureDevice *)dualCameraDevice {
   AVCaptureDevice *device = nil;
   if (@available(iOS 10.2, *)) {
     AVCaptureDeviceDiscoverySession *discoverySession = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInDualCamera] mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionBack];
