@@ -32,6 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)captureStillImage;
 
+
+
 @end
 
 NS_ASSUME_NONNULL_END

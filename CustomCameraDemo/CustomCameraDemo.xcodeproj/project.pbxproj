@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8CEA1C8C23019E6D00F306B2 /* LBCameraManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEA1C8B23019E6D00F306B2 /* LBCameraManager.m */; };
 		CEA0A95C22F18BE100F781E4 /* AlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA0A95B22F18BE100F781E4 /* AlbumViewController.m */; };
 		CEA0A95F22F18BF400F781E4 /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA0A95E22F18BF400F781E4 /* CameraViewController.m */; };
 		CEA0A96222F18C8100F781E4 /* UserAuthorization.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA0A96022F18C8100F781E4 /* UserAuthorization.m */; };
@@ -26,6 +27,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8CEA1C8A23019E6D00F306B2 /* LBCameraManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBCameraManager.h; sourceTree = "<group>"; };
+		8CEA1C8B23019E6D00F306B2 /* LBCameraManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBCameraManager.m; sourceTree = "<group>"; };
 		CEA0A95A22F18BE100F781E4 /* AlbumViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlbumViewController.h; sourceTree = "<group>"; };
 		CEA0A95B22F18BE100F781E4 /* AlbumViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlbumViewController.m; sourceTree = "<group>"; };
 		CEA0A95D22F18BF400F781E4 /* CameraViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraViewController.h; sourceTree = "<group>"; };
@@ -128,6 +131,8 @@
 				CEDDA38422F03CF0003A52A9 /* YiquxCameraManager.m */,
 				CEDDA38322F03CF0003A52A9 /* YiquxCameraPreviewView.h */,
 				CEDDA38522F03CF0003A52A9 /* YiquxCameraPreviewView.m */,
+				8CEA1C8A23019E6D00F306B2 /* LBCameraManager.h */,
+				8CEA1C8B23019E6D00F306B2 /* LBCameraManager.m */,
 				CEB0A40D22F2833B0089BDEB /* DHCameraManager.h */,
 				CEB0A40E22F2833B0089BDEB /* DHCameraManager.m */,
 				CEB0A41722F2CE700089BDEB /* DHCameraHelper.h */,
@@ -227,6 +232,7 @@
 				CEDDA39C22F03CF0003A52A9 /* YiquxCameraPreviewView.m in Sources */,
 				CEB0A40F22F2833B0089BDEB /* DHCameraManager.m in Sources */,
 				CEDDA37622F03770003A52A9 /* main.m in Sources */,
+				8CEA1C8C23019E6D00F306B2 /* LBCameraManager.m in Sources */,
 				CEA0A95F22F18BF400F781E4 /* CameraViewController.m in Sources */,
 				CEDDA36822F0376E003A52A9 /* AppDelegate.m in Sources */,
 				CEDDA39B22F03CF0003A52A9 /* YiquxCameraManager.m in Sources */,
