@@ -46,6 +46,12 @@ static const NSString *LBCameraAdjustingExposeureContext = @"LBCameraAdjustingEx
 @property (nonatomic, strong) AVCaptureVideoDataOutput *videoDataOutput;
 @property (nonatomic, strong) AVCaptureAudioDataOutput *audioDataOutput;
 
+@property (nonatomic, strong) dispatch_queue_t writeQueue;
+@property (nonatomic, strong) AVAssetWriter *assetWriter;
+@property (nonatomic, strong) AVAssetWriterInput *videoInput;
+@property (nonatomic, strong) AVAssetWriterInput *audioInput;
+
+
 @end
 
 @implementation LBCameraManager
@@ -70,6 +76,14 @@ static const NSString *LBCameraAdjustingExposeureContext = @"LBCameraAdjustingEx
     _videoQueue = dispatch_queue_create([label cStringUsingEncoding:NSASCIIStringEncoding], NULL);
   }
   return _videoQueue;
+}
+
+- (dispatch_queue_t)writeQueue {
+  if (!_writeQueue) {
+    NSString *label = [[NSBundle mainBundle].bundleIdentifier stringByAppendingString:@".avfoundation.videoWriteQueue"];
+    _writeQueue = dispatch_queue_create([label cStringUsingEncoding:NSASCIIStringEncoding], NULL);
+  }
+  return _writeQueue;
 }
 
 - (AVCaptureSession *)captureSession {
@@ -113,6 +127,26 @@ static const NSString *LBCameraAdjustingExposeureContext = @"LBCameraAdjustingEx
     _audioDataOutput = [[AVCaptureAudioDataOutput alloc] init];
   }
   return _audioDataOutput;
+}
+
+#pragma mark - Setter Getter
+
+- (AVCaptureTorchMode)torchMode {
+  return [[self acticeCamera] torchMode];
+}
+
+- (void)setTorchMode:(AVCaptureTorchMode)torchMode {
+  AVCaptureDevice *device = [self acticeCamera];
+
+  if ([device isTorchModeSupported:torchMode]) {
+    NSError *error = nil;
+    if ([device lockForConfiguration:&error]) {
+      device.torchMode = torchMode;
+      [device unlockForConfiguration];
+    } else {
+      NSAssert(NO, @"set torch fail : %@", error.localizedDescription);
+    }
+  }
 }
 
 #pragma mark - Public Methods
@@ -182,7 +216,6 @@ static const NSString *LBCameraAdjustingExposeureContext = @"LBCameraAdjustingEx
     });
   }
 }
-
 
 - (void)capturePhoto:(CapturePhotoBlock)completeHandler {
   self.capturePhotoBlock = completeHandler;
@@ -356,6 +389,164 @@ static const NSString *LBCameraAdjustingExposeureContext = @"LBCameraAdjustingEx
 
 - (BOOL)isRecording {
   return YES;
+}
+
+#pragma mark - Video Methods
+
+- (void)resetVideoOutputFile {
+  if (!_outputVideoPath) {
+    _outputVideoPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"tempVideo.mov"];
+  }
+
+  [[NSFileManager defaultManager] removeItemAtPath:_outputVideoPath error:nil];
+}
+
+- (AVAssetWriter *)assetWriter {
+  if (!_assetWriter) {
+    [self resetVideoOutputFile];
+
+    NSError *error = nil;
+    _assetWriter = [[AVAssetWriter alloc] initWithURL:[NSURL fileURLWithPath:_outputVideoPath] fileType:AVFileTypeQuickTimeMovie error:&error];
+    if (error) {
+      NSAssert(NO, @"creat asset writer error : %@", error.localizedDescription);
+    }
+  }
+  return _assetWriter;
+}
+
+- (void)writeData:(AVCaptureConnection *)connection video:(AVCaptureConnection*)video audio:(AVCaptureConnection *)audio buffer:(CMSampleBufferRef)buffer {
+  CFRetain(buffer);
+  dispatch_async(self.writeQueue, ^{
+    if (connection == video){
+      if (!self->_readyToRecordVideo){
+        self->_readyToRecordVideo = [self setupAssetWriterVideoInput:CMSampleBufferGetFormatDescription(buffer)] == nil;
+      }
+      if ([self inputsReadyToRecord]){
+        [self writeSampleBuffer:buffer ofType:AVMediaTypeVideo];
+      }
+    } else if (connection == audio){
+      if (!self->_readyToRecordAudio){
+        self->_readyToRecordAudio = [self setupAssetWriterAudioInput:CMSampleBufferGetFormatDescription(buffer)] == nil;
+      }
+      if ([self inputsReadyToRecord]){
+        [self writeSampleBuffer:buffer ofType:AVMediaTypeAudio];
+      }
+    }
+    CFRelease(buffer);
+  });
+}
+
+- (void)writeSampleBuffer:(CMSampleBufferRef)sampleBuffer ofType:(NSString *)mediaType {
+  if (_assetWriter.status == AVAssetWriterStatusUnknown) {
+    if ([_assetWriter startWriting]) {
+      [_assetWriter startSessionAtSourceTime:CMSampleBufferGetPresentationTimeStamp(sampleBuffer)];
+    } else {
+      NSLog(@"%@", _assetWriter.error);
+    }
+  }
+  if (_assetWriter.status == AVAssetWriterStatusWriting) {
+    if (mediaType == AVMediaTypeVideo) {
+      if (!_videoInput.readyForMoreMediaData) {
+        return;
+      }
+      if (![_videoInput appendSampleBuffer:sampleBuffer]){
+        NSLog(@"%@", _assetWriter.error);
+      }
+    } else if (mediaType == AVMediaTypeAudio){
+      if (!_audioInput.readyForMoreMediaData) {
+        return;
+      }
+      if (![_audioInput appendSampleBuffer:sampleBuffer]){
+        NSLog(@"%@", _assetWriter.error);
+      }
+    }
+  }
+}
+
+- (NSError *)setupAssetWriterAudioInput:(CMFormatDescriptionRef)currentFormatDescription {
+  size_t aclSize = 0;
+  const AudioStreamBasicDescription *currentASBD = CMAudioFormatDescriptionGetStreamBasicDescription(currentFormatDescription);
+  const AudioChannelLayout *channelLayout = CMAudioFormatDescriptionGetChannelLayout(currentFormatDescription,&aclSize);
+  NSData *dataLayout = aclSize > 0 ? [NSData dataWithBytes:channelLayout length:aclSize] : [NSData data];
+  NSDictionary *settings = @{AVFormatIDKey: [NSNumber numberWithInteger: kAudioFormatMPEG4AAC],
+                             AVSampleRateKey: [NSNumber numberWithFloat: currentASBD->mSampleRate],
+                             AVChannelLayoutKey: dataLayout,
+                             AVNumberOfChannelsKey: [NSNumber numberWithInteger: currentASBD->mChannelsPerFrame],
+                             AVEncoderBitRatePerChannelKey: [NSNumber numberWithInt: 64000]};
+
+  if ([_assetWriter canApplyOutputSettings:settings forMediaType: AVMediaTypeAudio]){
+    _audioInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeAudio outputSettings:settings];
+    _audioInput.expectsMediaDataInRealTime = YES;
+    if ([_assetWriter canAddInput:_audioInput]){
+      [_assetWriter addInput:_audioInput];
+    } else {
+      return _assetWriter.error;
+    }
+  } else {
+    return _assetWriter.error;
+  }
+  return nil;
+}
+
+/// 视频源数据写入配置
+- (NSError *)setupAssetWriterVideoInput:(CMFormatDescriptionRef)currentFormatDescription {
+  CMVideoDimensions dimensions = CMVideoFormatDescriptionGetDimensions(currentFormatDescription);
+  NSUInteger numPixels = dimensions.width * dimensions.height;
+  CGFloat bitsPerPixel = numPixels < (640 * 480) ? 4.05 : 11.0;
+  NSDictionary *compression = @{AVVideoAverageBitRateKey: [NSNumber numberWithInteger: numPixels * bitsPerPixel],
+                                AVVideoMaxKeyFrameIntervalKey: [NSNumber numberWithInteger:30]};
+  NSDictionary *settings = @{AVVideoCodecKey: AVVideoCodecH264,
+                             AVVideoWidthKey: [NSNumber numberWithInteger:dimensions.width],
+                             AVVideoHeightKey: [NSNumber numberWithInteger:dimensions.height],
+                             AVVideoCompressionPropertiesKey: compression};
+
+  if ([_assetWriter canApplyOutputSettings:settings forMediaType:AVMediaTypeVideo]){
+    _videoInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo outputSettings:settings];
+    _videoInput.expectsMediaDataInRealTime = YES;
+//    _videoInput.transform = [self transformFromCurrentVideoOrientationToOrientation:self.referenceOrientation];
+    if ([_assetWriter canAddInput:_videoInput]){
+      [_assetWriter addInput:_videoInput];
+    } else {
+      return _assetWriter.error;
+    }
+  } else {
+    return _assetWriter.error;
+  }
+  return nil;
+}
+
+// 获取视频旋转矩阵
+- (CGAffineTransform)transformFromCurrentVideoOrientationToOrientation:(AVCaptureVideoOrientation)orientation {
+  CGFloat orientationAngleOffset = [self angleOffsetFromPortraitOrientationToOrientation:orientation];
+  CGFloat videoOrientationAngleOffset = [self angleOffsetFromPortraitOrientationToOrientation:self.currentOrientation];
+  CGFloat angleOffset;
+  if (self.acticeCamera.position == AVCaptureDevicePositionBack) {
+    angleOffset = videoOrientationAngleOffset - orientationAngleOffset + M_PI_2;
+  } else {
+    angleOffset = orientationAngleOffset - videoOrientationAngleOffset + M_PI_2;
+  }
+  CGAffineTransform transform = CGAffineTransformMakeRotation(angleOffset);
+  return transform;
+}
+
+// 获取视频旋转角度
+- (CGFloat)angleOffsetFromPortraitOrientationToOrientation:(AVCaptureVideoOrientation)orientation {
+  CGFloat angle = 0.0;
+  switch (orientation){
+    case AVCaptureVideoOrientationPortrait:
+      angle = 0.0;
+      break;
+    case AVCaptureVideoOrientationPortraitUpsideDown:
+      angle = M_PI;
+      break;
+    case AVCaptureVideoOrientationLandscapeRight:
+      angle = -M_PI_2;
+      break;
+    case AVCaptureVideoOrientationLandscapeLeft:
+      angle = M_PI_2;
+      break;
+  }
+  return angle;
 }
 
 #pragma mark - KVO Action

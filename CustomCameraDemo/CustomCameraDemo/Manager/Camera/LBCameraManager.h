@@ -32,6 +32,8 @@ typedef void(^CapturePhotoBlock)(UIImage * _Nullable resultImage);
 // 高分辨率模式. 默认为NO
 @property (nonatomic, assign) BOOL highResolutionEnabled;
 
+@property (nonatomic, strong) NSString *outputVideoPath;
+
 // 照片一般为 AVCaptureSessionPresetPhoto, 视频 AVCaptureSessionPresetHigh. 默认为AVCaptureSessionPresetHigh
 - (void)setSessionPreset:(AVCaptureSessionPreset)sessionPreset;
 
