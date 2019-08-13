@@ -539,6 +539,7 @@ static const NSString *YQCameraAdjustingExposeureContext = @"camera_expose_id";
 }
 
 - (void)captureOutput:(AVCapturePhotoOutput *)captureOutput didFinishProcessingPhotoSampleBuffer:(nullable CMSampleBufferRef)photoSampleBuffer previewPhotoSampleBuffer:(nullable CMSampleBufferRef)previewPhotoSampleBuffer resolvedSettings:(AVCaptureResolvedPhotoSettings *)resolvedSettings bracketSettings:(nullable AVCaptureBracketedStillImageSettings *)bracketSettings error:(nullable NSError *)error {
+  
   if (NULL == photoSampleBuffer || error) {
     if (self.completeHandler) {
       self.completeHandler(nil);

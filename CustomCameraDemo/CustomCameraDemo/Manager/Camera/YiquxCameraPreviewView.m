@@ -18,7 +18,7 @@
 
 @property(strong, nonatomic) UIView *focusBox;
 @property(strong, nonatomic) UIView *exposureBox;
-@property(strong, nonatomic) NSTimer *timer;
+
 @property(strong, nonatomic) UITapGestureRecognizer *singleTapRecognizer;
 @property(strong, nonatomic) UITapGestureRecognizer *doubleTapRecognizer;
 @property(strong, nonatomic) UITapGestureRecognizer *doubleDoubleTapRecognizer;

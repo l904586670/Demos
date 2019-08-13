@@ -37,6 +37,8 @@ NS_ASSUME_NONNULL_BEGIN
 // 获取后置双摄输入设置
 + (AVCaptureDevice *)dualCameraDevice;
 
++ (UIImage *)fixOrientationWith:(UIImage *)image;
+
 
 @end
 

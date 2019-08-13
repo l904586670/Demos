@@ -18,7 +18,7 @@ typedef NS_ENUM(NSInteger, LBCapturePhotoType) {
   LBCapturePhotoTypeLivePhoto,  // 输出动态壁纸
 };
 
-typedef void(^CapturePhotoBlock)(UIImage *resultImage);
+typedef void(^CapturePhotoBlock)(UIImage * _Nullable resultImage);
 
 @interface LBCameraManager : NSObject
 
@@ -26,14 +26,16 @@ typedef void(^CapturePhotoBlock)(UIImage *resultImage);
 @property(nonatomic, strong, readonly) AVCaptureSession *captureSession;
 
 // 聚焦模式, default : auto
-@property(nonatomic, assign) AVCaptureTorchMode torchMode;
+@property (nonatomic, assign) AVCaptureTorchMode torchMode;
 // 闪光灯模式. default : Off
-@property(nonatomic, assign) AVCaptureFlashMode flashMode;
-
-
+@property (nonatomic, assign) AVCaptureFlashMode flashMode;
+// 高分辨率模式. 默认为NO
+@property (nonatomic, assign) BOOL highResolutionEnabled;
 
 // 照片一般为 AVCaptureSessionPresetPhoto, 视频 AVCaptureSessionPresetHigh. 默认为AVCaptureSessionPresetHigh
 - (void)setSessionPreset:(AVCaptureSessionPreset)sessionPreset;
+
+- (BOOL)setupSessionWithSinglePhoto:(BOOL)photo;
 
 - (void)startSession;
 
@@ -68,8 +70,12 @@ typedef void(^CapturePhotoBlock)(UIImage *resultImage);
 
 - (void)videoZoomWithFactor:(CGFloat)factor;
 
-
 - (void)capturePhoto:(CapturePhotoBlock)completeHandler;
+
+// video Recording
+- (void)startRecording;
+- (void)stopRecording;
+- (BOOL)isRecording;
 
 @end
 

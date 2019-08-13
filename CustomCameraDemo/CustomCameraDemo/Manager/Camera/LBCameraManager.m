@@ -8,6 +8,11 @@
 
 #import "LBCameraManager.h"
 
+#import <UIKit/UIKit.h>
+#import <Photos/Photos.h>
+#import <Photos/PHPhotoLibrary.h>
+#import "DHCameraHelper.h"
+
 static const NSString *LBCameraAdjustingExposeureContext = @"LBCameraAdjustingExposeureContext";
 
 @interface LBCameraManager () <AVCaptureVideoDataOutputSampleBufferDelegate,
@@ -31,7 +36,15 @@ static const NSString *LBCameraAdjustingExposeureContext = @"LBCameraAdjustingEx
 @property (nonatomic, strong) AVCapturePhotoSettings *photoSettings;
 
 // 拍照
+@property (nonatomic, assign) LBCapturePhotoType takePhotoType;
 @property (nonatomic, copy) CapturePhotoBlock capturePhotoBlock;
+@property (nonatomic, strong) NSData *livePhotoData;
+
+/*** 视频相关 ***/
+
+// 视频数据输出, 输出为CMBuffer, 可以用此方法添加实时滤镜之类
+@property (nonatomic, strong) AVCaptureVideoDataOutput *videoDataOutput;
+@property (nonatomic, strong) AVCaptureAudioDataOutput *audioDataOutput;
 
 @end
 
@@ -44,7 +57,7 @@ static const NSString *LBCameraAdjustingExposeureContext = @"LBCameraAdjustingEx
 
     _torchMode = AVCaptureTorchModeAuto;
     _flashMode = AVCaptureFlashModeOff;
-
+    _highResolutionEnabled = NO;
   }
   return self;
 }
@@ -76,7 +89,77 @@ static const NSString *LBCameraAdjustingExposeureContext = @"LBCameraAdjustingEx
   return _captureSession;
 }
 
+- (AVCapturePhotoOutput *)photoOutput {
+  if (!_photoOutput) {
+    _photoOutput = [[AVCapturePhotoOutput alloc] init];
+//    [_photoOutput setPhotoSettingsForSceneMonitoring:self.photoSettings];
+  }
+  return _photoOutput;
+}
+
+- (AVCaptureVideoDataOutput *)videoDataOutput {
+  if (!_videoDataOutput) {
+    _videoDataOutput = [[AVCaptureVideoDataOutput alloc] init];
+    _videoDataOutput.alwaysDiscardsLateVideoFrames = YES;
+    _videoDataOutput.videoSettings = @{ (id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA) };
+    
+    [_videoDataOutput setSampleBufferDelegate:self queue:self.videoQueue];
+  }
+  return _videoDataOutput;
+}
+
+- (AVCaptureAudioDataOutput *)audioDataOutput {
+  if (!_audioDataOutput) {
+    _audioDataOutput = [[AVCaptureAudioDataOutput alloc] init];
+  }
+  return _audioDataOutput;
+}
+
 #pragma mark - Public Methods
+
+- (BOOL)setupSessionWithSinglePhoto:(BOOL)photo {
+  // 设置摄像头
+  NSError *error = nil;
+  AVCaptureDevice *videoDevice = [DHCameraHelper videoDeviceWithDevicePosition:AVCaptureDevicePositionBack];
+  
+  AVCaptureDeviceInput *videoInput = [AVCaptureDeviceInput deviceInputWithDevice:videoDevice error:&error];
+  if (error) {
+    NSAssert(NO, @"creat videoInput Error : %@", error.localizedDescription);
+    return NO;
+  }
+  
+  // 添加视频流输入
+  if ([self.captureSession canAddInput:videoInput]) {
+    [self.captureSession addInput:videoInput];
+    self.activeVideoInput = videoInput;
+  }
+  
+  // 添加照片输出
+  if ([self.captureSession canAddOutput:self.photoOutput]) {
+    [self.captureSession addOutput:self.photoOutput];
+  }
+  
+  if (!photo) {
+    // 设置麦克风
+    AVCaptureDevice *audioDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio];
+    AVCaptureDeviceInput *audioInput = [AVCaptureDeviceInput deviceInputWithDevice:audioDevice error:&error];
+    if (error) {
+      NSAssert(NO, @"Get audio Input error : %@", error.localizedDescription);
+      return NO;
+    }
+    if ([self.captureSession canAddInput:audioInput]) {
+      [self.captureSession addInput:audioInput];
+    }
+    
+    // 添加视频输入流
+    if ([self.captureSession canAddOutput:self.videoDataOutput]) {
+      [self.captureSession addOutput:self.videoDataOutput];
+    }
+  }
+  
+  return YES;
+}
+
 
 - (void)setSessionPreset:(AVCaptureSessionPreset)sessionPreset {
   if ([self.captureSession canSetSessionPreset:sessionPreset]) {
@@ -100,18 +183,14 @@ static const NSString *LBCameraAdjustingExposeureContext = @"LBCameraAdjustingEx
   }
 }
 
-//- (BOOL)isRecording {
-//  return self.videoFileOutput.isRecording;
-//}
-
 
 - (void)capturePhoto:(CapturePhotoBlock)completeHandler {
   self.capturePhotoBlock = completeHandler;
-
-
-  
+  self.captureSession.sessionPreset = AVCaptureSessionPresetPhoto;
+  // 需要每次生成.
+  AVCapturePhotoSettings *setting = [self generalSetting];
+  [self.photoOutput capturePhotoWithSettings:setting delegate:self];
 }
-
 
 - (BOOL)canSwitchCameras {
   return self.cameraCount > 1;
@@ -185,7 +264,6 @@ static const NSString *LBCameraAdjustingExposeureContext = @"LBCameraAdjustingEx
       [device unlockForConfiguration];
     } else {
       NSAssert(NO, @"expose fail : %@", error.localizedDescription);
-  
     }
   }
 }
@@ -232,6 +310,54 @@ static const NSString *LBCameraAdjustingExposeureContext = @"LBCameraAdjustingEx
   }
 }
 
+#pragma mark - Video Recorder
+
+- (void)startRecording {
+  AVCaptureConnection *videoConnection = [self.videoDataOutput connectionWithMediaType:AVMediaTypeVideo];
+  
+  // 视频方向
+  if ([videoConnection isVideoOrientationSupported]) {
+    videoConnection.videoOrientation = [self currentVideoOrientation];
+  }
+  
+  // 摄像头镜像
+  AVCaptureDevicePosition currentPosition = [self acticeCamera].position;
+  videoConnection.videoMirrored = ((AVCaptureDevicePositionUnspecified == currentPosition) ||
+                                   (AVCaptureDevicePositionFront == currentPosition));
+  
+  // 视频防抖
+  if ([videoConnection isVideoStabilizationSupported]) {
+    videoConnection.preferredVideoStabilizationMode = AVCaptureVideoStabilizationModeAuto;
+    //    videoConnection.enablesVideoStabilizationWhenAvailable = YES;
+  }
+  
+  AVCaptureDevice *device = [self acticeCamera];
+  device.activeVideoMinFrameDuration = CMTimeMake(1, 24);
+  device.activeVideoMaxFrameDuration = CMTimeMake(1, 60);
+  
+  // 视频平稳对焦
+  if ([device isSmoothAutoFocusSupported]) {
+    NSError *error = nil;
+    if ([device lockForConfiguration:&error]) {
+      device.smoothAutoFocusEnabled = YES;
+      [device unlockForConfiguration];
+    } else {
+      NSAssert(NO, @"start recode error : %@", error.localizedDescription);
+    }
+  }
+  
+//  self.videoDataOutput recommendedVideoSettingsForAssetWriterWithOutputFileType:<#(nonnull AVFileType)#>
+  
+}
+
+- (void)stopRecording {
+  
+}
+
+- (BOOL)isRecording {
+  return YES;
+}
+
 #pragma mark - KVO Action
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
@@ -258,8 +384,6 @@ static const NSString *LBCameraAdjustingExposeureContext = @"LBCameraAdjustingEx
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
   }
 }
-
-
 
 #pragma mark - Private Methods
 
@@ -304,20 +428,218 @@ static const NSString *LBCameraAdjustingExposeureContext = @"LBCameraAdjustingEx
   return device;
 }
 
+- (AVCaptureVideoOrientation)currentVideoOrientation {
+  UIDeviceOrientation sataus = [UIDevice currentDevice].orientation;
+  switch (sataus) {
+    case UIDeviceOrientationPortrait:
+      return AVCaptureVideoOrientationPortrait;
+    case UIDeviceOrientationLandscapeRight:
+      return AVCaptureVideoOrientationLandscapeLeft;
+    case UIDeviceOrientationLandscapeLeft:
+      return AVCaptureVideoOrientationLandscapeRight;
+    default:
+      return AVCaptureVideoOrientationPortraitUpsideDown;
+  }
+}
 
-+ (AVCaptureDevice *)dualCameraDevice API_AVAILABLE(ios(10.2)) {
-  AVCaptureDevice *device = nil;
+- (AVCapturePhotoSettings *)generalSetting {
+  AVCapturePhotoSettings *settings = [AVCapturePhotoSettings photoSettings];
+  if (@available(iOS 12.0, *)) {
+    // 闪光灯时自动防红眼
+    settings.autoRedEyeReductionEnabled = YES;
+  }
+  
+  if ([settings isHighResolutionPhotoEnabled]) {
+    settings.highResolutionPhotoEnabled = _highResolutionEnabled; // 以当前活跃设备和支持的最高分辨率拍照. default = NO
+  }
+  
+  if (@available(iOS 11.0, *)) {
+    if ([self.photoOutput isCameraCalibrationDataDeliverySupported]) {
+      settings.cameraCalibrationDataDeliveryEnabled = NO;
+    }
+  }
+  
+  // 自动图像稳定
+  settings.autoStillImageStabilizationEnabled = YES;
   if (@available(iOS 10.2, *)) {
-    AVCaptureDeviceDiscoverySession *discoverySession = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInDualCamera] mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionBack];
-    device = [discoverySession.devices firstObject];
+    if ([settings isAutoDualCameraFusionEnabled]) {
+      // 自动组合双摄像头设备数据
+      settings.autoDualCameraFusionEnabled = YES;
+    }
   }
+  settings.flashMode = self.flashMode;
+  return settings;
+}
 
-  // 不支持后置双摄给一个默认的广角摄像头
-  if (!device) {
-    device = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWideAngleCamera mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionBack];
+/**
+ 无损格式图片导出设置
+
+ @return AVCapturePhotoSettings 实例
+ */
+- (AVCapturePhotoSettings *)rawPhotoSetting {
+  self.photoOutput.livePhotoCaptureEnabled = NO;
+  NSUInteger rawFormat = self.photoOutput.availableRawPhotoPixelFormatTypes.firstObject.unsignedIntegerValue;
+  AVCapturePhotoSettings *settings = [AVCapturePhotoSettings photoSettingsWithRawPixelFormatType:(OSType)rawFormat];
+  settings.flashMode = self.flashMode;
+  return settings;
+}
+
+
+/**
+ 动态壁纸图片导出对象设置
+ */
+- (AVCapturePhotoSettings *)livePhotoSetting {
+  self.photoOutput.livePhotoCaptureEnabled = YES;
+  self.photoOutput.livePhotoAutoTrimmingEnabled = YES;
+  self.photoOutput.highResolutionCaptureEnabled = YES;
+  
+  AVCapturePhotoSettings *setting = [[AVCapturePhotoSettings alloc] init];
+  if ([setting isHighResolutionPhotoEnabled]) {
+    setting.highResolutionPhotoEnabled = _highResolutionEnabled; // 以当前活跃设备和支持的最高分辨率拍照. default = NO
   }
+  
+  NSURL *writeURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"LivePhotoVideo%ld.mov",(long)setting.uniqueID]]];
+  setting.livePhotoMovieFileURL = writeURL;
+  
+  return setting;
+}
 
-  return device;
+- (UIImage *)fixOrientationWith:(UIImage *)image {
+  // No-op if the orientation is already correct
+  if (image.imageOrientation == UIImageOrientationUp) {
+    return image;
+  }
+  
+  // We need to calculate the proper transformation to make the image upright.
+  // We do it in 2 steps: Rotate if Left/Right/Down, and then flip if Mirrored.
+  CGAffineTransform transform = CGAffineTransformIdentity;
+  
+  switch (image.imageOrientation) {
+    case UIImageOrientationDown:
+    case UIImageOrientationDownMirrored:
+      transform = CGAffineTransformTranslate(transform, image.size.width, image.size.height);
+      transform = CGAffineTransformRotate(transform, M_PI);
+      break;
+      
+    case UIImageOrientationLeft:
+    case UIImageOrientationLeftMirrored:
+      transform = CGAffineTransformTranslate(transform, image.size.width, 0);
+      transform = CGAffineTransformRotate(transform, M_PI_2);
+      break;
+      
+    case UIImageOrientationRight:
+    case UIImageOrientationRightMirrored:
+      transform = CGAffineTransformTranslate(transform, 0, image.size.height);
+      transform = CGAffineTransformRotate(transform, -M_PI_2);
+      break;
+    default:
+      break;
+  }
+  
+  switch (image.imageOrientation) {
+    case UIImageOrientationUpMirrored:
+    case UIImageOrientationDownMirrored:
+      transform = CGAffineTransformTranslate(transform, image.size.width, 0);
+      transform = CGAffineTransformScale(transform, -1, 1);
+      break;
+      
+    case UIImageOrientationLeftMirrored:
+    case UIImageOrientationRightMirrored:
+      transform = CGAffineTransformTranslate(transform, image.size.height, 0);
+      transform = CGAffineTransformScale(transform, -1, 1);
+      break;
+    default:
+      break;
+  }
+  
+  // Now we draw the underlying CGImage into a new context, applying the transform
+  // calculated above.
+  CGContextRef ctx = CGBitmapContextCreate(NULL, image.size.width, image.size.height,
+                                           CGImageGetBitsPerComponent(image.CGImage), 0,
+                                           CGImageGetColorSpace(image.CGImage),
+                                           CGImageGetBitmapInfo(image.CGImage));
+  CGContextConcatCTM(ctx, transform);
+  switch (image.imageOrientation) {
+    case UIImageOrientationLeft:
+    case UIImageOrientationLeftMirrored:
+    case UIImageOrientationRight:
+    case UIImageOrientationRightMirrored:
+      // Grr...
+      CGContextDrawImage(ctx, CGRectMake(0,0, image.size.height, image.size.width), image.CGImage);
+      break;
+      
+    default:
+      CGContextDrawImage(ctx, CGRectMake(0,0,image.size.width,image.size.height), image.CGImage);
+      break;
+  }
+  
+  // And now we just create a new UIImage from the drawing context
+  CGImageRef cgimg = CGBitmapContextCreateImage(ctx);
+  UIImage *img = [UIImage imageWithCGImage:cgimg];
+  CGContextRelease(ctx);
+  CGImageRelease(cgimg);
+  return img;
+}
+
+- (void)checkPhotoLibraryAuthorizationWithCompletitionHandler:(void(^)(BOOL authorized))completionHandler {
+  
+  switch ([PHPhotoLibrary authorizationStatus]) {
+      
+    case PHAuthorizationStatusAuthorized: {
+      // The user has previously granted access to the photo library.
+      completionHandler(YES);
+      break;
+    }
+    case PHAuthorizationStatusNotDetermined: {
+      // The user has not yet been presented with the option to grant photo library access so request access.
+      [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+        completionHandler((status == PHAuthorizationStatusAuthorized));
+        
+      }];
+      break;
+    }
+    case PHAuthorizationStatusDenied: {
+      // The user has previously denied access.
+      completionHandler(NO);
+      break;
+    }
+    case PHAuthorizationStatusRestricted: {
+      // The user doesn't have the authority to request access e.g. parental restriction.
+      completionHandler(NO);
+      break;
+    }
+      
+    default:
+      break;
+  }
+}
+
+- (void)saveLivePhotoToPhotoLibraryWithLivePhotoMovieURL:(NSURL *)livePhotoMovieURL completitionHandler:(void(^)(BOOL success, NSError *error))completionHandler {
+  
+  [self checkPhotoLibraryAuthorizationWithCompletitionHandler:^(BOOL authorized) {
+    
+    if (!authorized) {
+      NSLog(@"Permission to access photo library denied.");
+      completionHandler(NO, nil);
+      return;
+    }
+    
+    if (!self.livePhotoData) {
+      NSLog(@"Unable to create JPEG data.");
+      completionHandler(NO, nil);
+      return;
+    }
+    
+    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+      
+      PHAssetCreationRequest *creationRequest = [PHAssetCreationRequest creationRequestForAsset];
+      PHAssetResourceCreationOptions *creationOptions = [[PHAssetResourceCreationOptions alloc] init];
+      creationOptions.shouldMoveFile = YES;
+      [creationRequest addResourceWithType:PHAssetResourceTypePhoto data:self.livePhotoData options:nil];
+      [creationRequest addResourceWithType:PHAssetResourceTypePairedVideo fileURL:livePhotoMovieURL options:creationOptions];
+      
+    } completionHandler: completionHandler];
+  }];
 }
 
 #pragma mark - AVCapturePhotoCaptureDelegate
@@ -331,44 +653,109 @@ static const NSString *LBCameraAdjustingExposeureContext = @"LBCameraAdjustingEx
 }
 
 - (void)captureOutput:(AVCapturePhotoOutput *)output didCapturePhotoForResolvedSettings:(AVCaptureResolvedPhotoSettings *)resolvedSettings {
-
+  NSLog(@"didCapturePhotoForResolvedSettings");
 }
 
 - (void)captureOutput:(AVCapturePhotoOutput *)output didFinishProcessingPhoto:(AVCapturePhoto *)photo error:(nullable NSError *)error API_AVAILABLE(ios(11.0)) {
-
   NSData *data = [photo fileDataRepresentation];
+  
+  if (_takePhotoType == LBCapturePhotoTypeLivePhoto) {
+    self.livePhotoData = data;
+  } else if (_takePhotoType == LBCapturePhotoTypeRaw) {
+    
+    NSString *writeFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"raw%@.dng",@(self.photoSettings.uniqueID)]];
+ 
+    [[NSFileManager defaultManager] removeItemAtPath:writeFilePath error:nil];
+    //  NSString *filePath = [dir stringByAppendingPathExtension:@"dng"];
+    [data writeToFile:writeFilePath atomically:YES];
+    
+    if (self.capturePhotoBlock) {
+      self.capturePhotoBlock(nil);
+    }
+  } else if (_takePhotoType == LBCapturePhotoTypeNormal) {
+    if (self.capturePhotoBlock) {
+      UIImage *resultImage = [UIImage imageWithData:data];
+      resultImage = [self fixOrientationWith:resultImage];
+      self.capturePhotoBlock(resultImage);
+    }
+  }
 
-  NSString *outputPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"测试.dng"];
-  [[NSFileManager defaultManager] removeItemAtPath:outputPath error:nil];
-  //  NSString *filePath = [dir stringByAppendingPathExtension:@"dng"];
-  [data writeToFile:outputPath atomically:YES];
 }
 
 - (void)captureOutput:(AVCapturePhotoOutput *)output didFinishProcessingPhotoSampleBuffer:(nullable CMSampleBufferRef)photoSampleBuffer previewPhotoSampleBuffer:(nullable CMSampleBufferRef)previewPhotoSampleBuffer resolvedSettings:(AVCaptureResolvedPhotoSettings *)resolvedSettings bracketSettings:(nullable AVCaptureBracketedStillImageSettings *)bracketSettings error:(nullable NSError *)error API_DEPRECATED("Use -captureOutput:didFinishProcessingPhoto:error: instead.", ios(10.0, 11.0)) {
-
+  
+  if (_takePhotoType == LBCapturePhotoTypeLivePhoto) {
+    self.livePhotoData = [AVCapturePhotoOutput JPEGPhotoDataRepresentationForJPEGSampleBuffer:photoSampleBuffer
+                                                                   previewPhotoSampleBuffer:previewPhotoSampleBuffer];
+  } else if (_takePhotoType == LBCapturePhotoTypeNormal) {
+    if (self.capturePhotoBlock) {
+      NSData *data = [AVCapturePhotoOutput JPEGPhotoDataRepresentationForJPEGSampleBuffer:photoSampleBuffer
+                                                                 previewPhotoSampleBuffer:previewPhotoSampleBuffer];
+      UIImage *resultImage = [UIImage imageWithData:data];
+      resultImage = [self fixOrientationWith:resultImage];
+      
+      self.capturePhotoBlock(resultImage);
+    }
+  }
 }
 
 - (void)captureOutput:(AVCapturePhotoOutput *)output didFinishProcessingRawPhotoSampleBuffer:(nullable CMSampleBufferRef)rawSampleBuffer previewPhotoSampleBuffer:(nullable CMSampleBufferRef)previewPhotoSampleBuffer resolvedSettings:(AVCaptureResolvedPhotoSettings *)resolvedSettings bracketSettings:(nullable AVCaptureBracketedStillImageSettings *)bracketSettings error:(nullable NSError *)error API_DEPRECATED("Use -captureOutput:didFinishProcessingPhoto:error: instead.", ios(10.0, 11.0)) {
   // 拍摄raw
-  NSData *data = [AVCapturePhotoOutput DNGPhotoDataRepresentationForRawSampleBuffer:rawSampleBuffer previewPhotoSampleBuffer:previewPhotoSampleBuffer];
-  NSString *outputPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"测试.dng"];
-  //  NSString *filePath = [dir stringByAppendingPathExtension:@"dng"];
-  [data writeToFile:outputPath atomically:YES];
-  // do something...
-
+  if (_takePhotoType == LBCapturePhotoTypeRaw) {
+    NSData *data = [AVCapturePhotoOutput DNGPhotoDataRepresentationForRawSampleBuffer:rawSampleBuffer previewPhotoSampleBuffer:previewPhotoSampleBuffer];
+    NSString *writeFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"raw%@.dng",@(self.photoSettings.uniqueID)]];
+    
+    [[NSFileManager defaultManager] removeItemAtPath:writeFilePath error:nil];
+    //  NSString *filePath = [dir stringByAppendingPathExtension:@"dng"];
+    [data writeToFile:writeFilePath atomically:YES];
+    
+    if (self.capturePhotoBlock) {
+//      self.capturePhotoBlock(nil, data, [NSURL fileURLWithPath:writeFilePath]);
+    }
+  }
+  
 }
 
+// 开始拍摄动态壁纸, 调用一次 显示'LIVE'等回调
 - (void)captureOutput:(AVCapturePhotoOutput *)output didFinishRecordingLivePhotoMovieForEventualFileAtURL:(NSURL *)outputFileURL resolvedSettings:(AVCaptureResolvedPhotoSettings *)resolvedSettings {
-
+  NSLog(@"[livePhoto] record start");
 }
 
+// 动态壁纸拍摄完成, 接收动态照片的拍摄结果
 - (void)captureOutput:(AVCapturePhotoOutput *)output didFinishProcessingLivePhotoToMovieFileAtURL:(NSURL *)outputFileURL duration:(CMTime)duration photoDisplayTime:(CMTime)photoDisplayTime resolvedSettings:(AVCaptureResolvedPhotoSettings *)resolvedSettings error:(nullable NSError *)error {
+  NSLog(@"[livePhoto] record end");
+  
+  if (self.capturePhotoBlock) {
+//    self.capturePhotoBlock(nil, self.livePhotoData, outputFileURL);
+  }
 
+  // livePhoto
+  [self saveLivePhotoToPhotoLibraryWithLivePhotoMovieURL:outputFileURL completitionHandler:^(BOOL success, NSError *error) {
+    
+    if (error) {
+      NSLog(@"%@",error.localizedDescription);
+    }
+  }];
 }
 
+// 操作处理完成
 - (void)captureOutput:(AVCapturePhotoOutput *)output didFinishCaptureForResolvedSettings:(AVCaptureResolvedPhotoSettings *)resolvedSettings error:(nullable NSError *)error {
-
+//  BOOL success = error ? NO : YES;
+//  __weak typeof(self)weakSelf = self;
+  dispatch_async(dispatch_get_main_queue(), ^{
+    // 发送通知
+    NSLog(@"-------------");
+  });
 }
 
+#pragma mark - AVCaptureVideoDataOutputSampleBufferDelegate
+
+- (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
+  
+}
+
+- (void)captureOutput:(AVCaptureOutput *)output didDropSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection API_AVAILABLE(ios(6.0)) {
+  
+}
 
 @end
