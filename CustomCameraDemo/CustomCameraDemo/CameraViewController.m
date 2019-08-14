@@ -67,11 +67,15 @@
 //  CGFloat halfH = screenSize.height/2.0;
   CGFloat itemWH = 50.0;
   CGRect frame = CGRectMake(halfW - itemWH/2.0, screenSize.height - itemWH -30, itemWH, itemWH);
-  [self buttonWithFrame:frame
+  UIButton *btn = [self buttonWithFrame:frame
                   title:nil
                   image:[UIImage imageNamed:@"takePhoto"]
           selectedImage:nil
-                 action:@selector(onCamera)];
+                 action:nil];
+  UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPress:)];
+  [btn addGestureRecognizer:longPress];
+  UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onCamera)];
+  [btn addGestureRecognizer:tapGesture];
   
   // flash
   frame = CGRectMake(30, 100, 40, 40);
@@ -102,6 +106,16 @@
   [_cameraManager capturePhoto:^(UIImage * _Nullable resultImage) {
     
   }];
+}
+
+- (void)onLongPress:(UILongPressGestureRecognizer *)longPress {
+  if (longPress.state == UIGestureRecognizerStateBegan) {
+    [_cameraManager startRecording];
+    NSLog(@"start record");
+  } else if (longPress.state == UIGestureRecognizerStateEnded) {
+    [_cameraManager stopRecording];
+    NSLog(@"end record");
+  }
 }
 
 - (void)onFlash:(UIButton *)sender {

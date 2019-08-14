@@ -15,6 +15,7 @@
 		8CEA1C992301AFE600F306B2 /* 聚焦热力图.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CEA1C922301AFE500F306B2 /* 聚焦热力图.png */; };
 		8CEA1C9A2301AFE600F306B2 /* flashOn.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CEA1C932301AFE500F306B2 /* flashOn.png */; };
 		8CEA1C9B2301AFE600F306B2 /* cameraFlip.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CEA1C942301AFE500F306B2 /* cameraFlip.png */; };
+		CE8A0AD623039DDF005AEB52 /* DHVideoBufferWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8A0AD523039DDF005AEB52 /* DHVideoBufferWriter.m */; };
 		CEA0A95C22F18BE100F781E4 /* AlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA0A95B22F18BE100F781E4 /* AlbumViewController.m */; };
 		CEA0A95F22F18BF400F781E4 /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA0A95E22F18BF400F781E4 /* CameraViewController.m */; };
 		CEA0A96222F18C8100F781E4 /* UserAuthorization.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA0A96022F18C8100F781E4 /* UserAuthorization.m */; };
@@ -26,7 +27,6 @@
 		CEDDA37022F03770003A52A9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEDDA36F22F03770003A52A9 /* Assets.xcassets */; };
 		CEDDA37322F03770003A52A9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEDDA37122F03770003A52A9 /* LaunchScreen.storyboard */; };
 		CEDDA37622F03770003A52A9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CEDDA37522F03770003A52A9 /* main.m */; };
-		CEDDA39B22F03CF0003A52A9 /* YiquxCameraManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CEDDA38422F03CF0003A52A9 /* YiquxCameraManager.m */; };
 		CEDDA39C22F03CF0003A52A9 /* YiquxCameraPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEDDA38522F03CF0003A52A9 /* YiquxCameraPreviewView.m */; };
 		CEDDA3AA22F03CF0003A52A9 /* YiquxPhotosUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = CEDDA39822F03CF0003A52A9 /* YiquxPhotosUtility.m */; };
 /* End PBXBuildFile section */
@@ -41,6 +41,8 @@
 		8CEA1C922301AFE500F306B2 /* 聚焦热力图.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "聚焦热力图.png"; sourceTree = "<group>"; };
 		8CEA1C932301AFE500F306B2 /* flashOn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flashOn.png; sourceTree = "<group>"; };
 		8CEA1C942301AFE500F306B2 /* cameraFlip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cameraFlip.png; sourceTree = "<group>"; };
+		CE8A0AD423039DDF005AEB52 /* DHVideoBufferWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DHVideoBufferWriter.h; sourceTree = "<group>"; };
+		CE8A0AD523039DDF005AEB52 /* DHVideoBufferWriter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DHVideoBufferWriter.m; sourceTree = "<group>"; };
 		CEA0A95A22F18BE100F781E4 /* AlbumViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlbumViewController.h; sourceTree = "<group>"; };
 		CEA0A95B22F18BE100F781E4 /* AlbumViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlbumViewController.m; sourceTree = "<group>"; };
 		CEA0A95D22F18BF400F781E4 /* CameraViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraViewController.h; sourceTree = "<group>"; };
@@ -63,9 +65,7 @@
 		CEDDA37222F03770003A52A9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CEDDA37422F03770003A52A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CEDDA37522F03770003A52A9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		CEDDA38222F03CF0003A52A9 /* YiquxCameraManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YiquxCameraManager.h; sourceTree = "<group>"; };
 		CEDDA38322F03CF0003A52A9 /* YiquxCameraPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YiquxCameraPreviewView.h; sourceTree = "<group>"; };
-		CEDDA38422F03CF0003A52A9 /* YiquxCameraManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YiquxCameraManager.m; sourceTree = "<group>"; };
 		CEDDA38522F03CF0003A52A9 /* YiquxCameraPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YiquxCameraPreviewView.m; sourceTree = "<group>"; };
 		CEDDA39822F03CF0003A52A9 /* YiquxPhotosUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YiquxPhotosUtility.m; sourceTree = "<group>"; };
 		CEDDA39922F03CF0003A52A9 /* YiquxPhotosUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YiquxPhotosUtility.h; sourceTree = "<group>"; };
@@ -150,12 +150,12 @@
 		CEDDA38122F03CF0003A52A9 /* Camera */ = {
 			isa = PBXGroup;
 			children = (
-				CEDDA38222F03CF0003A52A9 /* YiquxCameraManager.h */,
-				CEDDA38422F03CF0003A52A9 /* YiquxCameraManager.m */,
 				CEDDA38322F03CF0003A52A9 /* YiquxCameraPreviewView.h */,
 				CEDDA38522F03CF0003A52A9 /* YiquxCameraPreviewView.m */,
 				8CEA1C8A23019E6D00F306B2 /* LBCameraManager.h */,
 				8CEA1C8B23019E6D00F306B2 /* LBCameraManager.m */,
+				CE8A0AD423039DDF005AEB52 /* DHVideoBufferWriter.h */,
+				CE8A0AD523039DDF005AEB52 /* DHVideoBufferWriter.m */,
 				CEB0A41722F2CE700089BDEB /* DHCameraHelper.h */,
 				CEB0A41822F2CE700089BDEB /* DHCameraHelper.m */,
 				CEB0A41222F2B4C60089BDEB /* AVCapturePhotoOutputHeader.h */,
@@ -260,8 +260,8 @@
 				CEDDA37622F03770003A52A9 /* main.m in Sources */,
 				8CEA1C8C23019E6D00F306B2 /* LBCameraManager.m in Sources */,
 				CEA0A95F22F18BF400F781E4 /* CameraViewController.m in Sources */,
+				CE8A0AD623039DDF005AEB52 /* DHVideoBufferWriter.m in Sources */,
 				CEDDA36822F0376E003A52A9 /* AppDelegate.m in Sources */,
-				CEDDA39B22F03CF0003A52A9 /* YiquxCameraManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
