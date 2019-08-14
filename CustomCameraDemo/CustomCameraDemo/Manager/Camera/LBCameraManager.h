@@ -18,6 +18,31 @@ typedef NS_ENUM(NSInteger, LBCapturePhotoType) {
   LBCapturePhotoTypeLivePhoto,  // 输出动态壁纸
 };
 
+
+// 拍照模式 或者 视频模式
+typedef NS_ENUM(NSInteger, AVCamCaptureMode) {
+  AVCamCaptureModePhoto = 0,
+  AVCamCaptureModeMovie,
+};
+
+// 是否打开动态壁纸
+typedef NS_ENUM(NSInteger, AVCamLivePhotoMode) {
+  AVCamLivePhotoModeOn,
+  AVCamLivePhotoModeOff
+};
+
+
+typedef NS_ENUM(NSInteger, AVCamDepthDataDeliveryMode) {
+  AVCamDepthDataDeliveryModeOn,
+  AVCamDepthDataDeliveryModeOff
+};
+
+typedef NS_ENUM(NSInteger, AVCamPortraitEffectsMatteDeliveryMode) {
+  AVCamPortraitEffectsMatteDeliveryModeOn,
+  AVCamPortraitEffectsMatteDeliveryModeOff
+};
+
+
 typedef void(^CapturePhotoBlock)(UIImage * _Nullable resultImage);
 
 @interface LBCameraManager : NSObject

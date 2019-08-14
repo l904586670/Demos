@@ -67,6 +67,8 @@ static const NSString *LBCameraAdjustingExposeureContext = @"LBCameraAdjustingEx
     _highResolutionEnabled = NO;
     
     [self bufferWriter];
+    
+    [self videoQueue];
   }
   return self;
 }
@@ -76,7 +78,7 @@ static const NSString *LBCameraAdjustingExposeureContext = @"LBCameraAdjustingEx
 - (dispatch_queue_t)videoQueue {
   if (!_videoQueue) {
     NSString *label = [[NSBundle mainBundle].bundleIdentifier stringByAppendingString:@".avfoundation.videoQueue"];
-    _videoQueue = dispatch_queue_create([label cStringUsingEncoding:NSASCIIStringEncoding], NULL);
+    _videoQueue = dispatch_queue_create([label cStringUsingEncoding:NSASCIIStringEncoding], DISPATCH_QUEUE_SERIAL);
   }
   return _videoQueue;
 }
