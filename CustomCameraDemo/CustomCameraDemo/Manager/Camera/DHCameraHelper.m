@@ -9,6 +9,23 @@
 #import "DHCameraHelper.h"
 
 #import <UIKit/UIKit.h>
+#import <Photos/Photos.h>
+
+@implementation AVCaptureDeviceDiscoverySession (Utilities)
+
+- (NSInteger)uniqueDevicePositionsCount {
+  NSMutableArray <NSNumber *>*uniqueDevicePositions = [NSMutableArray array];
+  for (AVCaptureDevice *device in self.devices) {
+    if (![uniqueDevicePositions containsObject:@(device.position)]) {
+      [uniqueDevicePositions addObject:@(device.position)];
+    }
+  }
+  return uniqueDevicePositions.count;
+}
+
+@end
+
+#pragma mark - /************************/
 
 @implementation DHCameraHelper
 
@@ -52,6 +69,38 @@
 
 + (AVCaptureDevice *)audioDevice {
   return [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio];
+}
+
++ (AVCaptureDevice *)defaultCameraDevice {
+  // Choose the back dual camera if available, otherwise default to a wide angle camera.
+  AVCaptureDevice* videoDevice = nil;
+  if (@available(iOS 10.2, *)) {
+    videoDevice = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInDualCamera mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionBack];
+  }
+  if (!videoDevice) {
+    // If a rear dual camera is not available, default to the rear wide angle camera.
+    videoDevice = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWideAngleCamera mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionBack];
+    
+    // In the event that the rear wide angle camera isn't available, default to the front wide angle camera.
+    if (!videoDevice) {
+      videoDevice = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWideAngleCamera mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionFront];
+    }
+  }
+  
+  return videoDevice;
+}
+
++ (AVCaptureDeviceDiscoverySession *)deviceDiscoverySessionWith:(AVCaptureDevicePosition)devicePosition {
+  NSArray<AVCaptureDeviceType> *deviceTypes = @[AVCaptureDeviceTypeBuiltInWideAngleCamera];
+  if (@available(iOS 10.2, *)) {
+    if (@available(iOS 11.1, *)) {
+      deviceTypes = @[AVCaptureDeviceTypeBuiltInWideAngleCamera, AVCaptureDeviceTypeBuiltInDualCamera, AVCaptureDeviceTypeBuiltInTrueDepthCamera];
+    } else {
+      deviceTypes = @[AVCaptureDeviceTypeBuiltInWideAngleCamera, AVCaptureDeviceTypeBuiltInDualCamera];
+    }
+  }
+  AVCaptureDeviceDiscoverySession *deviceDiscoverySession = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:deviceTypes mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionUnspecified];
+  return deviceDiscoverySession;
 }
 
 #pragma mark - Other
@@ -200,5 +249,41 @@
   }
 }
 
-
++ (void)requestAlbumPermission:(void(^)(void))authorizedHandler
+                        denied:(void(^)(NSInteger authStatus))deniedHandler {
+  PHAuthorizationStatus photoAuthStatus = [PHPhotoLibrary authorizationStatus];
+  switch (photoAuthStatus) {
+    case PHAuthorizationStatusNotDetermined: {
+      [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+          if (PHAuthorizationStatusAuthorized == status) {
+            if (authorizedHandler) {
+              authorizedHandler();
+            }
+          } else {
+            if (deniedHandler) {
+              deniedHandler(AVAuthorizationStatusDenied);
+            }
+          }
+        });
+      }];
+      break;
+    }
+    case PHAuthorizationStatusRestricted:
+      if (deniedHandler) {
+        deniedHandler(PHAuthorizationStatusRestricted);
+      }
+      break;
+    case PHAuthorizationStatusDenied:
+      if (deniedHandler) {
+        deniedHandler(PHAuthorizationStatusDenied);
+      }
+      break;
+    case PHAuthorizationStatusAuthorized:
+      if (authorizedHandler) {
+        authorizedHandler();
+      }
+      break;
+  }
+}
 @end

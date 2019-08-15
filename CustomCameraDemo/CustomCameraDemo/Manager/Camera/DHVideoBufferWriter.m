@@ -13,8 +13,6 @@
 
 @interface DHVideoBufferWriter ()
 
-@property (nonatomic, strong) CMMotionManager *motionManager;
-
 @property (nonatomic, strong) dispatch_queue_t writeQueue;
 @property (nonatomic, strong) AVAssetWriter *assetWriter;
 @property (nonatomic, strong) AVAssetWriterInput *videoInput;
@@ -22,6 +20,10 @@
 
 @property (nonatomic, assign) BOOL readyToRecordVideo;
 @property (nonatomic, assign) BOOL readyToRecordAudio;
+
+@property (nonatomic, strong) CMMotionManager *motionManager;
+
+@property (nonatomic, assign) UIDeviceOrientation deviceOrientation;
 
 @end
 
@@ -33,30 +35,14 @@
     _readyToRecordVideo = NO;
     _readyToRecordAudio = NO;
     
+    _devicePosition = AVCaptureDevicePositionBack;
+    
     [self motionManager];
   }
   return self;
 }
 
 #pragma mark - Lazy Methods
-
-- (CMMotionManager *)motionManager {
-  if (!_motionManager) {
-    // 在build setting中设置不能旋转. 用 UIDevice 获取方向不准确,使用陀螺仪获取方向
-    dispatch_async(dispatch_get_main_queue(), ^{
-      CMMotionManager *motionManager = [[CMMotionManager alloc] init];
-      _motionManager = motionManager;
-    });
-    
-//    motionManager.deviceMotionUpdateInterval = 1/2.0;
-    
-//    [motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMDeviceMotion * _Nullable motion, NSError * _Nullable error) {
-//      [self performSelectorInBackground:@selector(handleDeviceMotion:) withObject:motion];
-//    }]; 
-    
-  }
-  return _motionManager;
-}
 
 - (dispatch_queue_t)writeQueue {
   if (!_writeQueue) {
@@ -66,20 +52,29 @@
   return _writeQueue;
 }
 
-- (AVAssetWriter *)assetWriter {
-  if (!_assetWriter) {
-    [self removeVideoOutputFile];
-    
-    NSError *error = nil;
-    _assetWriter = [[AVAssetWriter alloc] initWithURL:[NSURL fileURLWithPath:_outputVideoPath] fileType:AVFileTypeQuickTimeMovie error:&error];
-    if (error) {
-      NSAssert(NO, @"creat asset writer error : %@", error.localizedDescription);
+- (CMMotionManager *)motionManager {
+  if (!_motionManager) {
+    _motionManager = [[CMMotionManager alloc] init];
+    _motionManager.deviceMotionUpdateInterval = 1.0 / 3.0;
+    if (!_motionManager.deviceMotionAvailable) {
+      _motionManager = nil;
     }
+    __weak typeof(self) weakSelf = self;
+    [_motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue] withHandler: ^(CMDeviceMotion *motion, NSError *error) {
+      __strong  typeof(self) strongSelf = weakSelf;
+      [strongSelf performSelectorOnMainThread:@selector(handleDeviceMotion:) withObject:motion waitUntilDone:YES];
+    }];
   }
-  return _assetWriter;
+  
+  return _motionManager;
+}
+
+- (void)dealloc {
+  [_motionManager stopDeviceMotionUpdates];
 }
 
 #pragma mark - Public Methods
+
 
 - (void)removeVideoOutputFile {
   if (!_outputVideoPath) {
@@ -98,13 +93,14 @@
 
 - (void)startWrite {
   dispatch_async(self.writeQueue, ^{
-
-    if (!self->_assetWriter) {
-      [self assetWriter];
+    [self removeVideoOutputFile];
+    
+    NSError *error = nil;
+    self->_assetWriter = [[AVAssetWriter alloc] initWithURL:[NSURL fileURLWithPath:self->_outputVideoPath] fileType:AVFileTypeQuickTimeMovie error:&error];
+    if (error) {
+      NSAssert(NO, @"creat asset writer error : %@", error.localizedDescription);
     }
   });
-  
-  [self updateCurrentVideoOrientation];
 }
 
 - (void)stopWrite:(void(^)(NSURL * _Nullable outputUrl, NSError * _Nullable error))handle {
@@ -112,39 +108,39 @@
   _readyToRecordAudio = NO;
   
   dispatch_async(self.writeQueue, ^{
-    [self.assetWriter finishWritingWithCompletionHandler:^{
+    
+    [self->_assetWriter finishWritingWithCompletionHandler:^{
       dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.assetWriter.status == AVAssetWriterStatusCompleted) {
+        if (self->_assetWriter.status == AVAssetWriterStatusCompleted) {
           if (handle) {
-            handle([NSURL fileURLWithPath:self.outputVideoPath], nil);
+            handle([NSURL fileURLWithPath:self->_outputVideoPath], nil);
           }
         } else {
           if (handle) {
-            handle(nil, self.assetWriter.error);
+            handle(nil, self->_assetWriter.error);
           }
         }
-        
-        [self.assetWriter cancelWriting];
-        self.assetWriter = nil;
+
+        [self->_assetWriter cancelWriting];
+        self->_assetWriter = nil;
       });
     }];
   });
 }
 
-- (void)writeData:(AVCaptureConnection *)connection
-            video:(AVCaptureConnection*)video
-            audio:(AVCaptureConnection *)audio
-           buffer:(CMSampleBufferRef)buffer {
+
+- (void)addDataBuffer:(CMSampleBufferRef)buffer mediaType:(AVMediaType)mediaType {
   CFRetain(buffer);
   dispatch_async(self.writeQueue, ^{
-    if (connection == video){
+    if (mediaType == AVMediaTypeVideo) {
       if (!self->_readyToRecordVideo) {
         self->_readyToRecordVideo = [self setupAssetWriterVideoInput:CMSampleBufferGetFormatDescription(buffer)] == nil;
       }
+      
       if ([self inputsReadyToRecord]) {
         [self writeSampleBuffer:buffer ofType:AVMediaTypeVideo];
       }
-    } else if (connection == audio) {
+    } else if (mediaType == AVMediaTypeAudio) {
       if (!self->_readyToRecordAudio){
         self->_readyToRecordAudio = [self setupAssetWriterAudioInput:CMSampleBufferGetFormatDescription(buffer)] == nil;
       }
@@ -152,6 +148,7 @@
         [self writeSampleBuffer:buffer ofType:AVMediaTypeAudio];
       }
     }
+    
     CFRelease(buffer);
   });
 }
@@ -230,7 +227,7 @@
   if ([self.assetWriter canApplyOutputSettings:settings forMediaType:AVMediaTypeVideo]){
     _videoInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo outputSettings:settings];
     _videoInput.expectsMediaDataInRealTime = YES;
-//    _videoInput.transform = [self transformFromCurrentVideoOrientationToOrientation:_videoOrientation];
+    _videoInput.transform = [self transformFromCurrentVideoOrientationToOrientation:_videoOrientation];
     
     if ([_assetWriter canAddInput:_videoInput]){
       [_assetWriter addInput:_videoInput];
@@ -246,31 +243,36 @@
 // 获取视频旋转矩阵
 - (CGAffineTransform)transformFromCurrentVideoOrientationToOrientation:(AVCaptureVideoOrientation)orientation {
   CGFloat orientationAngleOffset = [self angleOffsetFromPortraitOrientationToOrientation:orientation];
-//  CGFloat videoOrientationAngleOffset = [self angleOffsetFromPortraitOrientationToOrientation:self.currentOrientation];
-//  CGFloat angleOffset;
-//  if (self.currentDevice.position == AVCaptureDevicePositionBack) {
-//    angleOffset = videoOrientationAngleOffset - orientationAngleOffset + M_PI_2;
-//  } else {
-//    angleOffset = orientationAngleOffset - videoOrientationAngleOffset + M_PI_2;
-//  }
-  return CGAffineTransformMakeRotation(orientationAngleOffset);
+  // 视频的播放方向
+  CGFloat videoOrientationAngleOffset = [self angleOffsetFromPortraitOrientationToOrientation:AVCaptureVideoOrientationPortrait];
+  CGFloat angleOffset = 0.0;
+  if (_devicePosition == AVCaptureDevicePositionBack) {
+    angleOffset = videoOrientationAngleOffset - orientationAngleOffset + M_PI_2;
+  } else if (_devicePosition == AVCaptureDevicePositionFront) {
+    angleOffset = orientationAngleOffset - videoOrientationAngleOffset + M_PI_2;
+  }
+
+  
+  NSLog(@"angleOffset : %@", @(angleOffset));
+
+  return CGAffineTransformMakeRotation(angleOffset);
 }
 
 // 获取视频旋转角度, 默认home键在右为0度
-- (CGFloat)angleOffsetFromPortraitOrientationToOrientation:(AVCaptureVideoOrientation)orientation {
+- (CGFloat)angleOffsetFromPortraitOrientationToOrientation:(AVCaptureVideoOrientation)orientation{
   CGFloat angle = 0.0;
   switch (orientation){
     case AVCaptureVideoOrientationPortrait:
-      angle = M_PI_2;
-      break;
-    case AVCaptureVideoOrientationPortraitUpsideDown:
-      angle = M_PI_2 * 3.0;
-      break;
-    case AVCaptureVideoOrientationLandscapeRight:
       angle = 0.0;
       break;
-    case AVCaptureVideoOrientationLandscapeLeft:
+    case AVCaptureVideoOrientationPortraitUpsideDown:
       angle = M_PI;
+      break;
+    case AVCaptureVideoOrientationLandscapeRight:
+      angle = -M_PI_2;
+      break;
+    case AVCaptureVideoOrientationLandscapeLeft:
+      angle = M_PI_2;
       break;
   }
   return angle;
@@ -292,29 +294,28 @@
   }
 }
 
-- (void)updateCurrentVideoOrientation {
-  [_motionManager startDeviceMotionUpdates];
-  [self handleDeviceMotion:_motionManager.deviceMotion];
-}
 
 // 从陀螺仪中获取当前设备方法
-- (void)handleDeviceMotion:(CMDeviceMotion *)deviceMotion {
+- (void)handleDeviceMotion:(CMDeviceMotion *)deviceMotion{
   double x = deviceMotion.gravity.x;
   double y = deviceMotion.gravity.y;
   if (fabs(y) >= fabs(x)) {
     if (y >= 0) {
-      _videoOrientation = AVCaptureVideoOrientationPortraitUpsideDown;
+      _deviceOrientation = UIDeviceOrientationPortraitUpsideDown;
+      _videoOrientation  = AVCaptureVideoOrientationPortraitUpsideDown;
     } else {
-      _videoOrientation = AVCaptureVideoOrientationPortrait;
+      _deviceOrientation = UIDeviceOrientationPortrait;
+      _videoOrientation  = AVCaptureVideoOrientationPortrait;
     }
   } else {
     if (x >= 0) {
-      _videoOrientation = AVCaptureVideoOrientationLandscapeLeft;
+      _deviceOrientation = UIDeviceOrientationLandscapeRight;
+      _videoOrientation  = AVCaptureVideoOrientationLandscapeRight;
     } else {
-      _videoOrientation = AVCaptureVideoOrientationLandscapeRight;
+      _deviceOrientation = UIDeviceOrientationLandscapeLeft;
+      _videoOrientation  = AVCaptureVideoOrientationLandscapeLeft;
     }
   }
-
 }
 
 

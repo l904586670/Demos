@@ -18,16 +18,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) NSString *outputVideoPath;
 
-- (void)removeVideoOutputFile;
+@property (nonatomic, assign) AVCaptureDevicePosition devicePosition;
+
+// 根据当前buffer 配置视频写入
+- (NSError *)setupAssetWriterVideoInput:(CMFormatDescriptionRef)currentFormatDescription;
+
+// 根据当前buffer 配置音频写入
+- (NSError *)setupAssetWriterAudioInput:(CMFormatDescriptionRef)currentFormatDescription;
 
 - (void)startWrite;
 
 - (void)stopWrite:(void(^)(NSURL * _Nullable outputUrl, NSError * _Nullable error))handle;
 
-- (void)writeData:(AVCaptureConnection *)connection
-            video:(AVCaptureConnection*)video
-            audio:(AVCaptureConnection *)audio
-           buffer:(CMSampleBufferRef)buffer;
+- (void)addDataBuffer:(CMSampleBufferRef)buffer mediaType:(AVMediaType)mediaType;
 
 @end
 

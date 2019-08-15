@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8CEA1C8C23019E6D00F306B2 /* LBCameraManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEA1C8B23019E6D00F306B2 /* LBCameraManager.m */; };
 		8CEA1C952301AFE600F306B2 /* camera-toke.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CEA1C8E2301AFE500F306B2 /* camera-toke.png */; };
 		8CEA1C962301AFE600F306B2 /* Size.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CEA1C8F2301AFE500F306B2 /* Size.png */; };
 		8CEA1C972301AFE600F306B2 /* flashOff.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CEA1C902301AFE500F306B2 /* flashOff.png */; };
@@ -20,6 +19,7 @@
 		CEA0A95F22F18BF400F781E4 /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA0A95E22F18BF400F781E4 /* CameraViewController.m */; };
 		CEA0A96222F18C8100F781E4 /* UserAuthorization.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA0A96022F18C8100F781E4 /* UserAuthorization.m */; };
 		CEA0A96522F190F900F781E4 /* AlbumAssetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA0A96422F190F900F781E4 /* AlbumAssetCell.m */; };
+		CEAF83A72304F1CB00601156 /* AVCameraManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CEAF83A62304F1CB00601156 /* AVCameraManager.m */; };
 		CEB0A41922F2CE700089BDEB /* DHCameraHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB0A41822F2CE700089BDEB /* DHCameraHelper.m */; };
 		CEDDA36822F0376E003A52A9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CEDDA36722F0376E003A52A9 /* AppDelegate.m */; };
 		CEDDA36B22F0376E003A52A9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEDDA36A22F0376E003A52A9 /* ViewController.m */; };
@@ -32,8 +32,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		8CEA1C8A23019E6D00F306B2 /* LBCameraManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBCameraManager.h; sourceTree = "<group>"; };
-		8CEA1C8B23019E6D00F306B2 /* LBCameraManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBCameraManager.m; sourceTree = "<group>"; };
 		8CEA1C8E2301AFE500F306B2 /* camera-toke.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera-toke.png"; sourceTree = "<group>"; };
 		8CEA1C8F2301AFE500F306B2 /* Size.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Size.png; sourceTree = "<group>"; };
 		8CEA1C902301AFE500F306B2 /* flashOff.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flashOff.png; sourceTree = "<group>"; };
@@ -51,8 +49,8 @@
 		CEA0A96122F18C8100F781E4 /* UserAuthorization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserAuthorization.h; sourceTree = "<group>"; };
 		CEA0A96322F190F900F781E4 /* AlbumAssetCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlbumAssetCell.h; sourceTree = "<group>"; };
 		CEA0A96422F190F900F781E4 /* AlbumAssetCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlbumAssetCell.m; sourceTree = "<group>"; };
-		CEB0A41222F2B4C60089BDEB /* AVCapturePhotoOutputHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AVCapturePhotoOutputHeader.h; sourceTree = "<group>"; };
-		CEB0A41322F2B98F0089BDEB /* AVCapturePhotoSettingsHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AVCapturePhotoSettingsHeader.h; sourceTree = "<group>"; };
+		CEAF83A52304F1CB00601156 /* AVCameraManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AVCameraManager.h; sourceTree = "<group>"; };
+		CEAF83A62304F1CB00601156 /* AVCameraManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AVCameraManager.m; sourceTree = "<group>"; };
 		CEB0A41722F2CE700089BDEB /* DHCameraHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DHCameraHelper.h; sourceTree = "<group>"; };
 		CEB0A41822F2CE700089BDEB /* DHCameraHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DHCameraHelper.m; sourceTree = "<group>"; };
 		CEDDA36322F0376E003A52A9 /* CustomCameraDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CustomCameraDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -152,14 +150,12 @@
 			children = (
 				CEDDA38322F03CF0003A52A9 /* YiquxCameraPreviewView.h */,
 				CEDDA38522F03CF0003A52A9 /* YiquxCameraPreviewView.m */,
-				8CEA1C8A23019E6D00F306B2 /* LBCameraManager.h */,
-				8CEA1C8B23019E6D00F306B2 /* LBCameraManager.m */,
+				CEAF83A52304F1CB00601156 /* AVCameraManager.h */,
+				CEAF83A62304F1CB00601156 /* AVCameraManager.m */,
 				CE8A0AD423039DDF005AEB52 /* DHVideoBufferWriter.h */,
 				CE8A0AD523039DDF005AEB52 /* DHVideoBufferWriter.m */,
 				CEB0A41722F2CE700089BDEB /* DHCameraHelper.h */,
 				CEB0A41822F2CE700089BDEB /* DHCameraHelper.m */,
-				CEB0A41222F2B4C60089BDEB /* AVCapturePhotoOutputHeader.h */,
-				CEB0A41322F2B98F0089BDEB /* AVCapturePhotoSettingsHeader.h */,
 			);
 			path = Camera;
 			sourceTree = "<group>";
@@ -258,8 +254,8 @@
 				CEA0A96222F18C8100F781E4 /* UserAuthorization.m in Sources */,
 				CEDDA39C22F03CF0003A52A9 /* YiquxCameraPreviewView.m in Sources */,
 				CEDDA37622F03770003A52A9 /* main.m in Sources */,
-				8CEA1C8C23019E6D00F306B2 /* LBCameraManager.m in Sources */,
 				CEA0A95F22F18BF400F781E4 /* CameraViewController.m in Sources */,
+				CEAF83A72304F1CB00601156 /* AVCameraManager.m in Sources */,
 				CE8A0AD623039DDF005AEB52 /* DHVideoBufferWriter.m in Sources */,
 				CEDDA36822F0376E003A52A9 /* AppDelegate.m in Sources */,
 			);

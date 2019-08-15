@@ -9,12 +9,18 @@
 #import "CameraViewController.h"
 
 #import "YiquxCameraPreviewView.h"
-#import "LBCameraManager.h"
+#import "AVCameraManager.h"
+#import "AVVideoMotionManager.h"
+
+#import <CoreMotion/CoreMotion.h>
 
 @interface CameraViewController () <YiquxCameraPreviewViewDelegate>
 
-@property (nonatomic, strong) LBCameraManager *cameraManager;
+@property (nonatomic, strong) AVCameraManager *baseCamera;
+
 @property (nonatomic, strong) YiquxCameraPreviewView *previewView;
+
+@property (nonatomic, strong) AVVideoMotionManager *motionManager;
 
 @end
 
@@ -23,18 +29,24 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   
-  [self cameraManager];
+  [self baseCamera];
   
   [self setupUI];
+  
+  NSLog(@"---");
+//  CMMotionManager *m = [[CMMotionManager alloc] init];
+  _motionManager = [[AVVideoMotionManager alloc] init];
+  NSLog(@"===");
 }
 
-- (LBCameraManager *)cameraManager {
-  if (!_cameraManager) {
-    _cameraManager = [[LBCameraManager alloc] init];
+- (AVCameraManager *)baseCamera {
+  if (!_baseCamera) {
+    _baseCamera = [[AVCameraManager alloc] init];
+    [self.previewView setSession:_baseCamera.session];
     
-    [_cameraManager setupSessionWithSinglePhoto:NO];
-    [self.previewView setSession:_cameraManager.captureSession];
-    [_cameraManager startSession];
+    dispatch_async(_baseCamera.sessionQueue, ^{
+      [_baseCamera.session startRunning];
+    });
     
     // 更改视频显示方向
     AVCaptureConnection *previewLayerConnection = _previewView.connection;
@@ -42,8 +54,9 @@
       [previewLayerConnection setVideoOrientation:AVCaptureVideoOrientationPortrait];
     }
   }
-  return _cameraManager;
+  return _baseCamera;
 }
+
 
 - (YiquxCameraPreviewView *)previewView {
 
@@ -103,17 +116,17 @@
 #pragma mark - Button Action
 
 - (void)onCamera {
-  [_cameraManager capturePhoto:^(UIImage * _Nullable resultImage) {
+  [_baseCamera capturePhoto:^(UIImage * _Nullable resultImage, NSData * _Nonnull imgData) {
     
   }];
 }
 
 - (void)onLongPress:(UILongPressGestureRecognizer *)longPress {
   if (longPress.state == UIGestureRecognizerStateBegan) {
-    [_cameraManager startRecording];
+    [_baseCamera startRecording];
     NSLog(@"start record");
   } else if (longPress.state == UIGestureRecognizerStateEnded) {
-    [_cameraManager stopRecording];
+    [_baseCamera stopRecording];
     NSLog(@"end record");
   }
 }
@@ -122,18 +135,25 @@
   sender.selected = !sender.selected;
   
   if (sender.isSelected) {
-    _cameraManager.flashMode = AVCaptureFlashModeOn;
+    _baseCamera.flashMode = AVCaptureFlashModeOn;
   } else {
-    _cameraManager.flashMode = AVCaptureFlashModeOff;
+    _baseCamera.flashMode = AVCaptureFlashModeOff;
   }
 }
 
 - (void)onSwicthCamera:(UIButton *)sender {
-  [_cameraManager switchCameras];
+  
+  [_baseCamera switchCamera];
 }
 
 - (void)onSwicthSize:(UIButton *)sender {
+  sender.selected = !sender.selected;
   
+  if (sender.isSelected) {
+    [_baseCamera changeCaptureMode:AVCaptureModeVideo];
+  } else {
+    [_baseCamera changeCaptureMode:AVCaptureModePhoto];
+  }
 }
 
 - (UIButton *)buttonWithFrame:(CGRect)frame
@@ -166,7 +186,7 @@ forControlEvents:UIControlEventTouchUpInside];
  @param point point为转换过坐标系后的point
  */
 - (void)tappedToFocusAtPoint:(CGPoint)point {
-  [_cameraManager focusAtPoint:point];
+  [_baseCamera focusAtPoint:point];
 }
 
 /**
@@ -175,14 +195,14 @@ forControlEvents:UIControlEventTouchUpInside];
  @param point point为转换过坐标系后的point
  */
 - (void)tappedToExposeAtPoint:(CGPoint)point {
-  [_cameraManager exposeAtPoint:point];
+  [_baseCamera exposeAtPoint:point];
 }
 
 /**
  复原 (双指双击触发)
  */
 - (void)tappedToResetFocusAndExposure {
-  [_cameraManager resetFocusAndExposureModes];
+  [_baseCamera resetFocusAndExposureModes];
 }
 
 
