@@ -23,6 +23,10 @@
 @property(strong, nonatomic) UITapGestureRecognizer *doubleTapRecognizer;
 @property(strong, nonatomic) UITapGestureRecognizer *doubleDoubleTapRecognizer;
 
+@property(nonatomic, strong) UIPinchGestureRecognizer *pinchGestureRecognizer;
+
+
+
 @end
 
 // *****************************************************************
@@ -65,9 +69,12 @@
   _doubleDoubleTapRecognizer.numberOfTapsRequired = 2;
   _doubleDoubleTapRecognizer.numberOfTouchesRequired = 2;
 
+  _pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(handlePinch:)];
+
   [self addGestureRecognizer:_singleTapRecognizer];
   [self addGestureRecognizer:_doubleTapRecognizer];
   [self addGestureRecognizer:_doubleDoubleTapRecognizer];
+  [self addGestureRecognizer:_pinchGestureRecognizer];
 
   [_singleTapRecognizer requireGestureRecognizerToFail:_doubleTapRecognizer];
 
@@ -81,7 +88,7 @@
 - (void)handleSingleTap:(UIGestureRecognizer *)recognizer {
   CGPoint point = [recognizer locationInView:self];
   [self runBoxAnimationOnView:self.focusBox point:point];
-  if (self.delegate) {
+  if ([self.delegate respondsToSelector:@selector(tappedToFocusAtPoint:)]) {
     [self.delegate tappedToFocusAtPoint:[self captureDevicePointForPoint:point]];
   }
 }
@@ -89,16 +96,24 @@
 - (void)handleDoubleTap:(UIGestureRecognizer *)recognizer {
   CGPoint point = [recognizer locationInView:self];
   [self runBoxAnimationOnView:self.exposureBox point:point];
-  if (self.delegate) {
+  if ([self.delegate respondsToSelector:@selector(tappedToExposeAtPoint:)]) {
     [self.delegate tappedToExposeAtPoint:[self captureDevicePointForPoint:point]];
   }
 }
 
 - (void)handleDoubleDoubleTap:(UIGestureRecognizer *)recognizer {
   [self runResetAnimation];
-  if (self.delegate) {
+  if ([self.delegate respondsToSelector:@selector(tappedToResetFocusAndExposure)]) {
     [self.delegate tappedToResetFocusAndExposure];
   }
+}
+
+- (void)handlePinch:(UIPinchGestureRecognizer *)recognizer {
+  if ([self.delegate respondsToSelector:@selector(videoZoomWithFactor:)]) {
+    [self.delegate videoZoomWithFactor:recognizer.scale];
+  }
+
+  recognizer.scale = 1.0;
 }
 
 #pragma mark - Public Methods

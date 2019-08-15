@@ -10,17 +10,16 @@
 
 #import "YiquxCameraPreviewView.h"
 #import "AVCameraManager.h"
-#import "AVVideoMotionManager.h"
 
 #import <CoreMotion/CoreMotion.h>
+
+#import "YiquxPhotosUtility.h"
 
 @interface CameraViewController () <YiquxCameraPreviewViewDelegate>
 
 @property (nonatomic, strong) AVCameraManager *baseCamera;
 
 @property (nonatomic, strong) YiquxCameraPreviewView *previewView;
-
-@property (nonatomic, strong) AVVideoMotionManager *motionManager;
 
 @end
 
@@ -32,11 +31,7 @@
   [self baseCamera];
   
   [self setupUI];
-  
-  NSLog(@"---");
-//  CMMotionManager *m = [[CMMotionManager alloc] init];
-  _motionManager = [[AVVideoMotionManager alloc] init];
-  NSLog(@"===");
+
 }
 
 - (AVCameraManager *)baseCamera {
@@ -44,10 +39,7 @@
     _baseCamera = [[AVCameraManager alloc] init];
     [self.previewView setSession:_baseCamera.session];
     
-    dispatch_async(_baseCamera.sessionQueue, ^{
-      [_baseCamera.session startRunning];
-    });
-    
+    [_baseCamera startSession];
     // 更改视频显示方向
     AVCaptureConnection *previewLayerConnection = _previewView.connection;
     if ([previewLayerConnection isVideoOrientationSupported]) {
@@ -62,7 +54,7 @@
 
   if (!_previewView) {
     CGRect frame = [self innerRectWithAspectRatio:CGSizeMake(1, 1) outRect:self.view.bounds];
-    _previewView = [[YiquxCameraPreviewView alloc] initWithFrame:frame];
+    _previewView = [[YiquxCameraPreviewView alloc] initWithFrame:self.view.bounds];
     _previewView.delegate = self;
 //    _previewView.tapToFocusEnabled = NO;
 //    _previewView.tapToExposeEnabled = NO;
@@ -86,6 +78,7 @@
           selectedImage:nil
                  action:nil];
   UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPress:)];
+  longPress.minimumPressDuration = 0.1;
   [btn addGestureRecognizer:longPress];
   UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onCamera)];
   [btn addGestureRecognizer:tapGesture];
@@ -117,7 +110,7 @@
 
 - (void)onCamera {
   [_baseCamera capturePhoto:^(UIImage * _Nullable resultImage, NSData * _Nonnull imgData) {
-    
+    UIImageWriteToSavedPhotosAlbum(resultImage, nil, nil, nil);
   }];
 }
 
@@ -126,7 +119,13 @@
     [_baseCamera startRecording];
     NSLog(@"start record");
   } else if (longPress.state == UIGestureRecognizerStateEnded) {
-    [_baseCamera stopRecording];
+    [_baseCamera stopRecording:^(NSURL * _Nullable outputURL, NSError * _Nullable error) {
+      if (!error) {
+        [YiquxPhotosUtility saveVideoToAlbumWithFileUrl:outputURL albumName:nil completionHandler:^(BOOL success, NSError * _Nonnull error) {
+          NSLog(@"save video success : %@", @(success));
+        }];
+      }
+    }];
     NSLog(@"end record");
   }
 }
@@ -203,6 +202,10 @@ forControlEvents:UIControlEventTouchUpInside];
  */
 - (void)tappedToResetFocusAndExposure {
   [_baseCamera resetFocusAndExposureModes];
+}
+
+- (void)videoZoomWithFactor:(CGFloat)zoom {
+
 }
 
 

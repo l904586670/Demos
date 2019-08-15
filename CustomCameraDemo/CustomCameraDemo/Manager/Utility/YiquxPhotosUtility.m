@@ -530,7 +530,6 @@
     [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
       [PHAssetCollectionChangeRequest creationRequestForAssetCollectionWithTitle:albumName];
     } completionHandler:^(BOOL success, NSError * _Nullable error) {
-      NSLog(@"thread : %@", [NSThread currentThread]);
       if (hander) {
         hander(success, error);
       }

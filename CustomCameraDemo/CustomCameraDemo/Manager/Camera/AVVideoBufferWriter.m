@@ -1,17 +1,14 @@
 //
-//  DHVideoBufferWriter.m
+//  AVVideoBufferWriter.m
 //  CustomCameraDemo
 //
 //  Created by User on 2019/8/14.
 //  Copyright © 2019 Rock. All rights reserved.
 //
 
-#import "DHVideoBufferWriter.h"
+#import "AVVideoBufferWriter.h"
 
-#import <UIKit/UIKit.h>
-#import <CoreMotion/CoreMotion.h>
-
-@interface DHVideoBufferWriter ()
+@interface AVVideoBufferWriter ()
 
 @property (nonatomic, strong) dispatch_queue_t writeQueue;
 @property (nonatomic, strong) AVAssetWriter *assetWriter;
@@ -21,23 +18,16 @@
 @property (nonatomic, assign) BOOL readyToRecordVideo;
 @property (nonatomic, assign) BOOL readyToRecordAudio;
 
-@property (nonatomic, strong) CMMotionManager *motionManager;
-
-@property (nonatomic, assign) UIDeviceOrientation deviceOrientation;
-
 @end
 
-@implementation DHVideoBufferWriter
+@implementation AVVideoBufferWriter
 
 - (instancetype)init {
   self = [super init];
   if (self) {
     _readyToRecordVideo = NO;
     _readyToRecordAudio = NO;
-    
-    _devicePosition = AVCaptureDevicePositionBack;
-    
-    [self motionManager];
+
   }
   return self;
 }
@@ -52,29 +42,7 @@
   return _writeQueue;
 }
 
-- (CMMotionManager *)motionManager {
-  if (!_motionManager) {
-    _motionManager = [[CMMotionManager alloc] init];
-    _motionManager.deviceMotionUpdateInterval = 1.0 / 3.0;
-    if (!_motionManager.deviceMotionAvailable) {
-      _motionManager = nil;
-    }
-    __weak typeof(self) weakSelf = self;
-    [_motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue] withHandler: ^(CMDeviceMotion *motion, NSError *error) {
-      __strong  typeof(self) strongSelf = weakSelf;
-      [strongSelf performSelectorOnMainThread:@selector(handleDeviceMotion:) withObject:motion waitUntilDone:YES];
-    }];
-  }
-  
-  return _motionManager;
-}
-
-- (void)dealloc {
-  [_motionManager stopDeviceMotionUpdates];
-}
-
 #pragma mark - Public Methods
-
 
 - (void)removeVideoOutputFile {
   if (!_outputVideoPath) {
@@ -89,7 +57,6 @@
     }
   }
 }
-
 
 - (void)startWrite {
   dispatch_async(self.writeQueue, ^{
@@ -227,8 +194,7 @@
   if ([self.assetWriter canApplyOutputSettings:settings forMediaType:AVMediaTypeVideo]){
     _videoInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo outputSettings:settings];
     _videoInput.expectsMediaDataInRealTime = YES;
-    _videoInput.transform = [self transformFromCurrentVideoOrientationToOrientation:_videoOrientation];
-    
+
     if ([_assetWriter canAddInput:_videoInput]){
       [_assetWriter addInput:_videoInput];
     } else {
@@ -239,84 +205,5 @@
   }
   return nil;
 }
-
-// 获取视频旋转矩阵
-- (CGAffineTransform)transformFromCurrentVideoOrientationToOrientation:(AVCaptureVideoOrientation)orientation {
-  CGFloat orientationAngleOffset = [self angleOffsetFromPortraitOrientationToOrientation:orientation];
-  // 视频的播放方向
-  CGFloat videoOrientationAngleOffset = [self angleOffsetFromPortraitOrientationToOrientation:AVCaptureVideoOrientationPortrait];
-  CGFloat angleOffset = 0.0;
-  if (_devicePosition == AVCaptureDevicePositionBack) {
-    angleOffset = videoOrientationAngleOffset - orientationAngleOffset + M_PI_2;
-  } else if (_devicePosition == AVCaptureDevicePositionFront) {
-    angleOffset = orientationAngleOffset - videoOrientationAngleOffset + M_PI_2;
-  }
-
-  
-  NSLog(@"angleOffset : %@", @(angleOffset));
-
-  return CGAffineTransformMakeRotation(angleOffset);
-}
-
-// 获取视频旋转角度, 默认home键在右为0度
-- (CGFloat)angleOffsetFromPortraitOrientationToOrientation:(AVCaptureVideoOrientation)orientation{
-  CGFloat angle = 0.0;
-  switch (orientation){
-    case AVCaptureVideoOrientationPortrait:
-      angle = 0.0;
-      break;
-    case AVCaptureVideoOrientationPortraitUpsideDown:
-      angle = M_PI;
-      break;
-    case AVCaptureVideoOrientationLandscapeRight:
-      angle = -M_PI_2;
-      break;
-    case AVCaptureVideoOrientationLandscapeLeft:
-      angle = M_PI_2;
-      break;
-  }
-  return angle;
-}
-
-
-// 如果设备获取方向不准确, 可以选择使用陀螺仪获取
-- (AVCaptureVideoOrientation)currentVideoOrientation {
-  UIDeviceOrientation sataus = [UIDevice currentDevice].orientation;
-  switch (sataus) {
-    case UIDeviceOrientationPortrait:
-      return AVCaptureVideoOrientationPortrait;
-    case UIDeviceOrientationLandscapeRight:
-      return AVCaptureVideoOrientationLandscapeLeft;
-    case UIDeviceOrientationLandscapeLeft:
-      return AVCaptureVideoOrientationLandscapeRight;
-    default:
-      return AVCaptureVideoOrientationPortraitUpsideDown;
-  }
-}
-
-
-// 从陀螺仪中获取当前设备方法
-- (void)handleDeviceMotion:(CMDeviceMotion *)deviceMotion{
-  double x = deviceMotion.gravity.x;
-  double y = deviceMotion.gravity.y;
-  if (fabs(y) >= fabs(x)) {
-    if (y >= 0) {
-      _deviceOrientation = UIDeviceOrientationPortraitUpsideDown;
-      _videoOrientation  = AVCaptureVideoOrientationPortraitUpsideDown;
-    } else {
-      _deviceOrientation = UIDeviceOrientationPortrait;
-      _videoOrientation  = AVCaptureVideoOrientationPortrait;
-    }
-  } else {
-    if (x >= 0) {
-      _deviceOrientation = UIDeviceOrientationLandscapeRight;
-      _videoOrientation  = AVCaptureVideoOrientationLandscapeRight;
-    } else {
-      _deviceOrientation = UIDeviceOrientationLandscapeLeft;
-      _videoOrientation  = AVCaptureVideoOrientationLandscapeLeft;
-    }
-  }
-}
-
 
 @end

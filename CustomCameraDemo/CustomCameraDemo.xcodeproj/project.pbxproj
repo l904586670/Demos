@@ -14,7 +14,7 @@
 		8CEA1C992301AFE600F306B2 /* 聚焦热力图.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CEA1C922301AFE500F306B2 /* 聚焦热力图.png */; };
 		8CEA1C9A2301AFE600F306B2 /* flashOn.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CEA1C932301AFE500F306B2 /* flashOn.png */; };
 		8CEA1C9B2301AFE600F306B2 /* cameraFlip.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CEA1C942301AFE500F306B2 /* cameraFlip.png */; };
-		CE8A0AD623039DDF005AEB52 /* DHVideoBufferWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8A0AD523039DDF005AEB52 /* DHVideoBufferWriter.m */; };
+		CE8A0AD623039DDF005AEB52 /* AVVideoBufferWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8A0AD523039DDF005AEB52 /* AVVideoBufferWriter.m */; };
 		CEA0A95C22F18BE100F781E4 /* AlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA0A95B22F18BE100F781E4 /* AlbumViewController.m */; };
 		CEA0A95F22F18BF400F781E4 /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA0A95E22F18BF400F781E4 /* CameraViewController.m */; };
 		CEA0A96222F18C8100F781E4 /* UserAuthorization.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA0A96022F18C8100F781E4 /* UserAuthorization.m */; };
@@ -39,8 +39,8 @@
 		8CEA1C922301AFE500F306B2 /* 聚焦热力图.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "聚焦热力图.png"; sourceTree = "<group>"; };
 		8CEA1C932301AFE500F306B2 /* flashOn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flashOn.png; sourceTree = "<group>"; };
 		8CEA1C942301AFE500F306B2 /* cameraFlip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cameraFlip.png; sourceTree = "<group>"; };
-		CE8A0AD423039DDF005AEB52 /* DHVideoBufferWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DHVideoBufferWriter.h; sourceTree = "<group>"; };
-		CE8A0AD523039DDF005AEB52 /* DHVideoBufferWriter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DHVideoBufferWriter.m; sourceTree = "<group>"; };
+		CE8A0AD423039DDF005AEB52 /* AVVideoBufferWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AVVideoBufferWriter.h; sourceTree = "<group>"; };
+		CE8A0AD523039DDF005AEB52 /* AVVideoBufferWriter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AVVideoBufferWriter.m; sourceTree = "<group>"; };
 		CEA0A95A22F18BE100F781E4 /* AlbumViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlbumViewController.h; sourceTree = "<group>"; };
 		CEA0A95B22F18BE100F781E4 /* AlbumViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlbumViewController.m; sourceTree = "<group>"; };
 		CEA0A95D22F18BF400F781E4 /* CameraViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraViewController.h; sourceTree = "<group>"; };
@@ -152,8 +152,8 @@
 				CEDDA38522F03CF0003A52A9 /* YiquxCameraPreviewView.m */,
 				CEAF83A52304F1CB00601156 /* AVCameraManager.h */,
 				CEAF83A62304F1CB00601156 /* AVCameraManager.m */,
-				CE8A0AD423039DDF005AEB52 /* DHVideoBufferWriter.h */,
-				CE8A0AD523039DDF005AEB52 /* DHVideoBufferWriter.m */,
+				CE8A0AD423039DDF005AEB52 /* AVVideoBufferWriter.h */,
+				CE8A0AD523039DDF005AEB52 /* AVVideoBufferWriter.m */,
 				CEB0A41722F2CE700089BDEB /* DHCameraHelper.h */,
 				CEB0A41822F2CE700089BDEB /* DHCameraHelper.m */,
 			);
@@ -256,7 +256,7 @@
 				CEDDA37622F03770003A52A9 /* main.m in Sources */,
 				CEA0A95F22F18BF400F781E4 /* CameraViewController.m in Sources */,
 				CEAF83A72304F1CB00601156 /* AVCameraManager.m in Sources */,
-				CE8A0AD623039DDF005AEB52 /* DHVideoBufferWriter.m in Sources */,
+				CE8A0AD623039DDF005AEB52 /* AVVideoBufferWriter.m in Sources */,
 				CEDDA36822F0376E003A52A9 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -8,8 +8,11 @@
 
 #import "AVCameraManager.h"
 
-#import "DHVideoBufferWriter.h"
+#import <CoreMotion/CoreMotion.h>
+
+#import "AVVideoBufferWriter.h"
 #import "DHCameraHelper.h"
+
 
 static const NSString *CameraAdjustingExposeureContext = @"CameraAdjustingExposeureContext";
 
@@ -27,7 +30,7 @@ static const NSString *CameraAdjustingExposeureContext = @"CameraAdjustingExpose
 
 @property (nonatomic, assign) BOOL recording;
 
-@property (nonatomic, strong) DHVideoBufferWriter *bufferWriter;
+@property (nonatomic, strong) AVVideoBufferWriter *bufferWriter;
 
 
 /***  图片相关  ***/
@@ -37,6 +40,11 @@ static const NSString *CameraAdjustingExposeureContext = @"CameraAdjustingExpose
 @property (nonatomic, strong) NSData *photoData;
 @property (nonatomic, copy) CapturePhotoResult capturePhotoBlock;
 
+
+// 陀螺仪,在拍照或摄像时确定方向信息. UIDevice 在设备竖屏锁定时获取的一直未竖屏
+@property (nonatomic, strong) CMMotionManager *motionManager;
+@property (nonatomic, assign) AVCaptureVideoOrientation videoOrientation;
+
 @end
 
 
@@ -45,14 +53,22 @@ static const NSString *CameraAdjustingExposeureContext = @"CameraAdjustingExpose
 - (instancetype)init {
   self = [super init];
   if (self) {
-    
+    _videoOrientation = AVCaptureVideoOrientationPortrait;
+    _photoMirror = NO;
+
     self.session = [[AVCaptureSession alloc] init];
     self.videoDeviceDiscoverySession = [DHCameraHelper deviceDiscoverySessionWith:AVCaptureDevicePositionUnspecified];
     [self sessionQueue];
   
     [self configureSession];
+
+    [self motionManager];
   }
   return self;
+}
+
+- (void)dealloc {
+  [_motionManager stopDeviceMotionUpdates];
 }
 
 #pragma mark - Lazy Methods
@@ -63,6 +79,23 @@ static const NSString *CameraAdjustingExposeureContext = @"CameraAdjustingExpose
     _sessionQueue = dispatch_queue_create([label cStringUsingEncoding:NSASCIIStringEncoding], DISPATCH_QUEUE_SERIAL);
   }
   return _sessionQueue;
+}
+
+- (CMMotionManager *)motionManager {
+  if (!_motionManager) {
+    _motionManager = [[CMMotionManager alloc] init];
+    _motionManager.deviceMotionUpdateInterval = 1.0 / 3.0;
+    if (!_motionManager.deviceMotionAvailable) {
+      _motionManager = nil;
+    }
+    __weak typeof(self) weakSelf = self;
+    [_motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue] withHandler: ^(CMDeviceMotion *motion, NSError *error) {
+      __strong  typeof(self) strongSelf = weakSelf;
+      [strongSelf performSelectorOnMainThread:@selector(handleDeviceMotion:) withObject:motion waitUntilDone:YES];
+    }];
+  }
+
+  return _motionManager;
 }
 
 - (AVCaptureVideoDataOutput *)videoDataOutput {
@@ -84,14 +117,40 @@ static const NSString *CameraAdjustingExposeureContext = @"CameraAdjustingExpose
   return _audioDataOutput;
 }
 
-- (DHVideoBufferWriter *)bufferWriter {
+- (AVVideoBufferWriter *)bufferWriter {
   if (!_bufferWriter) {
-    _bufferWriter = [[DHVideoBufferWriter alloc] init];
+    _bufferWriter = [[AVVideoBufferWriter alloc] init];
   }
   return _bufferWriter;
 }
 
+- (void)startSession {
+  if ([self.session isRunning]) {
+    return;
+  }
+
+  dispatch_async(self.sessionQueue, ^{
+    [self.session startRunning];
+  });
+}
+
+- (void)stopSession {
+  if ([self.session isRunning]) {
+    dispatch_async(self.sessionQueue, ^{
+      [self.session stopRunning];
+    });
+  }
+}
+
 #pragma mark - Public Methods
+
+- (CGFloat)videoZoomFactor {
+  return self.activeVideoInput.device.videoZoomFactor;
+}
+
+- (CGFloat)videoMaxZoomFactor {
+  return self.activeVideoInput.device.activeFormat.videoMaxZoomFactor;
+}
 
 - (void)switchCamera {
   dispatch_async(self.sessionQueue, ^{
@@ -322,16 +381,22 @@ static const NSString *CameraAdjustingExposeureContext = @"CameraAdjustingExpose
 }
 
 - (void)capturePhoto:(CapturePhotoResult)completeHandler {
+  NSLog(@"capturePhoto");
+
   self.capturePhotoBlock = completeHandler;
-  
-  AVCaptureVideoOrientation videoPreviewLayerVideoOrientation = self.bufferWriter.videoOrientation;
-  
+
   dispatch_async(self.sessionQueue, ^{
     
     // Update the photo output's connection to match the video orientation of the video preview layer.
     AVCaptureConnection *photoOutputConnection = [self.photoOutput connectionWithMediaType:AVMediaTypeVideo];
-    photoOutputConnection.videoOrientation = videoPreviewLayerVideoOrientation;
-    
+    photoOutputConnection.videoOrientation = self->_videoOrientation;
+
+    if (!self->_photoMirror) {
+      AVCaptureDevice *device = self.activeVideoInput.device;
+      AVCaptureDevicePosition currentPosition = device.position;
+      photoOutputConnection.videoMirrored = ((AVCaptureDevicePositionUnspecified == currentPosition) || (AVCaptureDevicePositionFront == currentPosition));
+    }
+
     AVCapturePhotoSettings *photoSettings = [AVCapturePhotoSettings photoSettings];
     // Capture HEIF photos when supported, with the flash set to enable auto- and high-resolution photos.
     if (@available(iOS 11.0, *)) {
@@ -353,17 +418,13 @@ static const NSString *CameraAdjustingExposeureContext = @"CameraAdjustingExpose
 }
 
 - (void)startRecording {
-  self.bufferWriter.devicePosition = self.activeVideoInput.device.position;
-  
   if (_recording) {
     return;
   }
-  
-  AVCaptureVideoOrientation videoPreviewLayerVideoOrientation = self.bufferWriter.videoOrientation;
-  
+
   dispatch_async(self.sessionQueue, ^{
     AVCaptureConnection *videoConnection = [self.videoDataOutput connectionWithMediaType:AVMediaTypeVideo];
-    videoConnection.videoOrientation = videoPreviewLayerVideoOrientation;
+    videoConnection.videoOrientation = self->_videoOrientation;
     AVCaptureDevice *device = self.activeVideoInput.device;
     AVCaptureDevicePosition currentPosition = device.position;
     
@@ -406,16 +467,17 @@ static const NSString *CameraAdjustingExposeureContext = @"CameraAdjustingExpose
     }
     
     [self.bufferWriter startWrite];
-    
     self->_recording = YES;
   });
 }
 
-- (void)stopRecording {
+- (void)stopRecording:(void(^)(NSURL * _Nullable outputURL, NSError * _Nullable error))resultBlock {
   _recording = NO;
   dispatch_async(self.sessionQueue, ^{
     [self.bufferWriter stopWrite:^(NSURL * _Nullable outputUrl, NSError * _Nullable error) {
-      
+      if (resultBlock) {
+        resultBlock(outputUrl, error);
+      }
     }];
   });
 }
@@ -495,7 +557,6 @@ static const NSString *CameraAdjustingExposeureContext = @"CameraAdjustingExpose
     }
 
   } else {
-    NSLog(@"Could not add photo output to the session");
     [self.session commitConfiguration];
     return;
   }
@@ -599,7 +660,7 @@ static const NSString *CameraAdjustingExposeureContext = @"CameraAdjustingExpose
     });
   }
   if (self.capturePhotoBlock) {
-    self.capturePhotoBlock( [self fixOrientationWith:[UIImage imageWithData:self.photoData]], self.photoData);
+    self.capturePhotoBlock( [UIImage imageWithData:self.photoData], self.photoData);
   }
 
 }
@@ -616,7 +677,7 @@ static const NSString *CameraAdjustingExposeureContext = @"CameraAdjustingExpose
   }
   
   if (self.capturePhotoBlock) {
-    self.capturePhotoBlock([self fixOrientationWith:[UIImage imageWithData:self.photoData]], self.photoData);
+    self.capturePhotoBlock([UIImage imageWithData:self.photoData], self.photoData);
   }
 }
 
@@ -652,6 +713,26 @@ static const NSString *CameraAdjustingExposeureContext = @"CameraAdjustingExpose
 }
 
 #pragma mark - Other
+
+// 从陀螺仪中获取当前设备方法
+- (void)handleDeviceMotion:(CMDeviceMotion *)deviceMotion{
+  double x = deviceMotion.gravity.x;
+  double y = deviceMotion.gravity.y;
+  if (fabs(y) >= fabs(x)) {
+    if (y >= 0) {
+      _videoOrientation  = AVCaptureVideoOrientationPortraitUpsideDown;
+    } else {
+      _videoOrientation  = AVCaptureVideoOrientationPortrait;
+    }
+  } else {
+    if (x >= 0) {
+      _videoOrientation  = AVCaptureVideoOrientationLandscapeLeft;
+    } else {
+      _videoOrientation  = AVCaptureVideoOrientationLandscapeRight;
+    }
+  }
+}
+
 
 - (UIImage *)fixOrientationWith:(UIImage *)image {
   // No-op if the orientation is already correct

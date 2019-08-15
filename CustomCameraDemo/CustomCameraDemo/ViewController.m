@@ -58,9 +58,6 @@ forControlEvents:UIControlEventTouchUpInside];
   [self presentViewController:cameraVC animated:YES completion:nil];
 }
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-  UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
-  NSLog(@"orientation : %@", @(orientation));
-}
+
 
 @end

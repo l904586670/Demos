@@ -1,5 +1,5 @@
 //
-//  DHVideoBufferWriter.h
+//  AVVideoBufferWriter.h
 //  CustomCameraDemo
 //
 //  Created by User on 2019/8/14.
@@ -12,19 +12,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface DHVideoBufferWriter : NSObject
-
-@property (nonatomic, assign, readonly) AVCaptureVideoOrientation videoOrientation;
+@interface AVVideoBufferWriter : NSObject
 
 @property (nonatomic, strong) NSString *outputVideoPath;
-
-@property (nonatomic, assign) AVCaptureDevicePosition devicePosition;
-
-// 根据当前buffer 配置视频写入
-- (NSError *)setupAssetWriterVideoInput:(CMFormatDescriptionRef)currentFormatDescription;
-
-// 根据当前buffer 配置音频写入
-- (NSError *)setupAssetWriterAudioInput:(CMFormatDescriptionRef)currentFormatDescription;
 
 - (void)startWrite;
 

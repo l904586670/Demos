@@ -45,14 +45,24 @@ typedef void(^CapturePhotoResult)(UIImage * _Nullable resultImage, NSData *imgDa
 // 会话输入流
 @property(nonatomic, strong, readonly) AVCaptureSession *session;
 
+@property(nonatomic, assign, readonly) CGFloat videoZoomFactor;
+
+@property(nonatomic, assign, readonly) CGFloat videoMaxZoomFactor;
+
 // 聚焦模式, default : auto
 @property (nonatomic, assign) AVCaptureTorchMode torchMode;
 // 闪光灯模式. default : Off
 @property (nonatomic, assign) AVCaptureFlashMode flashMode;
 
-@property (nonatomic, assign) AVCaptureMode captureMode;
+// 拍照是否镜像. 系统相机默认为镜像. 默认为不镜像
+@property(nonatomic, assign) BOOL photoMirror;
+
+@property (nonatomic, assign, readonly) AVCaptureMode captureMode;
 
 @property (nonatomic, weak) id<AVCameraManagerCapturePhotoDelegate> photoDelegate;
+
+- (void)startSession;
+- (void)stopSession;
 
 #pragma mark - 点击方法
 
@@ -78,7 +88,7 @@ typedef void(^CapturePhotoResult)(UIImage * _Nullable resultImage, NSData *imgDa
 - (void)changeCaptureMode:(AVCaptureMode)captureMode;
 
 - (void)startRecording;
-- (void)stopRecording;
+- (void)stopRecording:(void(^)(NSURL * _Nullable outputURL, NSError * _Nullable error))resultBlock;
 
 @end
 

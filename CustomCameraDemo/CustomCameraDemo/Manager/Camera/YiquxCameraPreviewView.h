@@ -35,6 +35,8 @@
  */
 - (void)tappedToResetFocusAndExposure;
 
+- (void)videoZoomWithFactor:(CGFloat)zoom;
+
 @end
 
 // *****************************************************************
