@@ -1,0 +1,466 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8C14A0B0231D0C0000421001 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C14A0AF231D0C0000421001 /* AppDelegate.m */; };
+		8C14A0B3231D0C0000421001 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C14A0B2231D0C0000421001 /* ViewController.m */; };
+		8C14A0B6231D0C0000421001 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C14A0B4231D0C0000421001 /* Main.storyboard */; };
+		8C14A0B8231D0C0300421001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C14A0B7231D0C0300421001 /* Assets.xcassets */; };
+		8C14A0BB231D0C0300421001 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C14A0B9231D0C0300421001 /* LaunchScreen.storyboard */; };
+		8C14A0BE231D0C0300421001 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C14A0BD231D0C0300421001 /* main.m */; };
+		8C14A313231D195100421001 /* SGG_SpineJSONTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C14A300231D195100421001 /* SGG_SpineJSONTools.m */; };
+		8C14A314231D195100421001 /* SGG_Spine.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C14A301231D195100421001 /* SGG_Spine.m */; };
+		8C14A315231D195100421001 /* AlphaValueHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C14A304231D195100421001 /* AlphaValueHelper.m */; };
+		8C14A316231D195100421001 /* SGG_SpineSkin.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C14A309231D195100421001 /* SGG_SpineSkin.m */; };
+		8C14A317231D195100421001 /* ColorValueHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C14A30A231D195100421001 /* ColorValueHelper.m */; };
+		8C14A318231D195100421001 /* SGG_SkinSlot.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C14A30B231D195100421001 /* SGG_SkinSlot.m */; };
+		8C14A319231D195100421001 /* SGG_SkinSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C14A30E231D195100421001 /* SGG_SkinSprite.m */; };
+		8C14A31A231D195100421001 /* SGG_SpineBone.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C14A311231D195100421001 /* SGG_SpineBone.m */; };
+		8C14A31B231D195100421001 /* SGG_SpineBoneAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C14A312231D195100421001 /* SGG_SpineBoneAction.m */; };
+		8C14A31F231D1A3E00421001 /* SpineScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C14A31E231D1A3E00421001 /* SpineScene.m */; };
+		8C14A326231D1B5900421001 /* goblin.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 8C14A321231D1B5900421001 /* goblin.atlas */; };
+		8C14A327231D1B5900421001 /* goblins.json in Resources */ = {isa = PBXBuildFile; fileRef = 8C14A322231D1B5900421001 /* goblins.json */; };
+		8C14A328231D1B5900421001 /* spineboy.json in Resources */ = {isa = PBXBuildFile; fileRef = 8C14A323231D1B5900421001 /* spineboy.json */; };
+		8C14A32A231D1B5900421001 /* spineboy.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 8C14A325231D1B5900421001 /* spineboy.atlas */; };
+		8C14A32D231D202900421001 /* SpriteKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C14A32C231D202900421001 /* SpriteKit.framework */; };
+		8C14A32F231D206000421001 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C14A32E231D206000421001 /* UIKit.framework */; };
+		8C14A331231D206700421001 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C14A330231D206700421001 /* Foundation.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		8C14A0AB231D0C0000421001 /* SpineDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpineDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C14A0AE231D0C0000421001 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		8C14A0AF231D0C0000421001 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		8C14A0B1231D0C0000421001 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		8C14A0B2231D0C0000421001 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		8C14A0B5231D0C0000421001 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8C14A0B7231D0C0300421001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8C14A0BA231D0C0300421001 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8C14A0BC231D0C0300421001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8C14A0BD231D0C0300421001 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		8C14A300231D195100421001 /* SGG_SpineJSONTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGG_SpineJSONTools.m; sourceTree = "<group>"; };
+		8C14A301231D195100421001 /* SGG_Spine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGG_Spine.m; sourceTree = "<group>"; };
+		8C14A302231D195100421001 /* SGG_SkinSlot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGG_SkinSlot.h; sourceTree = "<group>"; };
+		8C14A303231D195100421001 /* ColorValueHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorValueHelper.h; sourceTree = "<group>"; };
+		8C14A304231D195100421001 /* AlphaValueHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlphaValueHelper.m; sourceTree = "<group>"; };
+		8C14A305231D195100421001 /* SGG_SkinSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGG_SkinSprite.h; sourceTree = "<group>"; };
+		8C14A306231D195100421001 /* SpineImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpineImport.h; sourceTree = "<group>"; };
+		8C14A307231D195100421001 /* SGG_SpineBoneAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGG_SpineBoneAction.h; sourceTree = "<group>"; };
+		8C14A308231D195100421001 /* SGG_SpineBone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGG_SpineBone.h; sourceTree = "<group>"; };
+		8C14A309231D195100421001 /* SGG_SpineSkin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGG_SpineSkin.m; sourceTree = "<group>"; };
+		8C14A30A231D195100421001 /* ColorValueHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorValueHelper.m; sourceTree = "<group>"; };
+		8C14A30B231D195100421001 /* SGG_SkinSlot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGG_SkinSlot.m; sourceTree = "<group>"; };
+		8C14A30C231D195100421001 /* SGG_Spine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGG_Spine.h; sourceTree = "<group>"; };
+		8C14A30D231D195100421001 /* SGG_SpineJSONTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGG_SpineJSONTools.h; sourceTree = "<group>"; };
+		8C14A30E231D195100421001 /* SGG_SkinSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGG_SkinSprite.m; sourceTree = "<group>"; };
+		8C14A30F231D195100421001 /* AlphaValueHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlphaValueHelper.h; sourceTree = "<group>"; };
+		8C14A310231D195100421001 /* SGG_SpineSkin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGG_SpineSkin.h; sourceTree = "<group>"; };
+		8C14A311231D195100421001 /* SGG_SpineBone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGG_SpineBone.m; sourceTree = "<group>"; };
+		8C14A312231D195100421001 /* SGG_SpineBoneAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGG_SpineBoneAction.m; sourceTree = "<group>"; };
+		8C14A31D231D1A3E00421001 /* SpineScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpineScene.h; sourceTree = "<group>"; };
+		8C14A31E231D1A3E00421001 /* SpineScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpineScene.m; sourceTree = "<group>"; };
+		8C14A321231D1B5900421001 /* goblin.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = goblin.atlas; sourceTree = "<group>"; };
+		8C14A322231D1B5900421001 /* goblins.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = goblins.json; sourceTree = "<group>"; };
+		8C14A323231D1B5900421001 /* spineboy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = spineboy.json; sourceTree = "<group>"; };
+		8C14A325231D1B5900421001 /* spineboy.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = spineboy.atlas; sourceTree = "<group>"; };
+		8C14A32C231D202900421001 /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = System/Library/Frameworks/SpriteKit.framework; sourceTree = SDKROOT; };
+		8C14A32E231D206000421001 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		8C14A330231D206700421001 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8C14A0A8231D0C0000421001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C14A331231D206700421001 /* Foundation.framework in Frameworks */,
+				8C14A32F231D206000421001 /* UIKit.framework in Frameworks */,
+				8C14A32D231D202900421001 /* SpriteKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8C14A0A2231D0C0000421001 = {
+			isa = PBXGroup;
+			children = (
+				8C14A0AD231D0C0000421001 /* SpineDemo */,
+				8C14A0AC231D0C0000421001 /* Products */,
+				8C14A32B231D202900421001 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		8C14A0AC231D0C0000421001 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8C14A0AB231D0C0000421001 /* SpineDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8C14A0AD231D0C0000421001 /* SpineDemo */ = {
+			isa = PBXGroup;
+			children = (
+				8C14A320231D1B5900421001 /* Resource */,
+				8C14A31C231D195600421001 /* SupportFiles */,
+				8C14A2FF231D195100421001 /* SpineImporter */,
+			);
+			path = SpineDemo;
+			sourceTree = "<group>";
+		};
+		8C14A2FF231D195100421001 /* SpineImporter */ = {
+			isa = PBXGroup;
+			children = (
+				8C14A30F231D195100421001 /* AlphaValueHelper.h */,
+				8C14A304231D195100421001 /* AlphaValueHelper.m */,
+				8C14A303231D195100421001 /* ColorValueHelper.h */,
+				8C14A30A231D195100421001 /* ColorValueHelper.m */,
+				8C14A302231D195100421001 /* SGG_SkinSlot.h */,
+				8C14A30B231D195100421001 /* SGG_SkinSlot.m */,
+				8C14A305231D195100421001 /* SGG_SkinSprite.h */,
+				8C14A30E231D195100421001 /* SGG_SkinSprite.m */,
+				8C14A30C231D195100421001 /* SGG_Spine.h */,
+				8C14A301231D195100421001 /* SGG_Spine.m */,
+				8C14A308231D195100421001 /* SGG_SpineBone.h */,
+				8C14A311231D195100421001 /* SGG_SpineBone.m */,
+				8C14A307231D195100421001 /* SGG_SpineBoneAction.h */,
+				8C14A312231D195100421001 /* SGG_SpineBoneAction.m */,
+				8C14A30D231D195100421001 /* SGG_SpineJSONTools.h */,
+				8C14A300231D195100421001 /* SGG_SpineJSONTools.m */,
+				8C14A310231D195100421001 /* SGG_SpineSkin.h */,
+				8C14A309231D195100421001 /* SGG_SpineSkin.m */,
+				8C14A306231D195100421001 /* SpineImport.h */,
+			);
+			path = SpineImporter;
+			sourceTree = "<group>";
+		};
+		8C14A31C231D195600421001 /* SupportFiles */ = {
+			isa = PBXGroup;
+			children = (
+				8C14A0AE231D0C0000421001 /* AppDelegate.h */,
+				8C14A0AF231D0C0000421001 /* AppDelegate.m */,
+				8C14A0B1231D0C0000421001 /* ViewController.h */,
+				8C14A0B2231D0C0000421001 /* ViewController.m */,
+				8C14A31D231D1A3E00421001 /* SpineScene.h */,
+				8C14A31E231D1A3E00421001 /* SpineScene.m */,
+				8C14A0B4231D0C0000421001 /* Main.storyboard */,
+				8C14A0B7231D0C0300421001 /* Assets.xcassets */,
+				8C14A0B9231D0C0300421001 /* LaunchScreen.storyboard */,
+				8C14A0BC231D0C0300421001 /* Info.plist */,
+				8C14A0BD231D0C0300421001 /* main.m */,
+			);
+			name = SupportFiles;
+			sourceTree = "<group>";
+		};
+		8C14A320231D1B5900421001 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				8C14A321231D1B5900421001 /* goblin.atlas */,
+				8C14A322231D1B5900421001 /* goblins.json */,
+				8C14A323231D1B5900421001 /* spineboy.json */,
+				8C14A325231D1B5900421001 /* spineboy.atlas */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		8C14A32B231D202900421001 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8C14A330231D206700421001 /* Foundation.framework */,
+				8C14A32E231D206000421001 /* UIKit.framework */,
+				8C14A32C231D202900421001 /* SpriteKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8C14A0AA231D0C0000421001 /* SpineDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8C14A0C1231D0C0300421001 /* Build configuration list for PBXNativeTarget "SpineDemo" */;
+			buildPhases = (
+				8C14A0A7231D0C0000421001 /* Sources */,
+				8C14A0A8231D0C0000421001 /* Frameworks */,
+				8C14A0A9231D0C0000421001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SpineDemo;
+			productName = SpineDemo;
+			productReference = 8C14A0AB231D0C0000421001 /* SpineDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8C14A0A3231D0C0000421001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1030;
+				ORGANIZATIONNAME = Yiqux;
+				TargetAttributes = {
+					8C14A0AA231D0C0000421001 = {
+						CreatedOnToolsVersion = 10.3;
+					};
+				};
+			};
+			buildConfigurationList = 8C14A0A6231D0C0000421001 /* Build configuration list for PBXProject "SpineDemo" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8C14A0A2231D0C0000421001;
+			productRefGroup = 8C14A0AC231D0C0000421001 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8C14A0AA231D0C0000421001 /* SpineDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8C14A0A9231D0C0000421001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C14A0BB231D0C0300421001 /* LaunchScreen.storyboard in Resources */,
+				8C14A0B8231D0C0300421001 /* Assets.xcassets in Resources */,
+				8C14A32A231D1B5900421001 /* spineboy.atlas in Resources */,
+				8C14A328231D1B5900421001 /* spineboy.json in Resources */,
+				8C14A326231D1B5900421001 /* goblin.atlas in Resources */,
+				8C14A327231D1B5900421001 /* goblins.json in Resources */,
+				8C14A0B6231D0C0000421001 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8C14A0A7231D0C0000421001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C14A0B3231D0C0000421001 /* ViewController.m in Sources */,
+				8C14A317231D195100421001 /* ColorValueHelper.m in Sources */,
+				8C14A313231D195100421001 /* SGG_SpineJSONTools.m in Sources */,
+				8C14A0BE231D0C0300421001 /* main.m in Sources */,
+				8C14A31F231D1A3E00421001 /* SpineScene.m in Sources */,
+				8C14A316231D195100421001 /* SGG_SpineSkin.m in Sources */,
+				8C14A314231D195100421001 /* SGG_Spine.m in Sources */,
+				8C14A315231D195100421001 /* AlphaValueHelper.m in Sources */,
+				8C14A31A231D195100421001 /* SGG_SpineBone.m in Sources */,
+				8C14A319231D195100421001 /* SGG_SkinSprite.m in Sources */,
+				8C14A31B231D195100421001 /* SGG_SpineBoneAction.m in Sources */,
+				8C14A318231D195100421001 /* SGG_SkinSlot.m in Sources */,
+				8C14A0B0231D0C0000421001 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		8C14A0B4231D0C0000421001 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8C14A0B5231D0C0000421001 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		8C14A0B9231D0C0300421001 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8C14A0BA231D0C0300421001 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8C14A0BF231D0C0300421001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		8C14A0C0231D0C0300421001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8C14A0C2231D0C0300421001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = E9YKN6T6GN;
+				INFOPLIST_FILE = SpineDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.yiqux.SpineDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8C14A0C3231D0C0300421001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = E9YKN6T6GN;
+				INFOPLIST_FILE = SpineDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.yiqux.SpineDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8C14A0A6231D0C0000421001 /* Build configuration list for PBXProject "SpineDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C14A0BF231D0C0300421001 /* Debug */,
+				8C14A0C0231D0C0300421001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8C14A0C1231D0C0300421001 /* Build configuration list for PBXNativeTarget "SpineDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C14A0C2231D0C0300421001 /* Debug */,
+				8C14A0C3231D0C0300421001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8C14A0A3231D0C0000421001 /* Project object */;
+}

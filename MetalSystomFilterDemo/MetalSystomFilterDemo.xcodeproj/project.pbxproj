@@ -7,6 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C14A08B231CEA8900421001 /* MetalFilterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C14A08A231CEA8900421001 /* MetalFilterCell.m */; };
+		8C14A08E231CEBB500421001 /* UIImage+Scale.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C14A08D231CEBB500421001 /* UIImage+Scale.m */; };
+		8C14A098231CEE2400421001 /* lut-11.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C14A08F231CEE2300421001 /* lut-11.png */; };
+		8C14A099231CEE2400421001 /* lut-8.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C14A090231CEE2300421001 /* lut-8.png */; };
+		8C14A09A231CEE2400421001 /* lut-6.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C14A091231CEE2300421001 /* lut-6.png */; };
+		8C14A09B231CEE2400421001 /* lut-9.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C14A092231CEE2300421001 /* lut-9.png */; };
+		8C14A09C231CEE2400421001 /* lut-5.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C14A093231CEE2300421001 /* lut-5.png */; };
+		8C14A09D231CEE2400421001 /* lut-12.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C14A094231CEE2400421001 /* lut-12.png */; };
+		8C14A09E231CEE2400421001 /* lut-13.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C14A095231CEE2400421001 /* lut-13.png */; };
+		8C14A09F231CEE2400421001 /* lut-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C14A096231CEE2400421001 /* lut-7.png */; };
+		8C14A0A0231CEE2400421001 /* lut-10.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C14A097231CEE2400421001 /* lut-10.png */; };
 		CEE2CE4122F913D10030C714 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE2CE4022F913D10030C714 /* AppDelegate.m */; };
 		CEE2CE4422F913D10030C714 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE2CE4322F913D10030C714 /* ViewController.m */; };
 		CEE2CE4722F913D10030C714 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEE2CE4522F913D10030C714 /* Main.storyboard */; };
@@ -25,6 +36,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8C14A089231CEA8900421001 /* MetalFilterCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MetalFilterCell.h; sourceTree = "<group>"; };
+		8C14A08A231CEA8900421001 /* MetalFilterCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MetalFilterCell.m; sourceTree = "<group>"; };
+		8C14A08C231CEBB500421001 /* UIImage+Scale.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Scale.h"; sourceTree = "<group>"; };
+		8C14A08D231CEBB500421001 /* UIImage+Scale.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Scale.m"; sourceTree = "<group>"; };
+		8C14A08F231CEE2300421001 /* lut-11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lut-11.png"; sourceTree = "<group>"; };
+		8C14A090231CEE2300421001 /* lut-8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lut-8.png"; sourceTree = "<group>"; };
+		8C14A091231CEE2300421001 /* lut-6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lut-6.png"; sourceTree = "<group>"; };
+		8C14A092231CEE2300421001 /* lut-9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lut-9.png"; sourceTree = "<group>"; };
+		8C14A093231CEE2300421001 /* lut-5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lut-5.png"; sourceTree = "<group>"; };
+		8C14A094231CEE2400421001 /* lut-12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lut-12.png"; sourceTree = "<group>"; };
+		8C14A095231CEE2400421001 /* lut-13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lut-13.png"; sourceTree = "<group>"; };
+		8C14A096231CEE2400421001 /* lut-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lut-7.png"; sourceTree = "<group>"; };
+		8C14A097231CEE2400421001 /* lut-10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lut-10.png"; sourceTree = "<group>"; };
 		CEE2CE3C22F913D10030C714 /* MetalSystomFilterDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MetalSystomFilterDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEE2CE3F22F913D10030C714 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		CEE2CE4022F913D10030C714 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -90,6 +114,10 @@
 				CEE2CE4522F913D10030C714 /* Main.storyboard */,
 				CEE2CE4222F913D10030C714 /* ViewController.h */,
 				CEE2CE4322F913D10030C714 /* ViewController.m */,
+				8C14A08C231CEBB500421001 /* UIImage+Scale.h */,
+				8C14A08D231CEBB500421001 /* UIImage+Scale.m */,
+				8C14A089231CEA8900421001 /* MetalFilterCell.h */,
+				8C14A08A231CEA8900421001 /* MetalFilterCell.m */,
 			);
 			path = MetalSystomFilterDemo;
 			sourceTree = "<group>";
@@ -109,11 +137,20 @@
 		CEE2CE7322FA69320030C714 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				CEE2CE7422FA69320030C714 /* lut-4.png */,
 				CEE2CE7522FA69320030C714 /* lut-0.png */,
 				CEE2CE7622FA69320030C714 /* lut-1.png */,
-				CEE2CE7722FA69320030C714 /* lut-3.png */,
 				CEE2CE7822FA69320030C714 /* lut-2.png */,
+				CEE2CE7722FA69320030C714 /* lut-3.png */,
+				CEE2CE7422FA69320030C714 /* lut-4.png */,
+				8C14A093231CEE2300421001 /* lut-5.png */,
+				8C14A091231CEE2300421001 /* lut-6.png */,
+				8C14A096231CEE2400421001 /* lut-7.png */,
+				8C14A090231CEE2300421001 /* lut-8.png */,
+				8C14A092231CEE2300421001 /* lut-9.png */,
+				8C14A097231CEE2400421001 /* lut-10.png */,
+				8C14A08F231CEE2300421001 /* lut-11.png */,
+				8C14A094231CEE2400421001 /* lut-12.png */,
+				8C14A095231CEE2400421001 /* lut-13.png */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -177,10 +214,19 @@
 			files = (
 				CEE2CE4C22F913D20030C714 /* LaunchScreen.storyboard in Resources */,
 				CEE2CE7C22FA69330030C714 /* lut-3.png in Resources */,
+				8C14A0A0231CEE2400421001 /* lut-10.png in Resources */,
 				CEE2CE7B22FA69330030C714 /* lut-1.png in Resources */,
+				8C14A09E231CEE2400421001 /* lut-13.png in Resources */,
+				8C14A09D231CEE2400421001 /* lut-12.png in Resources */,
+				8C14A09C231CEE2400421001 /* lut-5.png in Resources */,
+				8C14A098231CEE2400421001 /* lut-11.png in Resources */,
+				8C14A09A231CEE2400421001 /* lut-6.png in Resources */,
 				CEE2CE5622F913F70030C714 /* img1.jpg in Resources */,
+				8C14A099231CEE2400421001 /* lut-8.png in Resources */,
+				8C14A09B231CEE2400421001 /* lut-9.png in Resources */,
 				CEE2CE7D22FA69330030C714 /* lut-2.png in Resources */,
 				CEE2CE7922FA69330030C714 /* lut-4.png in Resources */,
+				8C14A09F231CEE2400421001 /* lut-7.png in Resources */,
 				CEE2CE4922F913D20030C714 /* Assets.xcassets in Resources */,
 				CEE2CE7A22FA69330030C714 /* lut-0.png in Resources */,
 				CEE2CE4722F913D10030C714 /* Main.storyboard in Resources */,
@@ -199,6 +245,8 @@
 				CEE2CE4F22F913D20030C714 /* main.m in Sources */,
 				CEE2CE6D22F9824A0030C714 /* BaseFilter.metal in Sources */,
 				CEE2CE4122F913D10030C714 /* AppDelegate.m in Sources */,
+				8C14A08B231CEA8900421001 /* MetalFilterCell.m in Sources */,
+				8C14A08E231CEBB500421001 /* UIImage+Scale.m in Sources */,
 				CEE2CE6E22F9824A0030C714 /* BaseMetalShaderFilter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -342,8 +390,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = H8Z8H3RQUL;
+				DEVELOPMENT_TEAM = E9YKN6T6GN;
 				INFOPLIST_FILE = MetalSystomFilterDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -359,8 +408,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = H8Z8H3RQUL;
+				DEVELOPMENT_TEAM = E9YKN6T6GN;
 				INFOPLIST_FILE = MetalSystomFilterDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

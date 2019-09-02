@@ -9,11 +9,17 @@
 #import "ViewController.h"
 
 #import "BaseMetalShaderFilter.h"
+#import "MetalFilterCell.h"
+#import "UIImage+Scale.h"
 
-@interface ViewController ()
+@interface ViewController () <UICollectionViewDataSource,UICollectionViewDelegate>
 
 @property (nonatomic, strong) UIImageView *imgView;
 @property (nonatomic, strong) UIImage *originImage;
+
+@property (nonatomic, strong) UICollectionView *lutCollectionView;
+
+@property (nonatomic, strong) UIImage *scaleImage;
 
 @end
 
@@ -25,6 +31,7 @@
   self.title = @"基本滤镜";
   
   _originImage = [UIImage imageNamed:@"img1.jpg"];
+
   CGRect frame = [self innerRectWithAspectRatio:_originImage.size outRect:self.view.bounds];
   frame.origin.y = CGRectGetMinY(frame) / 2.0;
   _imgView = [[UIImageView alloc] initWithFrame:frame];
@@ -91,22 +98,26 @@
 }
 
 - (void)lutBtnUIWithPosY:(CGFloat)posY {
-  NSArray *titiles = @[@"原始", @"lut1", @"lut2", @"lut3", @"lut4"];
   CGSize screenSize = [UIScreen mainScreen].bounds.size;
-  CGFloat itmeWidth = (screenSize.width - 20) / titiles.count;
-  CGFloat posX = 10.0;
-  for (NSInteger i = 0; i < titiles.count; i++) {
-    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [btn setTitle:titiles[i] forState:UIControlStateNormal];
-    [btn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    [self.view addSubview:btn];
-    btn.frame = CGRectMake(posX + i * itmeWidth, posY, itmeWidth, 40);
-    [btn addTarget:self
-            action:@selector(onLutFilterTouch:)
-  forControlEvents:UIControlEventTouchUpInside];
-    btn.tag = i;
-  }
-  
+
+  CGFloat itemWH = 70;
+  _scaleImage = [_originImage scaleToFillSize:CGSizeMake(itemWH * [UIScreen mainScreen].scale, itemWH * [UIScreen mainScreen].scale)];
+
+  UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+  layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+  layout.itemSize = CGSizeMake(itemWH, itemWH);
+  layout.sectionInset = UIEdgeInsetsMake(0, 10, 0, 10);
+  layout.minimumLineSpacing = 10;
+
+  CGRect frame = CGRectMake(0, posY, screenSize.width, itemWH);
+
+  _lutCollectionView = [[UICollectionView alloc] initWithFrame:frame collectionViewLayout:layout];
+  _lutCollectionView.dataSource = self;
+  _lutCollectionView.delegate = self;
+  _lutCollectionView.backgroundColor = [UIColor clearColor];
+  [self.view addSubview:_lutCollectionView];
+
+  [_lutCollectionView registerClass:[MetalFilterCell class] forCellWithReuseIdentifier:@"cellId"];
 }
 
 #pragma mark - Action
@@ -143,14 +154,33 @@
   _imgView.image = resultImage;
 }
 
+#pragma mark - UICollectionViewDataSource
 
-- (void)onLutFilterTouch:(UIButton *)sender {
-  NSInteger index = sender.tag;
-  
-  UIImage *lutImage = [UIImage imageNamed:[NSString stringWithFormat:@"lut-%@.png", @(index)]];
-  
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+  return 14;
+}
+
+// The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+  MetalFilterCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cellId" forIndexPath:indexPath];
+
+  UIImage *lutImage = [UIImage imageNamed:[NSString stringWithFormat:@"lut-%@.png", @(indexPath.row)]];
+  UIImage *resultImage = [[BaseMetalShaderFilter shareInstance] lutFilterWithOriginImage:_scaleImage lutImage:lutImage];
+
+  cell.imageView.image = resultImage;
+
+  return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+
+  UIImage *lutImage = [UIImage imageNamed:[NSString stringWithFormat:@"lut-%@.png", @(indexPath.row)]];
+
   UIImage *resultImage = [[BaseMetalShaderFilter shareInstance] lutFilterWithOriginImage:_originImage lutImage:lutImage];
   _imgView.image = resultImage;
 }
+
+
+
 
 @end
