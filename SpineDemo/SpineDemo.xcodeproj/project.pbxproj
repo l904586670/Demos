@@ -30,6 +30,10 @@
 		8C14A32D231D202900421001 /* SpriteKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C14A32C231D202900421001 /* SpriteKit.framework */; };
 		8C14A32F231D206000421001 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C14A32E231D206000421001 /* UIKit.framework */; };
 		8C14A331231D206700421001 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C14A330231D206700421001 /* Foundation.framework */; };
+		8C28395E23214D5300CD4D51 /* base-0.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 8C28395D23214D5300CD4D51 /* base-0.atlas */; };
+		8C28396223214D8600CD4D51 /* metadata.json in Resources */ = {isa = PBXBuildFile; fileRef = 8C28396023214D8600CD4D51 /* metadata.json */; };
+		8C28396323214D8600CD4D51 /* skeleton.json in Resources */ = {isa = PBXBuildFile; fileRef = 8C28396123214D8600CD4D51 /* skeleton.json */; };
+		8C28396523214D9300CD4D51 /* 151567692172_.pic_hd.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8C28396423214D9300CD4D51 /* 151567692172_.pic_hd.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +75,10 @@
 		8C14A32C231D202900421001 /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = System/Library/Frameworks/SpriteKit.framework; sourceTree = SDKROOT; };
 		8C14A32E231D206000421001 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		8C14A330231D206700421001 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		8C28395D23214D5300CD4D51 /* base-0.atlas */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "base-0.atlas"; sourceTree = "<group>"; };
+		8C28396023214D8600CD4D51 /* metadata.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = metadata.json; sourceTree = "<group>"; };
+		8C28396123214D8600CD4D51 /* skeleton.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = skeleton.json; sourceTree = "<group>"; };
+		8C28396423214D9300CD4D51 /* 151567692172_.pic_hd.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 151567692172_.pic_hd.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +169,9 @@
 		8C14A320231D1B5900421001 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				8C28395F23214D8500CD4D51 /* face */,
+				8C28395D23214D5300CD4D51 /* base-0.atlas */,
+				8C28396423214D9300CD4D51 /* 151567692172_.pic_hd.jpg */,
 				8C14A321231D1B5900421001 /* goblin.atlas */,
 				8C14A322231D1B5900421001 /* goblins.json */,
 				8C14A323231D1B5900421001 /* spineboy.json */,
@@ -177,6 +188,15 @@
 				8C14A32C231D202900421001 /* SpriteKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8C28395F23214D8500CD4D51 /* face */ = {
+			isa = PBXGroup;
+			children = (
+				8C28396023214D8600CD4D51 /* metadata.json */,
+				8C28396123214D8600CD4D51 /* skeleton.json */,
+			);
+			path = face;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -236,13 +256,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C28396323214D8600CD4D51 /* skeleton.json in Resources */,
 				8C14A0BB231D0C0300421001 /* LaunchScreen.storyboard in Resources */,
+				8C28396223214D8600CD4D51 /* metadata.json in Resources */,
 				8C14A0B8231D0C0300421001 /* Assets.xcassets in Resources */,
 				8C14A32A231D1B5900421001 /* spineboy.atlas in Resources */,
 				8C14A328231D1B5900421001 /* spineboy.json in Resources */,
 				8C14A326231D1B5900421001 /* goblin.atlas in Resources */,
 				8C14A327231D1B5900421001 /* goblins.json in Resources */,
 				8C14A0B6231D0C0000421001 /* Main.storyboard in Resources */,
+				8C28396523214D9300CD4D51 /* 151567692172_.pic_hd.jpg in Resources */,
+				8C28395E23214D5300CD4D51 /* base-0.atlas in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
