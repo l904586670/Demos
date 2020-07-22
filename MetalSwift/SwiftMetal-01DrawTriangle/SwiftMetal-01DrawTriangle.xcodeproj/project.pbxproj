@@ -1,0 +1,361 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8CCCE6C724C72D6500D7DA8C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCCE6C624C72D6500D7DA8C /* AppDelegate.swift */; };
+		8CCCE6C924C72D6500D7DA8C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCCE6C824C72D6500D7DA8C /* SceneDelegate.swift */; };
+		8CCCE6CB24C72D6500D7DA8C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCCE6CA24C72D6500D7DA8C /* ViewController.swift */; };
+		8CCCE6CE24C72D6500D7DA8C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CCCE6CC24C72D6500D7DA8C /* Main.storyboard */; };
+		8CCCE6D024C72D6900D7DA8C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8CCCE6CF24C72D6900D7DA8C /* Assets.xcassets */; };
+		8CCCE6D324C72D6900D7DA8C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CCCE6D124C72D6900D7DA8C /* LaunchScreen.storyboard */; };
+		8CCCE6DB24C72DBC00D7DA8C /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCCE6DA24C72DBC00D7DA8C /* MetalView.swift */; };
+		8CCCE6E024C73F7600D7DA8C /* triangle.metal in Sources */ = {isa = PBXBuildFile; fileRef = 8CCCE6DF24C73F7600D7DA8C /* triangle.metal */; };
+		8CCCE6E224C8717900D7DA8C /* MathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCCE6E124C8717900D7DA8C /* MathLibrary.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		8CCCE6C324C72D6500D7DA8C /* SwiftMetal-01DrawTriangle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SwiftMetal-01DrawTriangle.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8CCCE6C624C72D6500D7DA8C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		8CCCE6C824C72D6500D7DA8C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		8CCCE6CA24C72D6500D7DA8C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		8CCCE6CD24C72D6500D7DA8C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8CCCE6CF24C72D6900D7DA8C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8CCCE6D224C72D6900D7DA8C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8CCCE6D424C72D6900D7DA8C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8CCCE6DA24C72DBC00D7DA8C /* MetalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalView.swift; sourceTree = "<group>"; };
+		8CCCE6DC24C7379100D7DA8C /* CommonType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonType.h; sourceTree = "<group>"; };
+		8CCCE6DE24C739E300D7DA8C /* MetalDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MetalDemo-Bridging-Header.h"; sourceTree = "<group>"; };
+		8CCCE6DF24C73F7600D7DA8C /* triangle.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = triangle.metal; sourceTree = "<group>"; };
+		8CCCE6E124C8717900D7DA8C /* MathLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathLibrary.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8CCCE6C024C72D6500D7DA8C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8CCCE6BA24C72D6500D7DA8C = {
+			isa = PBXGroup;
+			children = (
+				8CCCE6C524C72D6500D7DA8C /* SwiftMetal-01DrawTriangle */,
+				8CCCE6C424C72D6500D7DA8C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8CCCE6C424C72D6500D7DA8C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8CCCE6C324C72D6500D7DA8C /* SwiftMetal-01DrawTriangle.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8CCCE6C524C72D6500D7DA8C /* SwiftMetal-01DrawTriangle */ = {
+			isa = PBXGroup;
+			children = (
+				8CCCE6C624C72D6500D7DA8C /* AppDelegate.swift */,
+				8CCCE6C824C72D6500D7DA8C /* SceneDelegate.swift */,
+				8CCCE6DA24C72DBC00D7DA8C /* MetalView.swift */,
+				8CCCE6DC24C7379100D7DA8C /* CommonType.h */,
+				8CCCE6DF24C73F7600D7DA8C /* triangle.metal */,
+				8CCCE6DE24C739E300D7DA8C /* MetalDemo-Bridging-Header.h */,
+				8CCCE6CA24C72D6500D7DA8C /* ViewController.swift */,
+				8CCCE6E124C8717900D7DA8C /* MathLibrary.swift */,
+				8CCCE6CC24C72D6500D7DA8C /* Main.storyboard */,
+				8CCCE6CF24C72D6900D7DA8C /* Assets.xcassets */,
+				8CCCE6D124C72D6900D7DA8C /* LaunchScreen.storyboard */,
+				8CCCE6D424C72D6900D7DA8C /* Info.plist */,
+			);
+			path = "SwiftMetal-01DrawTriangle";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8CCCE6C224C72D6500D7DA8C /* SwiftMetal-01DrawTriangle */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8CCCE6D724C72D6900D7DA8C /* Build configuration list for PBXNativeTarget "SwiftMetal-01DrawTriangle" */;
+			buildPhases = (
+				8CCCE6BF24C72D6500D7DA8C /* Sources */,
+				8CCCE6C024C72D6500D7DA8C /* Frameworks */,
+				8CCCE6C124C72D6500D7DA8C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "SwiftMetal-01DrawTriangle";
+			productName = "SwiftMetal-01DrawTriangle";
+			productReference = 8CCCE6C324C72D6500D7DA8C /* SwiftMetal-01DrawTriangle.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8CCCE6BB24C72D6500D7DA8C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1160;
+				LastUpgradeCheck = 1160;
+				ORGANIZATIONNAME = Rock;
+				TargetAttributes = {
+					8CCCE6C224C72D6500D7DA8C = {
+						CreatedOnToolsVersion = 11.6;
+					};
+				};
+			};
+			buildConfigurationList = 8CCCE6BE24C72D6500D7DA8C /* Build configuration list for PBXProject "SwiftMetal-01DrawTriangle" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8CCCE6BA24C72D6500D7DA8C;
+			productRefGroup = 8CCCE6C424C72D6500D7DA8C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8CCCE6C224C72D6500D7DA8C /* SwiftMetal-01DrawTriangle */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8CCCE6C124C72D6500D7DA8C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8CCCE6D324C72D6900D7DA8C /* LaunchScreen.storyboard in Resources */,
+				8CCCE6D024C72D6900D7DA8C /* Assets.xcassets in Resources */,
+				8CCCE6CE24C72D6500D7DA8C /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8CCCE6BF24C72D6500D7DA8C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8CCCE6DB24C72DBC00D7DA8C /* MetalView.swift in Sources */,
+				8CCCE6CB24C72D6500D7DA8C /* ViewController.swift in Sources */,
+				8CCCE6E024C73F7600D7DA8C /* triangle.metal in Sources */,
+				8CCCE6C724C72D6500D7DA8C /* AppDelegate.swift in Sources */,
+				8CCCE6C924C72D6500D7DA8C /* SceneDelegate.swift in Sources */,
+				8CCCE6E224C8717900D7DA8C /* MathLibrary.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		8CCCE6CC24C72D6500D7DA8C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8CCCE6CD24C72D6500D7DA8C /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		8CCCE6D124C72D6900D7DA8C /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8CCCE6D224C72D6900D7DA8C /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8CCCE6D524C72D6900D7DA8C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		8CCCE6D624C72D6900D7DA8C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8CCCE6D824C72D6900D7DA8C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = E9YKN6T6GN;
+				INFOPLIST_FILE = "SwiftMetal-01DrawTriangle/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ios.SwiftMetal-01DrawTriangle";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SwiftMetal-01DrawTriangle/MetalDemo-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8CCCE6D924C72D6900D7DA8C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = E9YKN6T6GN;
+				INFOPLIST_FILE = "SwiftMetal-01DrawTriangle/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ios.SwiftMetal-01DrawTriangle";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SwiftMetal-01DrawTriangle/MetalDemo-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8CCCE6BE24C72D6500D7DA8C /* Build configuration list for PBXProject "SwiftMetal-01DrawTriangle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8CCCE6D524C72D6900D7DA8C /* Debug */,
+				8CCCE6D624C72D6900D7DA8C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8CCCE6D724C72D6900D7DA8C /* Build configuration list for PBXNativeTarget "SwiftMetal-01DrawTriangle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8CCCE6D824C72D6900D7DA8C /* Debug */,
+				8CCCE6D924C72D6900D7DA8C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8CCCE6BB24C72D6500D7DA8C /* Project object */;
+}
