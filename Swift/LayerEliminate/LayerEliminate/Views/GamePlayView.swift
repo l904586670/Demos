@@ -8,6 +8,8 @@
 
 import UIKit
 
+import CoreGraphics
+
 protocol GamePlayViewDelegate  {
     func gamePlayViewDidCompeteLevel(level:Int8)
 }
@@ -19,8 +21,17 @@ class GamePlayView: UIView, EliminateViewDelegate {
     
     var delegate: GamePlayViewDelegate?
     
+    var matrixWH: Int = 15
     /// 矩阵点
-    var matrixCount: Int = 15
+    var matrixCount: Int {
+        get {
+            return matrixWH
+        }
+        set {
+            matrixWH = newValue
+            creatMatrix()
+        }
+    }
     
     var bottomShapLayer: CAShapeLayer!
     
@@ -35,7 +46,8 @@ class GamePlayView: UIView, EliminateViewDelegate {
     var items: Array<EliminateView>! = []
 
     var levelModel: LevelModel?
-
+    
+    var allTargetPathsArray: Array<Any> = []
     
 
     //MARK: override
@@ -52,7 +64,6 @@ class GamePlayView: UIView, EliminateViewDelegate {
     override func didMoveToWindow() {
         super.didMoveToWindow()
         
-
     }
     
     // MARK: UI
@@ -72,7 +83,7 @@ class GamePlayView: UIView, EliminateViewDelegate {
         pointBgLayer?.frame = self.bounds
         pointBgLayer?.backgroundColor = UIColor.clear.cgColor
         self.layer.addSublayer(pointBgLayer)
-
+        
         creatMatrix()
     }
     
@@ -91,9 +102,16 @@ class GamePlayView: UIView, EliminateViewDelegate {
         // draw point
         contentPointArray.removeAll()
         
-        for x in 0...matrixCount {
+        let dotSublayers: Array<CALayer> = pointBgLayer.sublayers ?? []
+        if (dotSublayers.count > 0) {
+            for sublayer in pointBgLayer.sublayers! where sublayer is CAShapeLayer {
+                sublayer.removeFromSuperlayer()
+            }
+        }
+
+        for x in 0...matrixCount - 1 {
             var items: Array<CGPoint> = []
-            for y in 0...matrixCount {
+            for y in 0...matrixCount - 1 {
                 let offsetX = CGFloat(x) * itemSpacing
                 let offsetY = CGFloat(y) * itemSpacing
                 
@@ -185,38 +203,9 @@ class GamePlayView: UIView, EliminateViewDelegate {
         bottomShapLayer.path = bezierPath.cgPath
         bottomShapLayer.fillRule = .evenOdd
     }
-    
-    
-    func sortTargetPath(paths:Array<Any>) -> Array<Any>? {
-        guard let pathArray:Array<Any> = paths else { return nil }
-        let count = pathArray.count
-        
-        if count == 1 {
-            return pathArray
-        }
-        var tmp:Array<Any> = []
-//        for index in 0...count {
-//            var deletedArray = pathArray
-//            deletedArray.remove(at: index)
-//            
-//            let arrOfSub: Array<Any> = sortTargetPath(paths: deletedArray) ?? []
-//            
-//            for item in arrOfSub {
-//                var lastArray:Array<Any> = []
-//                if (item as AnyObject).isKindOfClass(Array) {
-//                    lastArray = item
-//                } else {
-//                    lastArray.append(item)
-//                }
-//            }
-//        }
-        
-        return nil
-    }
 
     // MARK: public
-
-    func startGameFromData(model: LevelModel!) {
+    func startGameFromData(model: LevelModel! , dest: Bool) {
         guard let levelItem:LevelModel = model else { return  }
         levelModel = levelItem
 
@@ -224,14 +213,34 @@ class GamePlayView: UIView, EliminateViewDelegate {
             item.removeFromSuperview()
         }
         items?.removeAll()
+        
+        if (dest) {
+            guard let drawPoints = levelItem.destPoints?.first else { return  }
 
+            for packPoints in drawPoints {
+                let item = creatEliminateView(points: packPoints)
+                items.append(item)
+            }
+            updateShapeLayer()
+            return
+        }
+        
         guard let drawPoints = levelItem.srcPoints else { return  }
 
         for packPoints in drawPoints {
             let item = creatEliminateView(points: packPoints)
             items.append(item)
         }
-//        updateShapeLayer()
+        
+        updateShapeLayer()
+        
+        allTargetPathsArray.removeAll()
+        if let destPoints = levelModel?.destPoints {
+            for index in 0..<destPoints.count {
+                guard let result = sortTargetPath(targetPoints: destPoints[index]) else { continue  }
+                allTargetPathsArray.append(contentsOf: result)
+           }
+        }
     }
     
     func eliminateViewWillStartMove(_:EliminateView) {
@@ -243,7 +252,124 @@ class GamePlayView: UIView, EliminateViewDelegate {
     func eliminateViewDidEndMove(_:EliminateView) {
         updateShapeLayer()
         // check game over
+        
+        if gameOver() {
+            self.delegate?.gamePlayViewDidCompeteLevel(level: Int8(levelModel?.levelId ?? 0))
+        }
     }
+    
+    func gameOver() -> Bool {
+        
+        // check
+        let gameOverPath = defaultBezierPath()
+        
+        guard let targetPoints:Array<Array<Array<CGPoint>>> = levelModel?.destPoints else { return false }
+        let firstTargetPoints:Array<Array<CGPoint>> = targetPoints.first ?? [[]]
+        
+        for element in firstTargetPoints {
+            if let path = appendPathFromPoints(points: element) {
+                gameOverPath.append(path)
+            }
+        }
+        
+        let layerPath: UIBezierPath = UIBezierPath.init(cgPath: bottomShapLayer.path!)
+        layerPath.lineWidth = 0.0
+        layerPath.usesEvenOddFillRule = true
+        
+        // check Size equal
+        if gameOverPath.bounds.size.equalTo(layerPath.bounds.size) {
+            let offsetX: CGFloat = gameOverPath.bounds.minX - layerPath.bounds.minX
+            let offsetY: CGFloat = gameOverPath.bounds.minY - layerPath.bounds.minY
+            
+            let transform = CGAffineTransform.init(translationX: offsetX, y: offsetY)
+            layerPath.apply(transform)
+            
+            for pointsArray in allTargetPathsArray {
+                let pointsList = pointsArray as! Array<Array<CGPoint>>
+                let passPath = defaultBezierPath()
+            
+                for contentPoints in pointsList {
+                    if let path = appendPathFromPoints(points: contentPoints) {
+                        passPath.append(path)
+                    }
+                }
+            
+                if passPath.bounds.equalTo(layerPath.bounds) {
+                    print("-------- level Pass ----------")
+                    return true
+                }
+        
+            }
+        }
+        
+        return false
+    }
+    
+    
+    func appendPathFromPoints(points: Array<CGPoint>) -> UIBezierPath? {
+        guard let parmPoints: Array<CGPoint> = points as Array<CGPoint> else { return nil }
+        
+        let bezierPath: UIBezierPath = defaultBezierPath()
+        for index in 0..<parmPoints.count {
+            let point = parmPoints[index]
+            let x = point.x * itemSpacing + originPoint.x
+            let y = point.y * itemSpacing + originPoint.y
+            let realPoint = CGPoint.init(x: x, y: y)
+            
+            if (0 == index) {
+                bezierPath.move(to: realPoint)
+            } else {
+                bezierPath.addLine(to: realPoint)
+            }
+        }
+        bezierPath.close()
+        return bezierPath
+    }
+    
+    func sortTargetPath(targetPoints: Array<Any>) -> Array<Any>? {
+        guard let pointsList: Array<Any> = targetPoints else { return nil }
+        let count = pointsList.count
+        if count == 1 {
+            return pointsList
+        }
+        
+        var resultList: Array<Any> = []
+        for index in 0..<count {
+            let element = pointsList[index]
+            var deletedArray: Array<Any> = pointsList
+                        
+            deletedArray.removeAll { (obj) -> Bool in
+                if element as AnyObject === obj as AnyObject {
+                    return true
+                }
+                return false
+            }
+            
+            let arrOfSub: Array<Any> = sortTargetPath(targetPoints: deletedArray) ?? []
+            for j in 0..<arrOfSub.count {
+                var list: Array<Any> = []
+                let lastObj = arrOfSub[j]
+                
+                if lastObj is Array<Any> {
+                    let lastArray = lastObj as! Array<Any>
+                    if lastArray.first is Array<Any> {
+                        list = lastObj as! Array<Any>
+                    } else {
+                        list = [ lastObj ]
+                    }
+                } else {
+                    list = [ lastObj ]
+                }
+                
+                list.insert(element, at: 0)
+                resultList.append(list)
+            }
+        }
+        return resultList
+    }
+    
+
+
 }
 
 extension CGPoint {
