@@ -11,12 +11,12 @@ import UIKit
 class LevelModel: NSObject, Codable {
     let levelId: Int
     let srcPoints: Array<Array<CGPoint>>?
-    let destPoints: Array<Array<CGPoint>>?
+    let destPoints: Array<Array<Array<CGPoint>>>?
 
     init(dict:Dictionary<String,Any>) {
         self.levelId = dict["level"] as! Int
         self.srcPoints = convertDataType(data: dict["srcPoints"] as! Array<Array<Any>>)
-        self.destPoints = convertDataType(data: dict["destPoints"] as! Array<Array<Any>>)
+        self.destPoints = convertDestDataType(data: dict["destPoints"] as! Array<Array<Array<Any>>>)
 
         super.init()
     }
@@ -44,6 +44,37 @@ func convertDataType(data:Array<Array<Any>>) -> Array<Array<CGPoint>> {
             }
         }
         list.append(contentList)
+    }
+    return list
+}
+
+func convertDestDataType(data:Array<Array<Array<Any>>>) -> Array<Array<Array<CGPoint>>> {
+    var list: Array<Array<Array<CGPoint>>> = []
+    for contentArr in data {
+        var resultArray: Array<Array<CGPoint>> = []
+        for arr in contentArr {
+            var contentList: Array<CGPoint> = []
+            for item in arr {
+                if (item is String) {
+                    var itemStr: String = item as! String
+                    
+                    itemStr.removeLast()
+                    itemStr.removeFirst()
+                    
+                    let arraySubstrings: [String] = itemStr.components(separatedBy: ",")
+                    let posX: CGFloat = StringToFloat(str: arraySubstrings[0])
+                    let posY: CGFloat = StringToFloat(str: arraySubstrings[1])
+                    contentList.append(CGPoint.init(x: posX, y: posY))
+                    //                print("String")
+                } else if (item is CGPoint) {
+                    //                print("CGPoint")
+                    contentList.append(item as! CGPoint)
+                }
+            }
+            
+            resultArray.append(contentList)
+        }
+        list.append(resultArray)
     }
     return list
 }

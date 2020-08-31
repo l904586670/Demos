@@ -18,6 +18,7 @@
 		8C5AB26E24C9D16800391DCF /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5AB26D24C9D16700391DCF /* HomeViewController.swift */; };
 		8C5AB27024C9D1BF00391DCF /* LevelModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5AB26F24C9D1BF00391DCF /* LevelModel.swift */; };
 		8C5AB27224C9D56500391DCF /* EliminateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5AB27124C9D56500391DCF /* EliminateView.swift */; };
+		DD7728E824FCDDAB008364F0 /* lunch.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DD7728E724FCDDAB008364F0 /* lunch.jpg */; };
 		DDFA123424CAC15A00B603AE /* GamePlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFA123324CAC15A00B603AE /* GamePlayView.swift */; };
 		DDFA124224CB26BB00B603AE /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFA124024CB26BB00B603AE /* SwiftyJSON.swift */; };
 /* End PBXBuildFile section */
@@ -36,6 +37,7 @@
 		8C5AB26D24C9D16700391DCF /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		8C5AB26F24C9D1BF00391DCF /* LevelModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelModel.swift; sourceTree = "<group>"; };
 		8C5AB27124C9D56500391DCF /* EliminateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EliminateView.swift; sourceTree = "<group>"; };
+		DD7728E724FCDDAB008364F0 /* lunch.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lunch.jpg; sourceTree = "<group>"; };
 		DDFA123324CAC15A00B603AE /* GamePlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePlayView.swift; sourceTree = "<group>"; };
 		DDFA124024CB26BB00B603AE /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		DDFA124124CB26BB00B603AE /* SwiftyJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftyJSON.h; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 		8C5AB25E24C9D10700391DCF /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				DD7728E724FCDDAB008364F0 /* lunch.jpg */,
 				8C5AB25F24C9D10700391DCF /* level.conf */,
 				8C5AB26024C9D10700391DCF /* play-result.png */,
 				8C5AB26124C9D10700391DCF /* 造字工房尚黑.otf */,
@@ -198,6 +201,7 @@
 			files = (
 				8C5AB25724C9D04800391DCF /* LaunchScreen.storyboard in Resources */,
 				8C5AB26524C9D10700391DCF /* play-result.png in Resources */,
+				DD7728E824FCDDAB008364F0 /* lunch.jpg in Resources */,
 				8C5AB26824C9D10700391DCF /* touch.mp3 in Resources */,
 				8C5AB25424C9D04800391DCF /* Assets.xcassets in Resources */,
 				8C5AB26424C9D10700391DCF /* level.conf in Resources */,

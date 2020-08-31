@@ -8,6 +8,7 @@
 
 import UIKit
 
+import AVFoundation
 import CoreGraphics
 
 protocol GamePlayViewDelegate  {
@@ -39,15 +40,30 @@ class GamePlayView: UIView, EliminateViewDelegate {
     
     var itemSpacing: CGFloat = 0.0
     
-    var contentPointArray: Array<Any> = []
+    var contentPointArray: [Any] = []
     
     var originPoint: CGPoint = CGPoint.zero
     
-    var items: Array<EliminateView>! = []
+    var items: [EliminateView]! = []
 
     var levelModel: LevelModel?
     
-    var allTargetPathsArray: Array<Any> = []
+    var touchSoundEffect: AVAudioPlayer? {
+        get {
+            if let filePath = Bundle.main.path(forResource: "touch", ofType: "mp3") {
+                let url = URL.init(fileURLWithPath: filePath)
+                do {
+                    let soundEffect = try AVAudioPlayer(contentsOf: url)
+                    return soundEffect
+                } catch {
+                    return nil
+                }
+            } else {
+                fatalError("can not found file [touch.mp3] in bundle")
+            }
+            return nil
+        }
+    }
     
 
     //MARK: override
@@ -63,7 +79,6 @@ class GamePlayView: UIView, EliminateViewDelegate {
     
     override func didMoveToWindow() {
         super.didMoveToWindow()
-        
     }
     
     // MARK: UI
@@ -129,8 +144,7 @@ class GamePlayView: UIView, EliminateViewDelegate {
         }
     }
     
-    
-    private func creatEliminateView(points: Array<CGPoint>) -> EliminateView {
+    private func eliminateView(by points: [CGPoint]) -> EliminateView {
         var minPoint: CGPoint = points.first ?? CGPoint.zero
         var maxPoint: CGPoint = CGPoint.zero
         
@@ -174,13 +188,11 @@ class GamePlayView: UIView, EliminateViewDelegate {
         itemView.itemWH = itemSpacing
         itemView.firstPoint = originPoint
         itemView.limitArea = self.bounds
-//        itemView.backgroundColor = UIColor.red
         self.addSubview(itemView)
         itemView.addShapeMask(shapePath: bezierPath)
         
         return itemView
     }
-    
 
     private func defaultBezierPath() -> UIBezierPath {
         let bezierPath = UIBezierPath()
@@ -205,42 +217,34 @@ class GamePlayView: UIView, EliminateViewDelegate {
     }
 
     // MARK: public
-    func startGameFromData(model: LevelModel! , dest: Bool) {
-        guard let levelItem:LevelModel = model else { return  }
-        levelModel = levelItem
-
+    public func startGame(from data: LevelModel, isDest: Bool) {
+        levelModel = data
         for item in items {
             item.removeFromSuperview()
         }
-        items?.removeAll()
+        items.removeAll()
         
-        if (dest) {
-            guard let drawPoints = levelItem.destPoints?.first else { return  }
-
-            for packPoints in drawPoints {
-                let item = creatEliminateView(points: packPoints)
-                items.append(item)
+        if isDest {
+            if let drawPoints = data.destPoints?.first {
+                for packPoints in drawPoints {
+                    let item = self.eliminateView(by: packPoints)
+                    items.append(item)
+                }
             }
+            
             updateShapeLayer()
             return
         }
         
-        guard let drawPoints = levelItem.srcPoints else { return  }
+        if let drawPoints = data.srcPoints {
+            for packPoints in drawPoints {
+                let item = self.eliminateView(by: packPoints)
+                items.append(item)
+            }
+            
+            updateShapeLayer()
+        }
 
-        for packPoints in drawPoints {
-            let item = creatEliminateView(points: packPoints)
-            items.append(item)
-        }
-        
-        updateShapeLayer()
-        
-        allTargetPathsArray.removeAll()
-        if let destPoints = levelModel?.destPoints {
-            for index in 0..<destPoints.count {
-                guard let result = sortTargetPath(targetPoints: destPoints[index]) else { continue  }
-                allTargetPathsArray.append(contentsOf: result)
-           }
-        }
     }
     
     func eliminateViewWillStartMove(_:EliminateView) {
@@ -250,6 +254,8 @@ class GamePlayView: UIView, EliminateViewDelegate {
         updateShapeLayer()
     }
     func eliminateViewDidEndMove(_:EliminateView) {
+        self.touchSoundEffect?.play()
+        
         updateShapeLayer()
         // check game over
         
@@ -267,7 +273,7 @@ class GamePlayView: UIView, EliminateViewDelegate {
         let firstTargetPoints:Array<Array<CGPoint>> = targetPoints.first ?? [[]]
         
         for element in firstTargetPoints {
-            if let path = appendPathFromPoints(points: element) {
+            if let path = self.appendPath(from: element) {
                 gameOverPath.append(path)
             }
         }
@@ -277,6 +283,7 @@ class GamePlayView: UIView, EliminateViewDelegate {
         layerPath.usesEvenOddFillRule = true
         
         // check Size equal
+        // 过关条件dest数组里面的所有排序方式排好==
         if gameOverPath.bounds.size.equalTo(layerPath.bounds.size) {
             let offsetX: CGFloat = gameOverPath.bounds.minX - layerPath.bounds.minX
             let offsetY: CGFloat = gameOverPath.bounds.minY - layerPath.bounds.minY
@@ -284,36 +291,97 @@ class GamePlayView: UIView, EliminateViewDelegate {
             let transform = CGAffineTransform.init(translationX: offsetX, y: offsetY)
             layerPath.apply(transform)
             
-            for pointsArray in allTargetPathsArray {
-                let pointsList = pointsArray as! Array<Array<CGPoint>>
-                let passPath = defaultBezierPath()
-            
-                for contentPoints in pointsList {
-                    if let path = appendPathFromPoints(points: contentPoints) {
-                        passPath.append(path)
+            if let destPoints = levelModel?.destPoints {
+                let passPaths = passBezierPaths(from: destPoints)
+                
+                for passPath in passPaths {
+                    if passPath == layerPath {
+                        print("-------- level Pass ----------")
+                        return true
                     }
                 }
-            
-                if passPath.bounds.equalTo(layerPath.bounds) {
-                    print("-------- level Pass ----------")
-                    return true
-                }
-        
             }
         }
-        
         return false
     }
     
+    private func passBezierPaths(from destPoints:[[[CGPoint]]]) -> [UIBezierPath] {
+        var resultPaths:[UIBezierPath] = []
+        
+        for pointsArray in destPoints {
+
+            // 遍历所有排列可能性，[1, 2, 3], [2,3,1], [3,2,1], [3,1,2], [1,3,2]
+            let sortCount: Int = pointsArray.count
+            let allSortedIndexs = sortIndexList(by: UInt(sortCount))
+            
+            for sortedIndex in allSortedIndexs {
+                print(sortedIndex)
+                
+                let passPath = defaultBezierPath()
+                for eleIndex in sortedIndex {
+                    if let path = self.appendPath(from: pointsArray[eleIndex]) {
+                        passPath.append(path)
+                    }
+                }
+                
+                resultPaths.append(passPath)
+            }
+        }
+        
+       return resultPaths
+    }
+
     
-    func appendPathFromPoints(points: Array<CGPoint>) -> UIBezierPath? {
-        guard let parmPoints: Array<CGPoint> = points as Array<CGPoint> else { return nil }
+    /// 指定长度的数组共有多少种排列方式
+    /// - Parameter count: 数组长度
+    /// - Returns: 所有排列方式的索引
+    private func sortIndexList(by count:UInt) -> [[Int]] {
+        if count == 0 {
+            return [[]]
+        }
+        
+        var indexList:[Int] = []
+        for index in 0..<count {
+            indexList.append(Int(index))
+        }
+        
+        return permute(indexList)
+    }
+    
+    private func permute (_ arr:[Int]) -> [[Int]] {
+
+        var array = arr
+        var result = [[Int]]()
+        helper(&array,0,&result)
+        return result
+    }
+
+    func helper (_ arr: inout [Int], _ begin:Int, _ results: inout [[Int]]){
+        
+        if begin >= arr.count{
+            results.append(arr)
+            return
+        } else {
+            for i in begin..<arr.count{
+                // choose
+                arr.swapAt(begin, i)
+                // explore
+                helper(&arr, begin + 1, &results)
+                // unchoose
+                arr.swapAt(begin, i)
+            }
+        }
+    }
+    
+    
+    func appendPath(from points: [CGPoint]?) -> UIBezierPath? {
+        guard let parmPoints: Array<CGPoint> = points else { return nil }
         
         let bezierPath: UIBezierPath = defaultBezierPath()
-        for index in 0..<parmPoints.count {
-            let point = parmPoints[index]
-            let x = point.x * itemSpacing + originPoint.x
-            let y = point.y * itemSpacing + originPoint.y
+        
+        for (index, element) in parmPoints.enumerated() {
+            let x = element.x * itemSpacing + originPoint.x
+            let y = element.y * itemSpacing + originPoint.y
             let realPoint = CGPoint.init(x: x, y: y)
             
             if (0 == index) {
@@ -325,8 +393,11 @@ class GamePlayView: UIView, EliminateViewDelegate {
         bezierPath.close()
         return bezierPath
     }
+
     
-    func sortTargetPath(targetPoints: Array<Any>) -> Array<Any>? {
+    
+    
+    func sortTargetPath(targetPoints: [Any]?) -> Array<Any>? {
         guard let pointsList: Array<Any> = targetPoints else { return nil }
         let count = pointsList.count
         if count == 1 {
@@ -368,8 +439,6 @@ class GamePlayView: UIView, EliminateViewDelegate {
         return resultList
     }
     
-
-
 }
 
 extension CGPoint {

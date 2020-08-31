@@ -8,10 +8,13 @@
 
 import UIKit
 
-class HomeViewController: UIViewController {
+class HomeViewController: UIViewController, GamePlayViewDelegate {
+    
+    
     var models: [LevelModel]! = []
     var playView: GamePlayView!
-
+    var targetView: GamePlayView!
+    var levelIndex: Int = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,11 +27,25 @@ class HomeViewController: UIViewController {
     }
 
     private func setupUI() {
-
-        playView = GamePlayView.init(frame: CGRect.init(x: 0, y: 50, width: self.view.frame.width, height: self.view.frame.width))
+        let statusRect = UIApplication.shared.statusBarFrame
+        let screenWidth = UIScreen.main.bounds.size.width
+        let playRect = CGRect.init(x: 0, y: statusRect.maxY + 10, width: screenWidth, height: screenWidth)
+        
+        playView = GamePlayView.init(frame: playRect)
+        playView.delegate = self
         self.view.addSubview(playView)
-
-        playView?.startGameFromData(model: models[0])
+        playView.startGame(from: models[levelIndex], isDest: false)
+        
+        
+        let targetW = screenWidth/2.0
+        let targetRect = CGRect.init(x: (screenWidth - targetW)/2.0, y: playRect.maxY + 30, width: targetW, height: targetW)
+        
+        targetView = GamePlayView.init(frame: targetRect)
+        targetView.matrixCount = 11
+        targetView.isUserInteractionEnabled = false
+        self.view.addSubview(targetView)
+        targetView.startGame(from: models[levelIndex], isDest: true)
+        
     }
 
     private func loadData() {
@@ -54,5 +71,17 @@ class HomeViewController: UIViewController {
         return models
     }
 
+    func gamePlayViewDidCompeteLevel(level: Int8) {
+        let alert = UIAlertController.init(title: "恭喜", message: "进入下一关", preferredStyle:.alert)
+        let nextLevelAction = UIAlertAction.init(title: "下一关", style: .default) { (nextAction) in
+            self.levelIndex+=1
+            self.playView.startGame(from: self.models[self.levelIndex], isDest: false)
+            self.targetView.startGame(from: self.models[self.levelIndex], isDest: true)
+        }
+        let cancelAction = UIAlertAction.init(title: "取消", style: .cancel, handler: nil)
+        alert.addAction(nextLevelAction)
+        alert.addAction(cancelAction)
+        self.present(alert, animated: true, completion: nil)
+    }
 }
 
